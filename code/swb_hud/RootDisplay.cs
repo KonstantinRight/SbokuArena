@@ -24,6 +24,7 @@ public class RootDisplay : PanelComponent
 
 		Panel.StyleSheet.Load( "/swb_hud/RootDisplay.cs.scss" );
 		Panel.AddChild( new HealthDisplay( Player ) );
+		Panel.AddChild( new ArmorDisplay( Player ) );
 		Panel.AddChild( new AmmoDisplay( Player ) );
 		Panel.AddChild( new InventoryDisplay( Player ) );
 		Panel.AddChild( new Scoreboard() );
