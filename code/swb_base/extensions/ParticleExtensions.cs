@@ -16,7 +16,15 @@ public static class ParticleExtensions
 				if ( OnFrame is not null )
 					OnFrame( particles );
 
-				particles?.Simulate( Time.Delta );
+				try
+				{
+					// It just throws exceptions all the time
+					particles?.Simulate( Time.Delta );
+				}
+				catch ( Exception e )
+				{
+					Log.Warning( e );
+				}
 			}
 		}
 		catch ( TaskCanceledException )
