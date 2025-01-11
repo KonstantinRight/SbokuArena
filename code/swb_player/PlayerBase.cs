@@ -101,7 +101,7 @@ public partial class PlayerBase : Component, Component.INetworkSpawn, IPlayerBas
 
 		if ( attackerGO is not null && !attackerGO.IsProxy )
 		{
-			var attacker = attackerGO.Components.Get<PlayerBase>();
+			var attacker = attackerGO.Components.Get<IPlayerBase>();
 
 			if ( attacker is not null && attacker != this )
 				attacker.Kills++;
@@ -177,7 +177,7 @@ public partial class PlayerBase : Component, Component.INetworkSpawn, IPlayerBas
 		if ( IsBot ) return;
 		if ( !IsProxy ) ViewModelCamera.Enabled = IsFirstPerson && IsAlive;
 
-		if ( IsAlive )
+        if ( IsAlive )
 			OnMovementUpdate();
 
 		HandleFlinch();
@@ -201,4 +201,11 @@ public partial class PlayerBase : Component, Component.INetworkSpawn, IPlayerBas
 	{
 		return Game.ActiveScene.GetAllComponents<PlayerBase>();
 	}
+
+	public bool IsAttackPressed(string type)
+		=> Input.Pressed(type);
+	public bool IsAttackDown(string type)
+		=> Input.Down(type);
+    public bool IsReloadDown()
+        => Input.Down(InputButtonHelper.Reload);
 }

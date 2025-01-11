@@ -1,4 +1,5 @@
 ﻿using SWB.Base.Attachments;
+using SWB.Player;
 using SWB.Shared;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ namespace SWB.Base;
 [Title( "Weapon" )]
 public partial class Weapon : Component, IInventoryItem
 {
+	public bool IsOwnerBot => Owner is PlayerBase ply ? ply.IsBot : true;
 	public IPlayerBase Owner { get; private set; }
 	public ViewModelHandler ViewModelHandler { get; private set; }
 	public SkinnedModelRenderer ViewModelRenderer { get; private set; }
@@ -19,6 +21,8 @@ public partial class Weapon : Component, IInventoryItem
 
 	protected override void OnAwake()
 	{
+        Owner = Components.GetInAncestors<IPlayerBase>(true); 
+		
 		Tags.Add( TagsHelper.Weapon );
 
 		Attachments = Components.GetAll<Attachment>( FindMode.EverythingInSelf ).OrderBy( att => att.Name ).ToList();
@@ -230,7 +234,7 @@ public partial class Weapon : Component, IInventoryItem
 				TimeSinceSecondaryShoot = 0;
 				Shoot( Secondary, false );
 			}
-			else if ( Input.Down( InputButtonHelper.Reload ) )
+			else if ( Owner.IsReloadDown() )
 			{
 				if ( ShellReloading )
 					OnShellReload();

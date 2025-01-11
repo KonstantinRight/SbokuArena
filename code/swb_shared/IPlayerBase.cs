@@ -9,7 +9,7 @@ public interface IPlayerBase : IValid
 	public CameraComponent Camera { get; set; }
 	public GameObject Body { get; set; }
 	public SkinnedModelRenderer BodyRenderer { get; set; }
-	public CharacterController CharacterController { get; set; }
+	//public CharacterController CharacterController { get; set; }
 	public CitizenAnimationHelper AnimationHelper { get; set; }
 	public GameObject GameObject { get; }
 	public IInventory Inventory { get; set; }
@@ -63,4 +63,8 @@ public interface IPlayerBase : IValid
 	/// </summary>
 	/// <param name="screenShake">Information about the shake</param>
 	public void ShakeScreen( ScreenShake screenShake );
+
+	public bool IsAttackPressed(string type);
+	public bool IsAttackDown(string type);
+	public bool IsReloadDown();
 }

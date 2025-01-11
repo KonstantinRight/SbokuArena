@@ -1,4 +1,5 @@
 ﻿
+using Sandbox.Sboku.Arena;
 using SWB.Base;
 using System;
 
@@ -23,10 +24,16 @@ public partial class PlayerBase
 		if ( Array.Exists( info.Tags, tag => tag == "head" ) )
 			info.Damage *= 2;
 
-		Health -= (int)info.Damage;
+        var multiplier = 1f;
+        var armor = GetComponent<ArmorClass>();
+        if (armor != null)
+        {
+            multiplier = armor.Multipler;
+        }
+        Health -= (int)(MathF.Round(info.Damage * multiplier));
 
-		// Flinch
-		var weapon = WeaponRegistry.Instance.Get( info.Inflictor );
+        // Flinch
+        var weapon = WeaponRegistry.Instance.Get( info.Inflictor );
 		if ( weapon is not null )
 			DoHitFlinch( weapon.Primary.HitFlinch );
 

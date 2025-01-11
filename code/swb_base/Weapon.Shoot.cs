@@ -1,4 +1,5 @@
-﻿using SWB.Shared;
+﻿using Sandbox.Events;
+using SWB.Shared;
 using System;
 using System.Collections.Generic;
 
@@ -6,6 +7,9 @@ namespace SWB.Base;
 
 public partial class Weapon
 {
+	public record NoAmmoLeftEvent(Weapon Weapon) : IGameEvent;
+	public record ReloadFinished(Weapon Weapon) : IGameEvent;
+
 	/// <summary>
 	/// Checks if the weapon can do the provided attack
 	/// </summary>
@@ -16,11 +20,11 @@ public partial class Weapon
 	public virtual bool CanShoot( ShootInfo shootInfo, TimeSince lastAttackTime, string inputButton )
 	{
 		if ( (IsReloading && !ShellReloading) || (IsReloading && ShellReloading && !ShellReloadingShootCancel) || InBoltBack ) return false;
-		if ( shootInfo is null || !Owner.IsValid() || !Input.Down( inputButton ) || (IsRunning && Secondary is null) ) return false;
+		if ( shootInfo is null || !Owner.IsValid() || !Owner.IsAttackDown(inputButton) || (IsRunning && Secondary is null) ) return false;
 
 		if ( !HasAmmo() )
 		{
-			if ( Input.Pressed( inputButton ) )
+			if (Owner.IsAttackPressed( inputButton ) )
 			{
 				// Check for auto reloading
 				if ( Settings.AutoReload && lastAttackTime > GetRealRPM( shootInfo.RPM ) )
@@ -28,10 +32,13 @@ public partial class Weapon
 					TimeSincePrimaryShoot = 999;
 					TimeSinceSecondaryShoot = 999;
 
-					if ( ShellReloading )
-						OnShellReload();
-					else
-						Reload();
+					if (!IsOwnerBot)
+					{
+						if (ShellReloading)
+							OnShellReload();
+						else
+							Reload();
+					}
 
 					return false;
 				}
@@ -44,12 +51,12 @@ public partial class Weapon
 			return false;
 		}
 
-		if ( shootInfo.FiringType == FiringType.semi && !Input.Pressed( inputButton ) ) return false;
+		if ( shootInfo.FiringType == FiringType.semi && !Owner.IsAttackPressed( inputButton ) ) return false;
 		if ( shootInfo.FiringType == FiringType.burst )
 		{
 			if ( burstCount > 2 ) return false;
 
-			if ( Input.Down( inputButton ) && lastAttackTime > GetRealRPM( shootInfo.RPM ) )
+			if (Owner.IsAttackDown( inputButton ) && lastAttackTime > GetRealRPM( shootInfo.RPM ) )
 			{
 				burstCount++;
 				return true;
@@ -114,7 +121,13 @@ public partial class Weapon
 		{
 			var realSpread = IsScoping ? 0 : GetRealSpread( shootInfo.Spread );
 			var spreadOffset = shootInfo.BulletType.GetRandomSpread( realSpread );
-			ShootBullet( isPrimary, spreadOffset );
+
+			// TODO: Make a better solution for a bot spread
+			ShootBullet( isPrimary, spreadOffset * (IsOwnerBot ? 4 : 1) );
+		}
+		if (!HasAmmo())
+		{
+			GameObject.Scene.Dispatch<NoAmmoLeftEvent>(new(this));
 		}
 	}
 

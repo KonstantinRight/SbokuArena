@@ -1,4 +1,5 @@
 ﻿using SWB.Base.UI;
+using SWB.Player;
 
 namespace SWB.Base;
 
@@ -12,7 +13,10 @@ public partial class Weapon
 	/// <summary>Override this if you want custom UI elements</summary>
 	public virtual void CreateUI()
 	{
-		ScreenPanel = Components.Create<ScreenPanel>();
+        if (IsOwnerBot)
+            return;
+
+        ScreenPanel = Components.Create<ScreenPanel>();
 		ScreenPanel.Opacity = 1;
 		ScreenPanel.ZIndex = 1;
 
