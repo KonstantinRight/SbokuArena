@@ -1,8 +1,8 @@
 {
-  "Title": "Simple Weapon Base",
+  "Title": "Sboku Arena",
   "Type": "game",
-  "Org": "swb",
-  "Ident": "demo",
+  "Org": "righty",
+  "Ident": "sboku.arena",
   "Schema": 1,
   "IncludeSourceFiles": false,
   "Resources": "*.png\n*.ttf\n*.mp3\n*.wav\n*.config\n*.scss\n*.prefab\n*.fbx\n*.smd\n*credits*\nfonts/*",
@@ -25,6 +25,7 @@
     "StartupScene": "scenes/minimal.scene",
     "ProjectTemplate": null,
     "LaunchMode": "QuickPlay",
-    "MapStartupScene": "scenes/minimal.scene"
+    "MapStartupScene": "scenes/minimal.scene",
+    "ParentPackage": "Simple Weapon Base"
   }
 }
