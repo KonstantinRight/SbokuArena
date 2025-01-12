@@ -24,13 +24,13 @@ public partial class PlayerBase
 		if ( Array.Exists( info.Tags, tag => tag == "head" ) )
 			info.Damage *= 2;
 
-        var multiplier = 1f;
-        var holder = GetComponent<UpgradeHolder>();
-        if (holder != null)
-        {
-            multiplier = holder.ArmorMultiplier;
-        }
-        Health -= (int)(MathF.Round(info.Damage * multiplier));
+		float dmgMultiplier = 1;
+		var attacker = Scene.Directory.FindByGuid(info.AttackerId);
+		if (attacker != null && attacker.IsValid)
+		{
+			dmgMultiplier = attacker.GetComponent<UpgradeHolder>().DamageMultiplier;
+		}
+        Health -= (int)(MathF.Round(info.Damage * GetComponent<UpgradeHolder>().ArmorMultiplier * dmgMultiplier));
 
         // Flinch
         var weapon = WeaponRegistry.Instance.Get( info.Inflictor );

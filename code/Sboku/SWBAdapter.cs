@@ -164,13 +164,13 @@ public class SWBAdapter : Component, IPlayerBase
         if (Array.Exists(info.Tags, tag => tag == "head"))
             info.Damage *= 2;
 
-        var multiplier = 1f;
-        var holder = GetComponent<UpgradeHolder>();
-        if (holder != null)
+        float dmgMultiplier = 1;
+        var attacker = Scene.Directory.FindByGuid(info.AttackerId);
+        if (attacker != null && attacker.IsValid)
         {
-            multiplier = holder.ArmorMultiplier;
+            dmgMultiplier = attacker.GetComponent<UpgradeHolder>().DamageMultiplier;
         }
-        Health -= (int)(MathF.Round(info.Damage * multiplier));
+        Health -= (int)(MathF.Round(info.Damage * GetComponent<UpgradeHolder>().ArmorMultiplier * dmgMultiplier));
 
         if (Health <= 0)
             OnDeath(info);

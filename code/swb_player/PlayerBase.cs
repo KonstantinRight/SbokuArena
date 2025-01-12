@@ -1,3 +1,4 @@
+using Sandbox.Sboku.Arena;
 using SWB.Shared;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ public partial class PlayerBase : Component, Component.INetworkSpawn, IPlayerBas
 	[Property] public CameraComponent ViewModelCamera { get; set; }
 	[Property] public PanelComponent RootDisplay { get; set; }
 	[Property] public Voice Voice { get; set; }
+	[RequireComponent]
+	public UpgradeHolder UpgradeHolder { get; set; }
 
 	[Sync] public bool IsBot { get; set; }
 	public IInventory Inventory { get; set; }

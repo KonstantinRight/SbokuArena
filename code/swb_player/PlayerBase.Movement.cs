@@ -1,4 +1,5 @@
 using Sandbox.Citizen;
+using Sandbox.Sboku.Arena;
 using SWB.Shared;
 
 namespace SWB.Player;
@@ -78,9 +79,9 @@ public partial class PlayerBase
 		WishVelocity = WishVelocity.WithZ( 0 );
 		if ( !WishVelocity.IsNearZeroLength ) WishVelocity = WishVelocity.Normal;
 
-		if ( IsCrouching ) WishVelocity *= CrouchSpeed;
-		else if ( IsRunning ) WishVelocity *= RunSpeed;
-		else WishVelocity *= WalkSpeed;
+		if ( IsCrouching ) WishVelocity *= CrouchSpeed * UpgradeHolder.SpeedMultiplier;
+		else if ( IsRunning ) WishVelocity *= RunSpeed * UpgradeHolder.SpeedMultiplier;
+		else WishVelocity *= WalkSpeed * UpgradeHolder.SpeedMultiplier;
 	}
 
 	void Move()

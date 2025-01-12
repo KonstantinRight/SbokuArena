@@ -37,7 +37,17 @@ public class DemoPlayer : PlayerBase
 	public override void Respawn()
 	{
 		base.Respawn();
-	}
+
+        if (IsBot) return;
+
+        // Give weapons
+        GiveWeapon("swb_colt");
+        GiveWeapon("swb_revolver");
+        GiveWeapon("swb_remington");
+        GiveWeapon("swb_veresk");
+        GiveWeapon("swb_scarh", true);
+        GiveWeapon("swb_l96a1");
+    }
 
 	public override void OnDeath( Shared.DamageInfo info )
 	{
@@ -71,12 +81,10 @@ public class DemoPlayer : PlayerBase
 	}
 
 	// Arena
-    [RequireComponent]
-    public UpgradeHolder UpgradeHolder { get; set; }
-
     protected override void OnAwake()
     {
 		base.OnAwake();
+		UpgradeHolder.DistributeRandomly();
 		CreateUpgradeScreen();
     }
 

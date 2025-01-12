@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Sandbox.Services;
+using System;
+using System.Collections.Generic;
 
 namespace Sandbox.Sboku.Arena;
 public class UpgradeHolder : Component
@@ -6,6 +8,7 @@ public class UpgradeHolder : Component
     #region Leveling
 
     public const int LevelCap = 5;
+    private static Random rand = new Random();
 
     [Property]
     public int FreePoints { get; set; } = 1;
@@ -69,8 +72,35 @@ public class UpgradeHolder : Component
 
     public void DistributeRandomly()
     {
-        // TODO:
-        throw new NotImplementedException();
+        var points = FreePoints;
+        var indexes = new List<int> { 0, 1, 2 };
+        while (points > 0)
+        {
+            var selected = indexes[rand.Next(indexes.Count)];
+            switch (selected)
+            {
+                case 0:
+                    points--;
+                    Speed.Inc();
+                    if (Speed.Level >= LevelCap)
+                        indexes.Remove(selected);
+                    break;
+
+                case 1:
+                    points--;
+                    Damage.Inc();
+                    if (Damage.Level >= LevelCap)
+                        indexes.Remove(selected);
+                    break;
+
+                case 2:
+                    points--;
+                    Armor.Inc();
+                    if (Armor.Level >= LevelCap)
+                        indexes.Remove(selected);
+                    break;
+            }
+        }
     }
 
     #endregion

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Sandbox.Citizen;
 using Sandbox.Events;
+using Sandbox.Sboku.Arena;
 using Sandbox.Sboku.Logic;
 using Sandbox.Sboku.States;
 using SWB.Base;
@@ -39,6 +40,9 @@ public class SbokuBase : Component, IGameEventHandler<Weapon.NoAmmoLeftEvent>, I
     [Group("AI")]
     [Property]
     public bool IsOffline { get; set; } = false;
+
+    [RequireComponent]
+    public UpgradeHolder UpgradeHolder { get; set; }
 
     public int DistanceToRecalucaltePath { get => MinFightRange / 2; }
     public float ThinkingInterval { get => Settings.ThinkingInterval; }
@@ -247,7 +251,7 @@ public class SbokuBase : Component, IGameEventHandler<Weapon.NoAmmoLeftEvent>, I
     /// <param name="wishVelocity"></param>
     private void Move(Vector3 wishVelocity)
     {
-        var vel = wishVelocity * Velocity;
+        var vel = wishVelocity * Velocity * UpgradeHolder.SpeedMultiplier;
         var gravity = Scene.PhysicsWorld.Gravity;
         if (character.IsOnGround)
         {

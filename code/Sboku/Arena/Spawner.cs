@@ -88,8 +88,6 @@ internal class Spawner : Component, Component.ITriggerListener
             sinceDamage = 0f;
     }
 
-    
-
     public void OnTriggerEnter(Collider other)
         => inside.Add(other);
     public void OnTriggerExit(Collider other)
