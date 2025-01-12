@@ -1,0 +1,58 @@
+@using SWB.Base
+@using SWB.Demo
+@using SWB.HUD
+@using SWB.Player
+@using Sandbox;
+@using Sandbox.Sboku.Arena
+@using Sandbox.UI;
+@using System;
+@using System.Linq;
+@using System.Collections.Generic;
+@inherits PanelComponent
+@namespace Sandbox.Sboku.UI
+
+<root>
+	<div class="menu">
+		<p class="title">Pick your weapon</p>
+		<div class="divider"/>
+		<div class="list">
+			@foreach (var wep in weapons)
+			{
+				<div onclick=@(() => selected = wep) class=@($"entry {(selected == wep ? "selected" : "")}")>
+					<img src="@wep.Icon"/>
+					<div>@wep.DisplayName</div>
+				</div>
+			}
+		</div>
+		<div class="divider" />
+		<div class="footer">
+			@if (selected != null)
+			{
+				<div class="but" onclick=@Next>Confirm</div>
+			}
+			else
+			{
+				<div class="filler"/>
+			}
+		</div>
+	</div>
+</root>
+
+@code
+{
+	private static Random rand = new Random();
+
+	private List<Weapon> weapons;
+	private Weapon selected;
+	protected override void OnAwake()
+	{
+		weapons = WeaponRegistry.Instance.Weapons.Values.OrderBy(_ => rand.Next()).Take(3).ToList();
+	}
+
+	private void Next()
+	{
+		GetComponentInParent<DemoPlayer>().GiveWeapon(selected.ClassName, true);
+		AddComponent<RootDisplay>();
+		Destroy();
+	}
+}

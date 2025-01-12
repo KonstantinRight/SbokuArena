@@ -14,7 +14,15 @@ public class RootDisplay : PanelComponent
 	Killfeed killfeed;
 	Hitmarker hitmarker;
 
-	protected override void OnStart()
+    protected override void OnAwake()
+    {
+        if (Player == null)
+		{
+			Player = GetComponentInParent<PlayerBase>();
+		}
+    }
+
+    protected override void OnStart()
 	{
 		if ( IsProxy )
 		{

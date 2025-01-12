@@ -11,7 +11,7 @@ namespace SWB.Demo;
 [Title( "Demo Player" )]
 public class DemoPlayer : PlayerBase
 {
-	void GiveWeapon( string className, bool setActive = false )
+	public void GiveWeapon( string className, bool setActive = false )
 	{
 		var weapon = WeaponRegistry.Instance.Get( className );
 
@@ -37,16 +37,6 @@ public class DemoPlayer : PlayerBase
 	public override void Respawn()
 	{
 		base.Respawn();
-
-		if ( IsBot ) return;
-
-		// Give weapons
-		GiveWeapon( "swb_colt" );
-		GiveWeapon( "swb_revolver" );
-		GiveWeapon( "swb_remington" );
-		GiveWeapon( "swb_veresk" );
-		GiveWeapon( "swb_scarh", true );
-		GiveWeapon( "swb_l96a1" );
 	}
 
 	public override void OnDeath( Shared.DamageInfo info )
@@ -93,8 +83,7 @@ public class DemoPlayer : PlayerBase
     public void CreateUpgradeScreen()
 	{
 		var root = RootDisplay.GameObject;
-		root.GetComponent<RootDisplay>().Enabled = false;
-		root.AddComponent<UpgradeMenu>();
-
+		root.GetComponent<RootDisplay>().Destroy();// .Enabled = false;
+		root.AddComponent<WeaponMenu>();
 	}
 }
