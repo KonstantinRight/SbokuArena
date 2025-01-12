@@ -25,10 +25,10 @@ public partial class PlayerBase
 			info.Damage *= 2;
 
         var multiplier = 1f;
-        var armor = GetComponent<ArmorClass>();
-        if (armor != null)
+        var holder = GetComponent<UpgradeHolder>();
+        if (holder != null)
         {
-            multiplier = armor.Multipler;
+            multiplier = holder.ArmorMultiplier;
         }
         Health -= (int)(MathF.Round(info.Damage * multiplier));
 

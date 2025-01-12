@@ -83,7 +83,7 @@ public class DemoPlayer : PlayerBase
     public void CreateUpgradeScreen()
 	{
 		var root = RootDisplay.GameObject;
-		root.GetComponent<RootDisplay>().Destroy();// .Enabled = false;
-		root.AddComponent<WeaponMenu>();
+		root.GetComponent<RootDisplay>().Destroy();
+		root.AddComponent<UpgradeMenu>();
 	}
 }

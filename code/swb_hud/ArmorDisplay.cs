@@ -28,7 +28,7 @@ public class ArmorDisplay : Panel
 
 		if ( armorLabel is not null )
 		{
-			armorLabel.Text = player.GameObject.GetComponent<ArmorClass>().Class.ToString();
+			armorLabel.Text = player.GameObject.GetComponent<UpgradeHolder>().ArmorClass.ToString();
 			armorLabel.Style.FontColor = Color.Cyan;
 		}
 	}

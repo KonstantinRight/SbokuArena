@@ -3,6 +3,8 @@
 namespace Sandbox.Sboku.Arena;
 public class UpgradeHolder : Component
 {
+    #region Leveling
+
     public const int LevelCap = 5;
 
     [Property]
@@ -70,4 +72,60 @@ public class UpgradeHolder : Component
         // TODO:
         throw new NotImplementedException();
     }
+
+    #endregion
+
+    #region Powerups
+
+    public enum Level { A, B, C, D, E, F }
+    public Level SpeedClass { get => IntToLevel(Speed.Level); } 
+    public Level DamageClass { get => IntToLevel(Damage.Level); } 
+    public Level ArmorClass { get => IntToLevel(Armor.Level); }
+
+    private Level IntToLevel(int level) => level switch
+    {
+        0 => Level.F,
+        1 => Level.E,
+        2 => Level.D,
+        3 => Level.C,
+        4 => Level.B,
+        5 => Level.A,
+        _ => throw new NotImplementedException("No level for " + level + " number")
+    };
+
+    public float SpeedMultiplier { get => SpeedClass switch
+        {
+            Level.A => 2f,
+            Level.B => 1.5f,
+            Level.C => 1.25f,
+            Level.D => 1f,
+            Level.E => 0.75f,
+            Level.F => 0.5f,
+            _ => throw new NotImplementedException("No multiplier for " + SpeedClass),
+        };
+    }
+    public float DamageMultiplier { get => DamageClass switch
+        {
+            Level.A => 10f,
+            Level.B => 5f,
+            Level.C => 3f,
+            Level.D => 1.5f,
+            Level.E => 1.1f,
+            Level.F => 1f,
+            _ => throw new NotImplementedException("No multiplier for " + DamageClass),
+        };
+    }
+    public float ArmorMultiplier { get => ArmorClass switch
+        {
+            Level.A => 0.05f,
+            Level.B => 0.1f,
+            Level.C => 0.25f,
+            Level.D => 0.5f,
+            Level.E => 0.75f,
+            Level.F => 1f,
+            _ => throw new System.NotImplementedException("No multiplier for " + ArmorClass),
+        };
+    }
+
+    #endregion
 }
