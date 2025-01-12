@@ -1,7 +1,7 @@
 ﻿namespace Sandbox.Sboku.Arena;
 internal class ArmorClass : Component
 {
-    public enum Identifier { A, B, C, D, E }
+    public enum Identifier { A, B, C, D, E, F }
 
     [Property]
     public Identifier Class { get; set; } = Identifier.E;
@@ -13,7 +13,8 @@ internal class ArmorClass : Component
         Identifier.B => 0.1f,
         Identifier.C => 0.25f,
         Identifier.D => 0.5f,
-        Identifier.E => 1f,
+        Identifier.E => 0.75f,
+        Identifier.F => 1f,
         _ => throw new System.NotImplementedException("No multiplier for " + armor),
     };
 }

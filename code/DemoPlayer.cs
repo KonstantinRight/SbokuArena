@@ -1,4 +1,6 @@
-﻿using SWB.Base;
+﻿using Sandbox.Sboku.Arena;
+using Sandbox.Sboku.UI;
+using SWB.Base;
 using SWB.HUD;
 using SWB.Player;
 using System.Linq;
@@ -23,7 +25,7 @@ public class DemoPlayer : PlayerBase
 		SetAmmo( weapon.Primary.AmmoType, 360 );
 	}
 
-	Weapon GetWeapon( string className )
+    Weapon GetWeapon( string className )
 	{
 		var weaponGO = Inventory.Items.First( x => x.Name == className );
 		if ( weaponGO is not null )
@@ -76,5 +78,23 @@ public class DemoPlayer : PlayerBase
 		var display = localPly.RootDisplay as RootDisplay;
 		display.CreateHitmarker( Health <= 0 );
 		Sound.Play( "hitmarker" );
+	}
+
+	// Arena
+    [RequireComponent]
+    public UpgradeHolder UpgradeHolder { get; set; }
+
+    protected override void OnAwake()
+    {
+		base.OnAwake();
+		CreateUpgradeScreen();
+    }
+
+    public void CreateUpgradeScreen()
+	{
+		var root = RootDisplay.GameObject;
+		root.GetComponent<RootDisplay>().Enabled = false;
+		root.AddComponent<UpgradeMenu>();
+
 	}
 }

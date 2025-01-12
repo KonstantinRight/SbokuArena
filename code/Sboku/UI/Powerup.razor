@@ -1,0 +1,29 @@
+@using Sandbox;
+@using Sandbox.Sboku.Arena
+@using Sandbox.UI;
+@namespace Sandbox.Sboku.UI
+
+<root class="entry">
+	<div class="type">@Upgrade.Display:</div>
+	<div class="cells">
+		@for (var i = 0; i < 5; i++)
+		{
+			<div class=@($"cell {(i < Upgrade.Level ? "lit" : "")}")/>
+		}
+	</div>
+	<div class="picker">
+		<div class="but" onclick=@Decrease>-</div>
+		<div class="points">@Upgrade.Level</div>
+		<div class="but" onclick=@Increase>+</div>
+	</div>
+</root>
+
+@code
+{
+	public UpgradeHolder.Powerup Upgrade { get; set; }
+
+	protected override int BuildHash() => System.HashCode.Combine(Upgrade.Level);
+
+	private void Increase() => Upgrade.Inc();
+	private void Decrease() => Upgrade.Dec();
+}

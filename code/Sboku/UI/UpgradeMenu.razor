@@ -1,0 +1,41 @@
+@using SWB.Player
+@using Sandbox;
+@using Sandbox.Sboku.Arena
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Sandbox.Sboku.UI
+
+<root>
+	<div class="menu">
+		<p class="title">Upgrade</p>
+		<div class="divider"/>
+		<p class="score">Points remaining: @holder.FreePoints</p>
+		<div class="list">
+			<Powerup Upgrade=@holder.Speed/>
+			<Powerup Upgrade=@holder.Damage/>
+			<Powerup Upgrade=@holder.Armor/>
+		</div>
+		<div class="divider" />
+		<div class="footer">
+			@if (holder.FreePoints == 0)
+			{
+				<div class="but">Next</div>
+			}
+			else
+			{
+				<div class="filler"/>
+			}
+		</div>
+	</div>
+</root>
+
+@code
+{
+	protected override int BuildHash() => System.HashCode.Combine( 0 );
+
+	private UpgradeHolder holder;
+	protected override void OnAwake()
+	{
+		holder = GetComponentInParent<UpgradeHolder>();
+	}
+}

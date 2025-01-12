@@ -1733,6 +1733,39 @@
           "__PrefabVariables": {}
         }
       ]
+    },
+    {
+      "__guid": "071396fd-8c2b-4ae4-a741-752d6f4b6136",
+      "Flags": 0,
+      "Name": "ui holder",
+      "Position": "118.0807,340.4101,341.3616",
+      "Components": [
+        {
+          "__type": "Sandbox.ScreenPanel",
+          "__guid": "7330318e-ec42-43c8-866c-a7520ce3c8a8",
+          "AutoScreenScale": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Opacity": 1,
+          "Scale": 1,
+          "ScaleStrategy": "ConsistentHeight",
+          "ZIndex": 100
+        },
+        {
+          "__type": "Sandbox.Sboku.UI.UpgradeMenu",
+          "__guid": "67315016-a915-4607-8b22-499de18250e9",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
+        }
+      ]
     }
   ],
   "SceneProperties": {
@@ -1748,7 +1781,7 @@
       "Title": "minimal"
     },
     "NavMesh": {
-      "Enabled": true,
+      "Enabled": false,
       "IncludeStaticBodies": true,
       "IncludeKeyframedBodies": true,
       "EditorAutoUpdate": true,
