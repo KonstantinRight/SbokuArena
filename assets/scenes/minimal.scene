@@ -2,6 +2,55 @@
   "__guid": "9f832399-4887-46b0-8f21-2ee284f538e2",
   "GameObjects": [
     {
+      "__guid": "165e9d74-5d8d-4217-91f4-b5ae9aec16b2",
+      "Flags": 0,
+      "Name": "Spawners",
+      "Position": "1.211843,343.4025,134.4501",
+      "Enabled": true,
+      "Children": [
+        {
+          "__guid": "e43f4bf2-f567-42b9-99cc-7ca19814b6a0",
+          "Flags": 0,
+          "Name": "Spawner",
+          "Position": "-0.1645635,-1015.996,261.3784",
+          "Scale": "0.5998768,0.5998768,1.339126",
+          "Enabled": true,
+          "__Prefab": "prefabs/arena/spawner.prefab",
+          "__PrefabVariables": {}
+        },
+        {
+          "__guid": "2aecff15-6268-4954-9463-3a32de0e9b58",
+          "Flags": 0,
+          "Name": "Spawner",
+          "Position": "-300.7202,-1015.996,34.1991",
+          "Scale": "0.5998768,0.5998768,1.339126",
+          "Enabled": true,
+          "__Prefab": "prefabs/arena/spawner.prefab",
+          "__PrefabVariables": {}
+        },
+        {
+          "__guid": "28a41165-2d4c-4fe7-8a88-ef6d614380f0",
+          "Flags": 0,
+          "Name": "Spawner",
+          "Position": "297.7445,-1015.996,34.1991",
+          "Scale": "0.5998768,0.5998768,1.339126",
+          "Enabled": true,
+          "__Prefab": "prefabs/arena/spawner.prefab",
+          "__PrefabVariables": {}
+        },
+        {
+          "__guid": "87760414-3c8a-40e4-a105-e64ff552971c",
+          "Flags": 0,
+          "Name": "Spawner",
+          "Position": "-0.1645632,-1015.996,34.1991",
+          "Scale": "0.5998768,0.5998768,1.339126",
+          "Enabled": true,
+          "__Prefab": "prefabs/arena/spawner.prefab",
+          "__PrefabVariables": {}
+        }
+      ]
+    },
+    {
       "__guid": "f8321a2b-c452-47d1-9c08-8fe058e3971f",
       "Flags": 0,
       "Name": "Pseudomap",
@@ -1646,6 +1695,15 @@
       "Rotation": "0,0,0.7071067,0.7071068",
       "Tags": "player",
       "__Prefab": "prefabs/sbokubot.prefab",
+      "__PrefabVariables": {}
+    },
+    {
+      "__guid": "4393f6ad-9a75-45ea-9aec-12217776fada",
+      "Flags": 0,
+      "Name": "Spawner",
+      "Position": "63.24046,157.9694,168.6492",
+      "Scale": "0.5998768,0.5998768,1.339126",
+      "__Prefab": "prefabs/arena/spawner.prefab",
       "__PrefabVariables": {}
     },
     {

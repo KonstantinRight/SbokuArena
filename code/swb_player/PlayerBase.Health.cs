@@ -40,4 +40,16 @@ public partial class PlayerBase
 		if ( Health <= 0 )
 			OnDeath( info );
 	}
+
+    [Rpc.Broadcast]
+    public virtual void TakeDamage(int damage)
+    {
+        if (!IsValid || IsProxy || !IsAlive || GodMode)
+            return;
+
+        Health -= damage;
+
+		// TODO:
+		//OnDeath(info);
+    }
 }
