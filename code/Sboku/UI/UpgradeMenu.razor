@@ -6,41 +6,41 @@
 @namespace Sandbox.Sboku.UI
 
 <root>
-	<div class="menu">
-		<p class="title">Upgrade</p>
-		<div class="divider"/>
-		<p class="score">Points remaining: @holder.FreePoints</p>
-		<div class="list">
-			<Powerup Upgrade=@holder.Speed/>
-			<Powerup Upgrade=@holder.Damage/>
-			<Powerup Upgrade=@holder.Armor/>
-		</div>
-		<div class="divider" />
-		<div class="footer">
-			@if (holder.FreePoints == 0)
-			{
-				<div class="but" onclick=@Next>Next</div>
-			}
-			else
-			{
-				<div class="filler"/>
-			}
-		</div>
-	</div>
+    <div class="menu">
+        <p class="title">Upgrade</p>
+        <div class="divider"/>
+        <p class="score">Points remaining: @holder.FreePoints</p>
+        <div class="list">
+            <Powerup Upgrade=@holder.Speed/>
+            <Powerup Upgrade=@holder.Damage/>
+            <Powerup Upgrade=@holder.Armor/>
+        </div>
+        <div class="divider" />
+        <div class="footer">
+            @if (holder.FreePoints == 0)
+            {
+                <div class="but" onclick=@Next>Next</div>
+            }
+            else
+            {
+                <div class="filler"/>
+            }
+        </div>
+    </div>
 </root>
 
 @code
 {
-	protected override int BuildHash() => System.HashCode.Combine(holder.FreePoints);
+    protected override int BuildHash() => System.HashCode.Combine(holder.FreePoints);
 
-	private UpgradeHolder holder;
-	protected override void OnAwake()
-	{
-		holder = GetComponentInParent<UpgradeHolder>();
-	}
+    private UpgradeHolder holder;
+    protected override void OnAwake()
+    {
+        holder = GetComponentInParent<UpgradeHolder>();
+    }
 
-	private void Next()
-	{
+    private void Next()
+    {
 		AddComponent<WeaponMenu>();
 		this.Destroy();
 	}

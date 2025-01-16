@@ -4,11 +4,14 @@ using SWB.Base;
 using SWB.Player;
 using SWB.Shared;
 using System;
+using System.Linq;
 
 namespace Sandbox.Sboku;
 [Title("SWB Adapter")]
 public class SWBAdapter : Component, IPlayerBase
 {
+    private static Random rand = new();
+
     public void GiveWeapon(string className, bool setActive = false)
     {
         var weapon = WeaponRegistry.Instance.Get(className);
@@ -30,7 +33,8 @@ public class SWBAdapter : Component, IPlayerBase
         Health = MaxHealth;
         Inventory = Components.Create<Inventory>();
         InitCameras();
-        GiveWeapon("swb_scarh", true);
+        var wep = WeaponRegistry.Instance.Weapons.Values.ElementAt(rand.Next(0, WeaponRegistry.Instance.Weapons.Count));
+        GiveWeapon(wep.ClassName, true);
     }
 
     protected override void OnAwake()
@@ -82,8 +86,8 @@ public class SWBAdapter : Component, IPlayerBase
     #region Expression bodied
 
     public bool IsFirstPerson => false;
-    Vector3 IPlayerBase.Velocity => GetComponent<SbokuBase>().Velocity;
-    public bool IsOnGround => GetComponent<CharacterController>().IsOnGround;
+    Vector3 IPlayerBase.Velocity => GetComponent<SbokuBase>()?.Velocity ?? Vector3.Zero;
+    public bool IsOnGround => GetComponent<CharacterController>()?.IsOnGround ?? true;
     public bool IsAlive => Health > 0;
     public Vector3 EyePos => Head.WorldPosition + EyeOffset;
     Guid IPlayerBase.Id { get => GameObject.Id; }
@@ -170,6 +174,7 @@ public class SWBAdapter : Component, IPlayerBase
         {
             dmgMultiplier = attacker.GetComponent<UpgradeHolder>().DamageMultiplier;
         }
+
         Health -= (int)(MathF.Round(info.Damage * GetComponent<UpgradeHolder>().ArmorMultiplier * dmgMultiplier));
 
         if (Health <= 0)

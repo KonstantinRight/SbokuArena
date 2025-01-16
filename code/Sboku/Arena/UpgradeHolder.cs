@@ -1,8 +1,8 @@
-﻿using Sandbox.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Sandbox.Sboku.Arena;
+[Group("Sboku Arena")]
 public class UpgradeHolder : Component
 {
     #region Leveling
@@ -13,15 +13,13 @@ public class UpgradeHolder : Component
     [Property]
     public int FreePoints { get; set; } = 1;
 
-    public Powerup Speed { get; }
-    public Powerup Damage { get; }
-    public Powerup Armor { get; }
+    public Powerup Speed { get; private set; }
+    public Powerup Damage { get; private set; }
+    public Powerup Armor { get; private set; }
 
     public UpgradeHolder()
     {
-        Speed = new(this, "Speed");
-        Damage = new(this, "Damage");
-        Armor = new(this, "Armor");
+        Clear();
     }
 
     public class Powerup
@@ -101,6 +99,14 @@ public class UpgradeHolder : Component
                     break;
             }
         }
+    }
+
+    public void Clear()
+    {
+        FreePoints = 1;
+        Speed = new(this, "Speed");
+        Damage = new(this, "Damage");
+        Armor = new(this, "Armor");
     }
 
     #endregion

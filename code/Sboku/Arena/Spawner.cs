@@ -18,27 +18,27 @@ internal class Spawner : Component, Component.ITriggerListener
 
     private HashSet<Collider> inside = new();
     private int spawnCounter = 0;
-    private TimeSince? lastSpawn = null;
+    private TimeSince lastSpawn = new();
     private TimeSince sinceDamage = new();
+    private TimeSince timer;
 
+    private RoundManager roundManager;
+
+    public bool IsDone() => spawnCounter <= 0;
     public void RequestSpawn() => spawnCounter++;
-
     private void Spawn()
     {
         if (inside.Any()) return;
-
         spawnCounter--;
 
         var bot = Prefab.Clone();
         var upgrades = bot.GetComponent<UpgradeHolder>();
-        upgrades.FreePoints = 0; // TODO:
+        upgrades.FreePoints = roundManager.RoundNumber;
         upgrades.DistributeRandomly();
         bot.WorldPosition = SpawnPoint.WorldPosition;
+        bot.NetworkSpawn();
 
-        if (lastSpawn != null)
-            lastSpawn = 0f;
-        else
-            lastSpawn = null;
+        lastSpawn = 0f;
     }
 
     protected override void DrawGizmos()
@@ -55,21 +55,24 @@ internal class Spawner : Component, Component.ITriggerListener
         {
             Log.Warning("There is something inside " + GameObject);
         }
-    }
 
+        roundManager = Scene.GetComponentInChildren<RoundManager>();
+    }
+    private int sec = 0;
     protected override void OnFixedUpdate()
     {
+        if (timer > 1f)
+        {
+            timer = 0;
+        }
+
         if (spawnCounter > 0)
         {
-            if (lastSpawn == null || lastSpawn > SpawnInterval)
+            if (lastSpawn > SpawnInterval && Scene.GetAllComponents<SbokuBase>().Count() < roundManager.BotCap)
             {
                 Spawn();
             }
-        }
-        else if (lastSpawn != null)
-        {
-            lastSpawn = null;
-        }
+    }
 
         bool damageFlag = false;
         var players = inside.Where(x => x.GameObject.GetComponentInParent<DemoPlayer>() != null)

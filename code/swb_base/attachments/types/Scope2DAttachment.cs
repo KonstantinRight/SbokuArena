@@ -48,7 +48,7 @@ public abstract class Scope2DAttachment : Attachment
 	{
 		base.CreateHudElements();
 		sniperScope = new SniperScope( Weapon, Weapon.ScopeInfo.LensTexture, Weapon.ScopeInfo.ScopeTexture );
-		Weapon.RootPanel.Panel.AddChild( sniperScope );
+		Weapon?.RootPanel?.Panel?.AddChild( sniperScope );
 	}
 
 	public override void DestroyHudElements()

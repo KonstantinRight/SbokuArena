@@ -32,6 +32,7 @@
       {
         "__type": "Sandbox.Sboku.Arena.Spawner",
         "__guid": "a16f800c-aa6c-415e-b9b0-883151bad9d9",
+        "DamageInterval": 0.5,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -40,8 +41,9 @@
         "OnComponentUpdate": null,
         "Prefab": {
           "_type": "gameobject",
-          "prefab": "prefabs/sbokubot.prefab"
+          "prefab": "prefabs/arena/sbokubot.prefab"
         },
+        "SpawnInterval": 5,
         "SpawnPoint": {
           "_type": "gameobject",
           "go": "cdb0f843-0a3a-4dde-a42c-f97733665bdd"

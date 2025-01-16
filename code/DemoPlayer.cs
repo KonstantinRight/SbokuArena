@@ -1,4 +1,5 @@
-﻿using Sandbox.Sboku.Arena;
+﻿using Sandbox.Events;
+using Sandbox.Sboku.Arena;
 using Sandbox.Sboku.UI;
 using SWB.Base;
 using SWB.HUD;
@@ -9,9 +10,12 @@ namespace SWB.Demo;
 
 [Group( "SWB" )]
 [Title( "Demo Player" )]
-public class DemoPlayer : PlayerBase
+public class DemoPlayer : PlayerBase, IGameEventHandler<RoundManager.OpenUpgradeScreen>
 {
-	public void GiveWeapon( string className, bool setActive = false )
+    [Property]
+    public GameObject ArenaUI { get; set; }
+
+    public void GiveWeapon( string className, bool setActive = false )
 	{
 		var weapon = WeaponRegistry.Instance.Get( className );
 
@@ -41,30 +45,30 @@ public class DemoPlayer : PlayerBase
         if (IsBot) return;
 
         // Give weapons
-        GiveWeapon("swb_colt");
-        GiveWeapon("swb_revolver");
-        GiveWeapon("swb_remington");
-        GiveWeapon("swb_veresk");
-        GiveWeapon("swb_scarh", true);
-        GiveWeapon("swb_l96a1");
+        //GiveWeapon("swb_colt");
+        //GiveWeapon("swb_revolver");
+        //GiveWeapon("swb_remington");
+        //GiveWeapon("swb_veresk");
+        //GiveWeapon("swb_scarh", true);
+        //GiveWeapon("swb_l96a1");
     }
 
 	public override void OnDeath( Shared.DamageInfo info )
 	{
 		base.OnDeath( info );
 
-		var localPly = PlayerBase.GetLocal();
-		if ( localPly is null ) return;
+		//var localPly = PlayerBase.GetLocal();
+		//if ( localPly is null ) return;
 
-		var display = localPly.RootDisplay as RootDisplay;
-		display.AddToKillFeed( info.AttackerId, GameObject.Id, info.Inflictor );
+		//var display = localPly.RootDisplay as RootDisplay;
+		//display.AddToKillFeed( info.AttackerId, GameObject.Id, info.Inflictor );
 
-		// Leaderboards
-		if ( IsProxy && !IsBot && localPly.GameObject.Id == info.AttackerId )
-			Sandbox.Services.Stats.Increment( "kills", 1 );
+		//// Leaderboards
+		//if ( IsProxy && !IsBot && localPly.GameObject.Id == info.AttackerId )
+		//	Sandbox.Services.Stats.Increment( "kills", 1 );
 
-		if ( !IsProxy && !IsBot )
-			Sandbox.Services.Stats.Increment( "deaths", 1 );
+		//if ( !IsProxy && !IsBot )
+		//	Sandbox.Services.Stats.Increment( "deaths", 1 );
 	}
 
 	public override void TakeDamage( Shared.DamageInfo info )
@@ -84,14 +88,26 @@ public class DemoPlayer : PlayerBase
     protected override void OnAwake()
     {
 		base.OnAwake();
-		UpgradeHolder.DistributeRandomly();
-		CreateUpgradeScreen();
+        CreateFailScreen();
     }
 
     public void CreateUpgradeScreen()
 	{
-		var root = RootDisplay.GameObject;
-		root.GetComponent<RootDisplay>().Destroy();
-		root.AddComponent<UpgradeMenu>();
+        RootDisplay.GetComponent<ScreenPanel>().Enabled = false;
+		ArenaUI.AddComponent<UpgradeMenu>();
 	}
+
+    public void CreateFailScreen()
+    {
+		if (RootDisplay.GetComponent<ScreenPanel>() != null)
+			RootDisplay.GetComponent<ScreenPanel>().Enabled = false;
+
+        ArenaUI.AddComponent<FailMenu>();
+    }
+
+    public void OnGameEvent(RoundManager.OpenUpgradeScreen eventArgs)
+    {
+		if (!IsValid || IsProxy) return;
+        CreateUpgradeScreen();
+    }
 }

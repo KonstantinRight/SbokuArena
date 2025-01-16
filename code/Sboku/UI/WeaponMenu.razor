@@ -3,6 +3,7 @@
 @using SWB.HUD
 @using SWB.Player
 @using Sandbox;
+@using Sandbox.Events
 @using Sandbox.Sboku.Arena
 @using Sandbox.UI;
 @using System;
@@ -52,7 +53,8 @@
 	private void Next()
 	{
 		GetComponentInParent<DemoPlayer>().GiveWeapon(selected.ClassName, true);
-		AddComponent<RootDisplay>();
+		this.GameObject.Parent.GetComponent<DemoPlayer>().RootDisplay.GetComponent<ScreenPanel>(true).Enabled = true;
+		Scene.Dispatch<RoundManager.UpgradeScreenClosed>(new());
 		Destroy();
 	}
 }

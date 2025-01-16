@@ -1,3 +1,4 @@
+using Sandbox.Events;
 using Sandbox.Sboku.Arena;
 using SWB.Shared;
 using System;
@@ -122,8 +123,9 @@ public partial class PlayerBase : Component, Component.INetworkSpawn, IPlayerBas
 	public async virtual void RespawnWithDelay( float delay )
 	{
 		await GameTask.DelaySeconds( delay );
-		Respawn();
-	}
+		Scene.Dispatch<RoundManager.GameOver>(new());
+        //Respawn();
+    }
 
 	[Rpc.Broadcast]
 	public void RespawnWithDelayBroadCast( float delay )

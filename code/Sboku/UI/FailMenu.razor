@@ -1,0 +1,53 @@
+@using SWB.Base
+@using SWB.Demo
+@using SWB.HUD
+@using SWB.Player
+@using Sandbox;
+@using Sandbox.Events
+@using Sandbox.Sboku.Arena
+@using Sandbox.UI;
+@using System;
+@using System.Linq;
+@using System.Collections.Generic;
+@inherits PanelComponent
+@namespace Sandbox.Sboku.UI
+
+<root>
+	<div class="menu">
+		<p class="title">You lost</p>
+		<div class="divider"/>
+		<div class="list">
+			<div onclick=@Retry class="but">Retry</div>
+			<div onclick=@NewGame class ="but">New Game</div>
+			<div onclick=@Exit class="but">Exit</div>
+		</div>
+	</div>
+</root>
+
+@code
+{
+	private RoundManager manager;
+	protected override void OnAwake()
+	{
+		manager = Scene.GetComponentInChildren<RoundManager>();
+	}
+
+	private void Retry()
+		=> Close();
+
+	private void NewGame()
+	{
+		manager.RoundNumber = 1;
+		this.GameObject.Parent.GetComponent<UpgradeHolder>().Clear();
+		Close();
+	}
+
+	private void Close()
+	{
+		this.GameObject.Parent.GetComponent<DemoPlayer>().ArenaUI.AddComponent<UpgradeMenu>();
+		Destroy();
+	}
+
+	private void Exit()
+		=> Game.Close();
+}

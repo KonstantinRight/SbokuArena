@@ -14,7 +14,6 @@
           "Name": "Spawner",
           "Position": "-0.1645635,-1015.996,261.3784",
           "Scale": "0.5998768,0.5998768,1.339126",
-          "Enabled": true,
           "__Prefab": "prefabs/arena/spawner.prefab",
           "__PrefabVariables": {}
         },
@@ -24,7 +23,6 @@
           "Name": "Spawner",
           "Position": "-300.7202,-1015.996,34.1991",
           "Scale": "0.5998768,0.5998768,1.339126",
-          "Enabled": true,
           "__Prefab": "prefabs/arena/spawner.prefab",
           "__PrefabVariables": {}
         },
@@ -34,7 +32,6 @@
           "Name": "Spawner",
           "Position": "297.7445,-1015.996,34.1991",
           "Scale": "0.5998768,0.5998768,1.339126",
-          "Enabled": true,
           "__Prefab": "prefabs/arena/spawner.prefab",
           "__PrefabVariables": {}
         },
@@ -1694,7 +1691,7 @@
       "Name": "SbokuBot",
       "Rotation": "0,0,0.7071067,0.7071068",
       "Tags": "player",
-      "__Prefab": "prefabs/sbokubot.prefab",
+      "__Prefab": "prefabs/arena/sbokubot.prefab",
       "__PrefabVariables": {}
     },
     {
@@ -1709,7 +1706,7 @@
     {
       "__guid": "c988658d-a998-405a-b169-e1711fe59578",
       "Flags": 0,
-      "Name": "ExampleNetworkManager",
+      "Name": "SceneHolder",
       "Position": "73.25323,515.2476,-156.4206",
       "Enabled": true,
       "Components": [
@@ -1726,6 +1723,21 @@
             "_type": "gameobject",
             "prefab": "prefabs/player.prefab"
           }
+        },
+        {
+          "__type": "Sandbox.Sboku.Arena.RoundManager",
+          "__guid": "69f9fdea-7049-4310-8238-8760387e6d71",
+          "BotCap": 3,
+          "EndCountdown": 1,
+          "EnemiesPerSpawner": 1,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "StartCountdown": 1,
+          "TotalRounds": 10
         }
       ]
     },
@@ -1806,7 +1818,7 @@
       "Title": "minimal"
     },
     "NavMesh": {
-      "Enabled": false,
+      "Enabled": true,
       "IncludeStaticBodies": true,
       "IncludeKeyframedBodies": true,
       "EditorAutoUpdate": true,
