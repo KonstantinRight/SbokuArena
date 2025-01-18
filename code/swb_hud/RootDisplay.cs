@@ -33,12 +33,14 @@ public class RootDisplay : PanelComponent
 
 		Panel.StyleSheet.Load( "/swb_hud/RootDisplay.cs.scss" );
 		Panel.AddChild( new HealthDisplay( Player ) );
-		Panel.AddChild( new ArmorDisplay( Player ) );
-		Panel.AddChild( new RoundDisplay( Player, Scene.GetComponentInChildren<RoundManager>() ) );
 		Panel.AddChild( new AmmoDisplay( Player ) );
 		Panel.AddChild( new InventoryDisplay( Player ) );
 		Panel.AddChild( new Scoreboard() );
 		Panel.AddChild( new KeyDisplay( Player ) );
+
+		Panel.AddChild( new ArmorDisplay( Player ) );
+		Panel.AddChild( new RoundDisplay( Player, Scene.GetComponentInChildren<RoundManager>() ) );
+        Panel.AddChild( new TimerDisplay( Player, Scene.GetComponentInChildren<RoundManager>() ) );
 
 		chatbox = new Chatbox( Player );
 		Panel.AddChild( chatbox );

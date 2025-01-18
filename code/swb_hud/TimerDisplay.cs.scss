@@ -1,0 +1,36 @@
+TimerDisplay {
+    position: absolute;
+    top: 25px;
+    width: 100%;
+    justify-content: center;
+
+    .box {
+        height: 110px;
+        color: white;
+        font-family: Poppins;
+        padding: 6px;
+        background-color: rgba( #2222, 0.5 );
+        backdrop-filter: blur( 16px );
+        border-radius: 4px;
+        flex-direction: column;
+    }
+
+    .name {
+        text-align: left;
+        font-size: 14px;
+        font-family: FONTSPRING DEMO - Integral CF;
+        text-transform: uppercase;
+    }
+
+    .timer {
+        text-align: center;
+        font-size: 60px;
+        font-weight: bold;
+        width: 120px;
+        margin-left: 20px;
+    }
+
+    &.hide {
+        display: none;
+    }
+}
