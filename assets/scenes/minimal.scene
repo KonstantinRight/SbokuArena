@@ -12,7 +12,8 @@
           "__guid": "e43f4bf2-f567-42b9-99cc-7ca19814b6a0",
           "Flags": 0,
           "Name": "Spawner",
-          "Position": "-0.1645635,-1015.996,261.3784",
+          "Position": "990.2937,207.6197,-100.201",
+          "Rotation": "0,0,0.7071067,0.7071068",
           "Scale": "0.5998768,0.5998768,1.339126",
           "Enabled": true,
           "__Prefab": "prefabs/arena/spawner.prefab",
@@ -22,7 +23,8 @@
           "__guid": "2aecff15-6268-4954-9463-3a32de0e9b58",
           "Flags": 0,
           "Name": "Spawner",
-          "Position": "-300.7202,-1015.996,34.1991",
+          "Position": "990.2935,-935.7141,-100.201",
+          "Rotation": "0,0,0.7071067,0.7071068",
           "Scale": "0.5998768,0.5998768,1.339126",
           "Enabled": true,
           "__Prefab": "prefabs/arena/spawner.prefab",
@@ -32,7 +34,8 @@
           "__guid": "28a41165-2d4c-4fe7-8a88-ef6d614380f0",
           "Flags": 0,
           "Name": "Spawner",
-          "Position": "297.7445,-1015.996,34.1991",
+          "Position": "990.2936,-337.2494,-100.201",
+          "Rotation": "0,0,0.7071067,0.7071068",
           "Scale": "0.5998768,0.5998768,1.339126",
           "Enabled": true,
           "__Prefab": "prefabs/arena/spawner.prefab",
@@ -53,8 +56,8 @@
       "__guid": "f8321a2b-c452-47d1-9c08-8fe058e3971f",
       "Flags": 0,
       "Name": "Pseudomap",
-      "Position": "0,0,132.3651",
-      "Enabled": true,
+      "Position": "249.6469,0,12.7173",
+      "Rotation": "0,0,-0.7071067,0.7071068",
       "Children": [
         {
           "__guid": "e2348a87-7d84-4680-9910-954b98c6be4a",
@@ -386,7 +389,7 @@
           "__guid": "84faacf9-167b-43c3-a235-eb1f1d04634b",
           "Flags": 0,
           "Name": "Ramp 2",
-          "Position": "-209.8653,618.9756,90.79063",
+          "Position": "-209.8653,618.9755,90.79062",
           "Rotation": "-0.258819,-0.00000005039392,-0.9659258,0.0000001880727",
           "Scale": "9.266971,3,1",
           "Enabled": true,
@@ -979,7 +982,7 @@
           "__guid": "7abfb3b5-b870-4774-8b28-f2b3b3fc24d1",
           "__version": 1,
           "EnableCollision": true,
-          "MapName": "facepunch.flatgrass",
+          "MapName": "maps/arena_v1.vmap",
           "NoOrigin": true,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -993,631 +996,6 @@
         }
       ],
       "Children": []
-    },
-    {
-      "__guid": "9318758b-1419-4d49-9e5d-991d863b4964",
-      "Flags": 0,
-      "Name": "Environment",
-      "Children": [
-        {
-          "__guid": "bfc59c12-1ed2-4f91-8956-a95a315eac3c",
-          "Flags": 0,
-          "Name": "Sun",
-          "Rotation": "-0.0729315,0.4822396,0.1305433,0.8631827",
-          "Tags": "light_directional,light",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.DirectionalLight",
-              "__guid": "4c6cab0f-a914-4b35-bf8f-af7abd4247ca",
-              "FogMode": "Enabled",
-              "FogStrength": 1,
-              "LightColor": "0.94419,0.97767,1,1",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Shadows": true,
-              "SkyColor": "0.2532,0.32006,0.35349,1"
-            }
-          ]
-        },
-        {
-          "__guid": "00344a8c-fa5e-45ae-b12a-10bb781a1dc3",
-          "Flags": 0,
-          "Name": "2D Skybox",
-          "Tags": "skybox",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.SkyBox2D",
-              "__guid": "7f898c15-4d83-46b4-ad22-362d1936f026",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "SkyIndirectLighting": true,
-              "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
-              "Tint": "1,1,1,1"
-            },
-            {
-              "__type": "Sandbox.EnvmapProbe",
-              "__guid": "5107d571-975e-475e-94bb-86fcce406bd2",
-              "Bounds": {
-                "Mins": "-512,-512,-512",
-                "Maxs": "512,512,512"
-              },
-              "DelayBetweenUpdates": 0.1,
-              "Feathering": 0.02,
-              "FrameInterval": 5,
-              "MaxDistance": 512,
-              "MultiBounce": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Projection": "Sphere",
-              "RenderDynamically": false,
-              "Texture": "textures/cubemaps/default2.vtex",
-              "TintColor": "1,1,1,1",
-              "UpdateStrategy": "OnEnabled",
-              "ZFar": 4096,
-              "ZNear": 16
-            }
-          ]
-        },
-        {
-          "__guid": "6ad70641-3c6c-4402-9c85-9a4969af4764",
-          "Flags": 0,
-          "Name": "Plane",
-          "Scale": "13.09961,14.53646,5",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "6dd1575c-7bea-47a4-9132-80fde582c978",
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "MaterialGroup": null,
-              "MaterialOverride": "materials/default.vmat",
-              "Model": "models/dev/plane.vmdl",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "0.39546,0.51163,0.27128,1"
-            },
-            {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "36adf6f9-d345-49f1-8587-093d992aa18c",
-              "Center": "0,0,-5",
-              "Friction": null,
-              "IsTrigger": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnObjectTriggerEnter": null,
-              "OnObjectTriggerExit": null,
-              "OnTriggerEnter": null,
-              "OnTriggerExit": null,
-              "Scale": "100,100,10",
-              "Static": false,
-              "Surface": null,
-              "SurfaceVelocity": "0,0,0"
-            }
-          ]
-        },
-        {
-          "__guid": "3c2490ef-54a0-49bb-8f13-490e40aa51d1",
-          "Flags": 0,
-          "Name": "Cube",
-          "Position": "106.3166,135.0241,14.17619",
-          "Rotation": "0.000002976795,-0.000007906739,0.2982059,0.9545016",
-          "Scale": "0.5632889,0.5632889,0.5632889",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "a223f448-a475-42c5-960e-e991b8441229",
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "MaterialGroup": null,
-              "MaterialOverride": "materials/default.vmat",
-              "Model": "models/dev/box.vmdl",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            },
-            {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "7ed98b9b-ea7b-4572-8ccb-0d54a3b49dad",
-              "Center": "0,0,0",
-              "Friction": null,
-              "IsTrigger": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnObjectTriggerEnter": null,
-              "OnObjectTriggerExit": null,
-              "OnTriggerEnter": null,
-              "OnTriggerExit": null,
-              "Scale": "50,50,50",
-              "Static": false,
-              "Surface": null,
-              "SurfaceVelocity": "0,0,0"
-            },
-            {
-              "__type": "Sandbox.Rigidbody",
-              "__guid": "8f90638b-6eb5-4cae-b54f-54600252303d",
-              "AngularDamping": 0,
-              "Gravity": true,
-              "LinearDamping": 0,
-              "Locking": {
-                "X": false,
-                "Y": false,
-                "Z": false,
-                "Pitch": false,
-                "Yaw": false,
-                "Roll": false
-              },
-              "MassCenterOverride": "0,0,0",
-              "MassOverride": 0,
-              "MotionEnabled": true,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OverrideMassCenter": false,
-              "RigidbodyFlags": 0,
-              "StartAsleep": false
-            }
-          ]
-        },
-        {
-          "__guid": "70be23ad-9cda-4dd6-8142-99c7a9f69a92",
-          "Flags": 0,
-          "Name": "Long Cube",
-          "Position": "-223.7912,249.1929,49.96741",
-          "Rotation": "-0.01588935,-0.004894807,0.3824361,0.9238324",
-          "Scale": "0.5632889,0.5632889,1.97564",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "138bae94-f70e-4e32-8839-22f396b33944",
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "MaterialGroup": null,
-              "MaterialOverride": "materials/default.vmat",
-              "Model": "models/dev/box.vmdl",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            },
-            {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "aac8d6ab-a64d-4d9d-9007-ceb2354232c9",
-              "Center": "0,0,0",
-              "Friction": null,
-              "IsTrigger": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnObjectTriggerEnter": null,
-              "OnObjectTriggerExit": null,
-              "OnTriggerEnter": null,
-              "OnTriggerExit": null,
-              "Scale": "50,50,50",
-              "Static": true,
-              "Surface": null,
-              "SurfaceVelocity": "0,0,0"
-            },
-            {
-              "__type": "Sandbox.Rigidbody",
-              "__guid": "c55017a2-e4ae-4fe7-96ca-d956e1af96d8",
-              "AngularDamping": 0,
-              "Gravity": false,
-              "LinearDamping": 0,
-              "Locking": {
-                "X": false,
-                "Y": false,
-                "Z": false,
-                "Pitch": false,
-                "Yaw": false,
-                "Roll": false
-              },
-              "MassCenterOverride": "0,0,0",
-              "MassOverride": 0,
-              "MotionEnabled": true,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OverrideMassCenter": false,
-              "RigidbodyFlags": 0,
-              "StartAsleep": false
-            }
-          ]
-        },
-        {
-          "__guid": "8463f994-fc03-4478-8cc5-8663c0dd38d8",
-          "Flags": 0,
-          "Name": "Long Cube (1)",
-          "Position": "-179.8882,174.0877,50.27879",
-          "Rotation": "0.01091752,-0.02698293,0.442313,0.8963884",
-          "Scale": "0.5632889,0.5632889,1.97564",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "58f78879-2d53-4370-af9a-4bfd79d1e7df",
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "MaterialGroup": null,
-              "MaterialOverride": "materials/default.vmat",
-              "Model": "models/dev/box.vmdl",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            },
-            {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "497aa671-314d-49e4-adf5-79962c195f28",
-              "Center": "0,0,0",
-              "Friction": null,
-              "IsTrigger": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnObjectTriggerEnter": null,
-              "OnObjectTriggerExit": null,
-              "OnTriggerEnter": null,
-              "OnTriggerExit": null,
-              "Scale": "50,50,50",
-              "Static": true,
-              "Surface": null,
-              "SurfaceVelocity": "0,0,0"
-            },
-            {
-              "__type": "Sandbox.Rigidbody",
-              "__guid": "6deec7a6-9bfb-415d-9895-861188cb24f9",
-              "AngularDamping": 0,
-              "Gravity": false,
-              "LinearDamping": 0,
-              "Locking": {
-                "X": false,
-                "Y": false,
-                "Z": false,
-                "Pitch": false,
-                "Yaw": false,
-                "Roll": false
-              },
-              "MassCenterOverride": "0,0,0",
-              "MassOverride": 0,
-              "MotionEnabled": true,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OverrideMassCenter": false,
-              "RigidbodyFlags": 0,
-              "StartAsleep": false
-            }
-          ]
-        },
-        {
-          "__guid": "f373bc8b-8230-43b3-b1d0-7d9d318b1520",
-          "Flags": 0,
-          "Name": "Long Cube (2)",
-          "Position": "-180.215,206.8841,58.73539",
-          "Rotation": "0.6312017,0.2930965,0.3396897,0.6326846",
-          "Scale": "0.4871052,0.5632889,1.816077",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "c5d74743-e4fa-4813-8f08-d19bd66341fb",
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "MaterialGroup": null,
-              "MaterialOverride": "materials/default.vmat",
-              "Model": "models/dev/box.vmdl",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            },
-            {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "c7c42dc7-e7d2-4b0f-be21-f4dd05a2d233",
-              "Center": "0,0,0",
-              "Friction": null,
-              "IsTrigger": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnObjectTriggerEnter": null,
-              "OnObjectTriggerExit": null,
-              "OnTriggerEnter": null,
-              "OnTriggerExit": null,
-              "Scale": "50,50,50",
-              "Static": true,
-              "Surface": null,
-              "SurfaceVelocity": "0,0,0"
-            },
-            {
-              "__type": "Sandbox.Rigidbody",
-              "__guid": "761d67fc-c75c-4794-8e81-9f4171f06f0f",
-              "AngularDamping": 0,
-              "Gravity": false,
-              "LinearDamping": 0,
-              "Locking": {
-                "X": false,
-                "Y": false,
-                "Z": false,
-                "Pitch": false,
-                "Yaw": false,
-                "Roll": false
-              },
-              "MassCenterOverride": "0,0,0",
-              "MassOverride": 0,
-              "MotionEnabled": true,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OverrideMassCenter": false,
-              "RigidbodyFlags": 0,
-              "StartAsleep": false
-            }
-          ]
-        },
-        {
-          "__guid": "523e3e8f-a4ec-4ec1-af9a-d86ffc9c17e1",
-          "Flags": 0,
-          "Name": "Cube (1)",
-          "Position": "118.522,113.5585,37.78748",
-          "Rotation": "-0.3422784,-0.1094723,0.2794239,0.890384",
-          "Scale": "0.5632889,0.5632889,0.5632889",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "a9ef2bf2-01d1-40b9-bd96-5f01783281c2",
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "MaterialGroup": null,
-              "MaterialOverride": "materials/default.vmat",
-              "Model": "models/dev/box.vmdl",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            },
-            {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "e4a516da-614d-4c3c-abfc-b0b9b4739455",
-              "Center": "0,0,0",
-              "Friction": null,
-              "IsTrigger": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnObjectTriggerEnter": null,
-              "OnObjectTriggerExit": null,
-              "OnTriggerEnter": null,
-              "OnTriggerExit": null,
-              "Scale": "50,50,50",
-              "Static": false,
-              "Surface": null,
-              "SurfaceVelocity": "0,0,0"
-            },
-            {
-              "__type": "Sandbox.Rigidbody",
-              "__guid": "68f5bdf3-7618-40ea-9531-99ba0752502b",
-              "AngularDamping": 0,
-              "Gravity": true,
-              "LinearDamping": 0,
-              "Locking": {
-                "X": false,
-                "Y": false,
-                "Z": false,
-                "Pitch": false,
-                "Yaw": false,
-                "Roll": false
-              },
-              "MassCenterOverride": "0,0,0",
-              "MassOverride": 0,
-              "MotionEnabled": true,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OverrideMassCenter": false,
-              "RigidbodyFlags": 0,
-              "StartAsleep": false
-            }
-          ]
-        },
-        {
-          "__guid": "5b483a09-bbf2-4949-98c7-a73b789d0ee7",
-          "Flags": 0,
-          "Name": "Cube (2)",
-          "Position": "129.9087,91.38236,14.18267",
-          "Rotation": "-0.00007207559,0.0002271165,0.3022816,0.9532187",
-          "Scale": "0.5632889,0.5632889,0.5632889",
-          "Enabled": true,
-          "Components": [
-            {
-              "__type": "Sandbox.ModelRenderer",
-              "__guid": "18bbef80-4357-4f24-a2df-108ee23a6000",
-              "BodyGroups": 18446744073709551615,
-              "CreateAttachments": false,
-              "MaterialGroup": null,
-              "MaterialOverride": "materials/default.vmat",
-              "Model": "models/dev/box.vmdl",
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "RenderOptions": {
-                "GameLayer": true,
-                "OverlayLayer": false,
-                "BloomLayer": false,
-                "AfterUILayer": false
-              },
-              "RenderType": "On",
-              "Tint": "1,1,1,1"
-            },
-            {
-              "__type": "Sandbox.BoxCollider",
-              "__guid": "116e4e83-c8fa-4d05-85e7-920f138a693d",
-              "Center": "0,0,0",
-              "Friction": null,
-              "IsTrigger": false,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OnObjectTriggerEnter": null,
-              "OnObjectTriggerExit": null,
-              "OnTriggerEnter": null,
-              "OnTriggerExit": null,
-              "Scale": "50,50,50",
-              "Static": false,
-              "Surface": null,
-              "SurfaceVelocity": "0,0,0"
-            },
-            {
-              "__type": "Sandbox.Rigidbody",
-              "__guid": "cd258e97-7059-4769-a7f2-b9974fb33a63",
-              "AngularDamping": 0,
-              "Gravity": true,
-              "LinearDamping": 0,
-              "Locking": {
-                "X": false,
-                "Y": false,
-                "Z": false,
-                "Pitch": false,
-                "Yaw": false,
-                "Roll": false
-              },
-              "MassCenterOverride": "0,0,0",
-              "MassOverride": 0,
-              "MotionEnabled": true,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "OverrideMassCenter": false,
-              "RigidbodyFlags": 0,
-              "StartAsleep": false
-            }
-          ]
-        }
-      ]
     },
     {
       "__guid": "8b3cd142-6acb-47f1-b4e0-6b00f75f7355",
@@ -1824,6 +1202,701 @@
           "OnComponentUpdate": null
         }
       ]
+    },
+    {
+      "__guid": "ae28b839-1f55-47e3-b028-98af9648b343",
+      "Flags": 0,
+      "Name": "Environment",
+      "Position": "332.3919,442.9442,579.0495",
+      "Enabled": true,
+      "Children": [
+        {
+          "__guid": "d67f8db1-a3e8-47e5-acf3-ac0938b199be",
+          "Flags": 0,
+          "Name": "2D Skybox",
+          "Position": "-489.713,-474.9931,-349.1342",
+          "Tags": "skybox",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.SkyBox2D",
+              "__guid": "c9e46866-c595-41c4-94f1-8305e39b11c4",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "SkyIndirectLighting": true,
+              "SkyMaterial": "materials/skybox/skybox_day_01.vmat",
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "b1db7c14-2d65-4c15-8f78-165cf7e4030e",
+          "Flags": 0,
+          "Name": "Sun",
+          "Position": "-698.5505,-78.95813,156.4774",
+          "Rotation": "0,0.6087614,0,0.7933534",
+          "Tags": "light_directional,light",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.DirectionalLight",
+              "__guid": "c6cffcfd-231d-494e-9114-2e525607d05a",
+              "FogMode": "Enabled",
+              "FogStrength": 1,
+              "LightColor": "0.91373,0.98039,1,1",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Shadows": true,
+              "SkyColor": "0,0,0,0"
+            }
+          ]
+        },
+        {
+          "__guid": "a7fb2150-0319-4041-947d-d06f42a1051a",
+          "Flags": 0,
+          "Name": "Volumetric Fog",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.VolumetricFogVolume",
+              "__guid": "df244e60-9a3e-4ec0-9c8a-f6acc0344793",
+              "Bounds": {
+                "Mins": "-1500,-1500,-1500",
+                "Maxs": "1500,1500,1500"
+              },
+              "FalloffExponent": 1,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Strength": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "__guid": "7924ab71-082f-4930-9415-84be4619e838",
+      "Flags": 0,
+      "Name": "World Objects",
+      "Position": "150.3619,81.7764,808.7837",
+      "Enabled": true,
+      "Children": [
+        {
+          "__guid": "609922ef-3525-4cd3-b120-24d0c971305d",
+          "Flags": 0,
+          "Name": "pickup_dev",
+          "Position": "757.1022,67.3746,-808.5225",
+          "Rotation": "0,0,-0.9238795,0.3826834",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "80c437b8-b5ac-4e56-812d-4b1f7afa2139",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/vehicle/pickup_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "39f3aee2-00dc-49ea-9e7d-71f4ef7e4562",
+          "Flags": 0,
+          "Name": "pickup_dev (1)",
+          "Position": "-348.1335,211.0173,-808.5225",
+          "Rotation": "0,0,-0.9914449,0.1305262",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "ca97a713-587c-45aa-81f5-68fc5c7c95b3",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/vehicle/pickup_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "e6a920fc-de33-4736-9611-1cfe455cee4a",
+          "Flags": 0,
+          "Name": "car_dev",
+          "Position": "151.2253,40.46002,-807.3389",
+          "Rotation": "0,0,0.9238796,0.3826836",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "2e9651a3-8f1a-47d1-8b7e-a0c8799d406d",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/vehicle/car_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "748777e6-c68d-4596-aaa0-ddbedc0e85e4",
+          "Flags": 0,
+          "Name": "van_dev (1)",
+          "Position": "159.7603,-706.9041,-807.1367",
+          "Rotation": "0,0,-0.9659259,0.2588192",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "eaf6fea6-27bd-40d4-bbde-4aa6f579352d",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/vehicle/van_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "c3afa091-0470-49d6-8d6a-554fbdb8b1dc",
+          "Flags": 0,
+          "Name": "van_dev (2)",
+          "Position": "-261.6252,-256.2099,-807.1367",
+          "Rotation": "0,0,-0.9238796,-0.3826833",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "6c5e6be8-12ae-4478-97bb-e46f14cf3d4a",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/vehicle/van_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "1d7697eb-fbfb-4692-9e47-e6b46aae722c",
+          "Flags": 0,
+          "Name": "van_dev",
+          "Position": "563.7151,-478.7595,-807.1367",
+          "Rotation": "0,0,-0.3826834,0.9238796",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "b6dbfbe3-2e29-403f-a4c3-7ffffee38abb",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/vehicle/van_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "46ce8332-7dae-47ca-8d98-acd2cb30128b",
+          "Flags": 0,
+          "Name": "truck_dev",
+          "Position": "463.0819,-28.86173,-808.7341",
+          "Rotation": "0,0,-0.7071067,0.7071068",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "2881044c-3b07-4c11-9b47-a630ee8b938a",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/vehicle/truck_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "59a287ab-4ae7-4d91-860f-ffe31daccf84",
+          "Flags": 0,
+          "Name": "waste_bin_dev",
+          "Position": "815.8228,-558.8649,-808.7836",
+          "Rotation": "0,0,-0.9999999,0.0000001490116",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "51f319c8-e5ae-4883-84d8-c1603baa2045",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/dumpster/waste_bin_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "d54f1115-3179-4185-80c0-216046adaee0",
+          "Flags": 0,
+          "Name": "waste_bin_dev (5)",
+          "Position": "-617.1471,-322.2134,-808.7836",
+          "Rotation": "0,0,-0.0000003437187,-0.9999999",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "d661ff17-e583-43a3-a2da-e568b3df7a08",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/dumpster/waste_bin_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "18b284c6-07d3-4bd2-8b8b-c917fb9e2493",
+          "Flags": 0,
+          "Name": "waste_bin_dev (1)",
+          "Position": "815.8228,-440.3057,-808.7836",
+          "Rotation": "0,0,-0.9999999,0.0000001490116",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "fc9b6be4-c807-4942-a0d6-8c8336aa8801",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/dumpster/waste_bin_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "04df42ff-e7fc-41d4-b158-b943bc90bdc4",
+          "Flags": 0,
+          "Name": "waste_bin_dev (4)",
+          "Position": "-617.1471,-440.7726,-808.7836",
+          "Rotation": "0,0,-0.0000003437187,-0.9999999",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "ba036151-c2e1-4203-9234-0800b23af868",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/dumpster/waste_bin_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "54577ee5-d0d7-4157-a454-27a0e4d6fbbd",
+          "Flags": 0,
+          "Name": "waste_bin_dev (2)",
+          "Position": "815.8228,-322.2134,-808.7836",
+          "Rotation": "0,0,-0.9999999,0.0000001490116",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "7b42f159-f3ad-4f19-b813-119be3cdd178",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/dumpster/waste_bin_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "32db6172-222d-4799-a72d-39979731ccfe",
+          "Flags": 0,
+          "Name": "waste_bin_dev (3)",
+          "Position": "-617.147,-558.8649,-808.7836",
+          "Rotation": "0,0,-0.0000003437187,-0.9999999",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "bb2ccaed-f85e-461a-b62f-4e68dff532fb",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/dumpster/waste_bin_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "35c88daf-ea82-4e9a-aad5-06944d89c9d0",
+          "Flags": 0,
+          "Name": "weapon_crate_small_stack2",
+          "Position": "-81.457,417.3832,-808.7837",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "b617ee17-5849-48c1-adac-d545ce7cfce5",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/weapon_crates/weapon_crate_small_stack2.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "8c624cac-1bd2-4fa0-81a5-bd1abc3509df",
+          "Flags": 0,
+          "Name": "weapon_crate_small_stack2 (1)",
+          "Position": "-572.6952,417.3832,-808.7837",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "ec57e04a-bb69-44d0-bcbf-5a102b82a13c",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/weapon_crates/weapon_crate_small_stack2.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "2efdda57-38c6-43b1-88d3-4247ad4420f6",
+          "Flags": 0,
+          "Name": "watertote_large_dev",
+          "Position": "149.7993,-225.1937,-808.7836",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "0a974198-042d-46be-ab10-ccf2f7d26cfc",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/watertote/watertote_large_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "e28cfd67-4ca6-47a8-99b2-80438fccb1c7",
+          "Flags": 0,
+          "Name": "watertote_large_dev (2)",
+          "Position": "-370.267,-36.69638,-808.7836",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "087e7558-5bff-4f80-9087-57a11010443e",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/watertote/watertote_large_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "08c735da-4fe6-470a-85a5-eee101975ee5",
+          "Flags": 0,
+          "Name": "watertote_large_dev (1)",
+          "Position": "-74.87582,-504.0713,-808.7836",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "4ea68f06-6cc6-44d3-b3e1-85e326f8fd62",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/watertote/watertote_large_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "381def68-7c05-4e8d-9039-f9f0481e2d71",
+          "Flags": 0,
+          "Name": "truck_cargo_dev",
+          "Position": "460.9656,-9.644691,-769.9791",
+          "Rotation": "0,0,-0.7071067,0.7071068",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "601b5d13-0dbc-426c-a5c3-c6858251285d",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/vehicle/truck_cargo_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "36863464-7543-48a4-94e5-bd2a8ba294d4",
+          "Flags": 0,
+          "Name": "shipping_container_open_dev",
+          "Position": "250.0445,-396.8226,-808.7837",
+          "Rotation": "0,0,-0.258819,0.9659258",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "02f272f7-7383-4db0-9418-fb65a2e4b2b2",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/shippingcontainer/shipping_container_open_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        },
+        {
+          "__guid": "f1007bf0-db52-4931-8be6-3e277a5d7b02",
+          "Flags": 0,
+          "Name": "shipping_container_open_dev (1)",
+          "Position": "9.781158,279.9261,-808.7837",
+          "Rotation": "0,0,-0.8660253,0.5000001",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.Prop",
+              "__guid": "42e71331-02f1-4f9f-bd6a-4014eb752401",
+              "BodyGroups": 18446744073709551615,
+              "Health": 0,
+              "IsStatic": true,
+              "MaterialGroup": null,
+              "Model": "models/dev/shippingcontainer/shipping_container_open_dev.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OnPropBreak": null,
+              "OnPropTakeDamage": null,
+              "StartAsleep": false,
+              "Tint": "1,1,1,1"
+            }
+          ]
+        }
+      ]
     }
   ],
   "SceneProperties": {
@@ -1854,6 +1927,16 @@
   "ResourceVersion": 2,
   "Title": "minimal",
   "Description": null,
-  "__references": [],
+  "__references": [
+    "facepunch.car_dev#58005",
+    "facepunch.pickup_dev#58636",
+    "facepunch.shipping_container_open_dev#58563",
+    "facepunch.truck_cargo_dev#58358",
+    "facepunch.truck_dev#58591",
+    "facepunch.van_dev#57990",
+    "facepunch.waste_bin_dev#58707",
+    "facepunch.watertote_large_dev#59547",
+    "facepunch.weapon_crate_small_stack2#58705"
+  ],
   "__version": 2
 }
