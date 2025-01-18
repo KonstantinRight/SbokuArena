@@ -194,9 +194,10 @@ public partial class PlayerBase : Component, Component.INetworkSpawn, IPlayerBas
 	{
 		if ( !IsAlive || IsBot ) return;
 		OnMovementFixedUpdate();
-	}
+        HandleDamage();
+    }
 
-	public static PlayerBase GetLocal()
+    public static PlayerBase GetLocal()
 	{
 		var players = GetAll();
 		return players.FirstOrDefault( ( player ) => !player.IsProxy && !player.IsBot, null );
