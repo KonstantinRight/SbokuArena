@@ -10,7 +10,7 @@ public partial class PlayerBase
 {
 	[Property] public int MaxHealth { get; set; } = 100;
 	[Property] public float DamageThrottle { get; set; } = 0.3f;
-	[Property] public int MaxDamage { get; set; } = 15;
+	[Property] public int MaxDamageClamp { get; set; } = 15;
 	[Sync] public int Health { get; set; } = 100;
 	[Sync] public int Kills { get; set; }
 	[Sync] public int Deaths { get; set; }
@@ -78,12 +78,12 @@ public partial class PlayerBase
 			dmgMultiplier = attacker.GetComponent<UpgradeHolder>().DamageMultiplier;
 		}
 
-        var dmg = (int)(MathF.Round(info.Damage * GetComponent<UpgradeHolder>().ArmorMultiplier * dmgMultiplier));
+        var dmg = (int)(MathF.Round(info.Damage * dmgMultiplier));
 		if (!dmgTable.ContainsKey(info.Inflictor))
 		{
 			dmgTable.Add(info.Inflictor, new(info));
 		}
-		dmgTable[info.Inflictor].Damage = Math.Clamp(dmgTable[info.Inflictor].Damage + dmg, 0, MaxDamage);
+		dmgTable[info.Inflictor].Damage = Math.Clamp(dmgTable[info.Inflictor].Damage + dmg, 1, (int)MathF.Round(MaxDamageClamp * GetComponent<UpgradeHolder>().ArmorMultiplier));
     }
 
     [Rpc.Broadcast]
@@ -93,8 +93,5 @@ public partial class PlayerBase
             return;
 
         Health -= damage;
-
-		// TODO:
-		//OnDeath(info);
     }
 }

@@ -45,8 +45,9 @@ public sealed class RoundManager : Component,
     protected override void OnFixedUpdate()
     {
         BotsNumber = Scene.GetAllComponents<SbokuBase>().Count();
-		if (isRoundStarted && BotsNumber == 0 && AreSpawnersDone())
+        if (isRoundStarted && BotsNumber == 0 && AreSpawnersDone())
 		{
+			isRoundStarted = false;
             SetCallback(EndCountdown, FinishRound);
         }
 
@@ -62,7 +63,7 @@ public sealed class RoundManager : Component,
 		if (Timer > 0)
 		{
 			Timer--;
-			if (Timer == 0)
+            if (Timer == 0)
 			{
 				OnTimerExpire();
 			}
@@ -150,6 +151,7 @@ public sealed class RoundManager : Component,
     public void OnGameEvent(GameOver eventArgs)
     {
 		isRoundStarted = false;
+		spawners.ForEach(x => x.ClearQueue());
 		RemoveEntities();
 
         foreach (var pl in Scene.GetComponentsInChildren<DemoPlayer>())

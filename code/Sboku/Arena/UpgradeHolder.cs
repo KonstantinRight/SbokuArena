@@ -154,7 +154,7 @@ public class UpgradeHolder : Component
     public float ArmorMultiplier { get => ArmorClass switch
         {
             Level.A => 0.05f,
-            Level.B => 0.1f,
+            Level.B => 0.11f,
             Level.C => 0.25f,
             Level.D => 0.5f,
             Level.E => 0.75f,

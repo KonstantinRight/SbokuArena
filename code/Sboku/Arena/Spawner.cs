@@ -26,6 +26,7 @@ internal class Spawner : Component, Component.ITriggerListener
 
     public bool IsDone() => spawnCounter <= 0;
     public void RequestSpawn() => spawnCounter++;
+    public void ClearQueue() => spawnCounter = 0;
     private void Spawn()
     {
         if (inside.Any()) return;
@@ -58,7 +59,6 @@ internal class Spawner : Component, Component.ITriggerListener
 
         roundManager = Scene.GetComponentInChildren<RoundManager>();
     }
-    private int sec = 0;
     protected override void OnFixedUpdate()
     {
         if (timer > 1f)

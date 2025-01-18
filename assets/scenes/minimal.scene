@@ -14,6 +14,7 @@
           "Name": "Spawner",
           "Position": "-0.1645635,-1015.996,261.3784",
           "Scale": "0.5998768,0.5998768,1.339126",
+          "Enabled": true,
           "__Prefab": "prefabs/arena/spawner.prefab",
           "__PrefabVariables": {}
         },
@@ -23,6 +24,7 @@
           "Name": "Spawner",
           "Position": "-300.7202,-1015.996,34.1991",
           "Scale": "0.5998768,0.5998768,1.339126",
+          "Enabled": true,
           "__Prefab": "prefabs/arena/spawner.prefab",
           "__PrefabVariables": {}
         },
@@ -32,6 +34,7 @@
           "Name": "Spawner",
           "Position": "297.7445,-1015.996,34.1991",
           "Scale": "0.5998768,0.5998768,1.339126",
+          "Enabled": true,
           "__Prefab": "prefabs/arena/spawner.prefab",
           "__PrefabVariables": {}
         },
@@ -41,7 +44,6 @@
           "Name": "Spawner",
           "Position": "-0.1645632,-1015.996,34.1991",
           "Scale": "0.5998768,0.5998768,1.339126",
-          "Enabled": true,
           "__Prefab": "prefabs/arena/spawner.prefab",
           "__PrefabVariables": {}
         }
@@ -1728,15 +1730,15 @@
           "__type": "Sandbox.Sboku.Arena.RoundManager",
           "__guid": "69f9fdea-7049-4310-8238-8760387e6d71",
           "BotCap": 3,
-          "EndCountdown": 1,
-          "EnemiesPerSpawner": 1,
+          "EndCountdown": 3,
+          "EnemiesPerSpawner": 3,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "StartCountdown": 1,
+          "StartCountdown": 5,
           "TotalRounds": 10
         }
       ]
