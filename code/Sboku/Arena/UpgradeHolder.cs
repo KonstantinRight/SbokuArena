@@ -131,12 +131,12 @@ public class UpgradeHolder : Component
 
     public float SpeedMultiplier { get => SpeedClass switch
         {
-            Level.A => 2f,
+            Level.A => 1.75f,
             Level.B => 1.5f,
             Level.C => 1.25f,
-            Level.D => 1f,
-            Level.E => 0.75f,
-            Level.F => 0.5f,
+            Level.D => 1.05f,
+            Level.E => 0.9f,
+            Level.F => 0.75f,
             _ => throw new NotImplementedException("No multiplier for " + SpeedClass),
         };
     }

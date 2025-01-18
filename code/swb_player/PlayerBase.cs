@@ -150,6 +150,7 @@ public partial class PlayerBase : Component, Component.INetworkSpawn, IPlayerBas
 		UnragdollWithDelay();
 
 		Inventory.Clear();
+		dmgTable.Clear();
 		Health = MaxHealth;
 
 		var spawnLocation = GetSpawnLocation();

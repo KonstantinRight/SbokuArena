@@ -9,8 +9,8 @@ namespace SWB.Player;
 public partial class PlayerBase
 {
 	[Property] public int MaxHealth { get; set; } = 100;
-	[Property] public float DamageThrottle { get; set; } = 0.25f;
-	[Property] public int MaxDamage { get; set; } = 5;
+	[Property] public float DamageThrottle { get; set; } = 0.3f;
+	[Property] public int MaxDamage { get; set; } = 15;
 	[Sync] public int Health { get; set; } = 100;
 	[Sync] public int Kills { get; set; }
 	[Sync] public int Deaths { get; set; }

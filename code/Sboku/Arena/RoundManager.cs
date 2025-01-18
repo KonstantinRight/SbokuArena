@@ -110,7 +110,7 @@ public sealed class RoundManager : Component,
 
 		isRoundStarted = true;
     }
-
+	[Rpc.Host]
 	public void RemoveEntities()
 	{
         foreach (var ad in Scene.GetComponentsInChildren<SWBAdapter>(includeDisabled: true))
@@ -127,8 +127,7 @@ public sealed class RoundManager : Component,
 
 		foreach (var ply in Scene.GetAllComponents<DemoPlayer>())
 		{
-			ply.Health = ply.MaxHealth;
-			ply.Inventory.Clear();
+			ply.Respawn();
 			ply.GetComponent<UpgradeHolder>().FreePoints++;
 		}
 
@@ -158,7 +157,6 @@ public sealed class RoundManager : Component,
 	        pl.Respawn();
             pl.CreateFailScreen();
 		}
-
     }
 
     public record OpenUpgradeScreen() : IGameEvent;
