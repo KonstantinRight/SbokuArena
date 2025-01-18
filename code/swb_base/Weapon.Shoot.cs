@@ -124,7 +124,7 @@ public partial class Weapon
 			var realSpread = IsScoping ? 0 : GetRealSpread( shootInfo.Spread );
 			var spreadOffset = shootInfo.BulletType.GetRandomSpread( realSpread );
 
-			ShootBullet( isPrimary, spreadOffset );
+			ShootBullet( isPrimary, spreadOffset * (IsOwnerBot ? 3 : 1));
 		}
 		if (!HasAmmo())
 		{
