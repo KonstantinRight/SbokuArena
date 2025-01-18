@@ -12,6 +12,9 @@ namespace Sandbox.Sboku;
 [Title("SWB Adapter")]
 public class SWBAdapter : SbokuBase, IPlayerBase
 {
+    [RequireComponent]
+    public UpgradeHolder UpgradeHolder { get; set; }
+
     private static Random rand = new();
 
     public void GiveWeapon(string className)
@@ -47,12 +50,27 @@ public class SWBAdapter : SbokuBase, IPlayerBase
         sboku = GetComponent<SbokuBase>();
     }
 
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        if (!IsAlive)
+        {
+            Enabled = false;
+        }
+    }
+
     #region Sboku
 
     public override ISbokuWeapon Weapon { get => sbokuWeapon; }
     private ISbokuWeapon sbokuWeapon;
 
     private SbokuBase sboku;
+
+    protected override void Move(Vector3 wishVelocity)
+    {
+        base.Move(wishVelocity * new Vector3(UpgradeHolder.SpeedMultiplier, UpgradeHolder.SpeedMultiplier, 1));
+    }
 
     public bool IsAttackPressed(string type)
         => sboku?.IsShooting ?? false;

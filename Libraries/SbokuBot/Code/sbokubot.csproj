@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<AssemblyName>sbokubot</AssemblyName>
+		<PackageId>sbokubot</PackageId>
+		<LangVersion>13</LangVersion>
+		<NoWarn>1701;1702;1591;</NoWarn>
+		<WarningsAsErrors></WarningsAsErrors>
+		<TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<DefineConstants>SANDBOX;ADDON;DEBUG</DefineConstants>
+		<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+
+	</PropertyGroup>
+
+	<ItemGroup>
+		
+		<None Update="**\*.cs.scss" DependentUpon="%(Filename)" />
+		<Compile Update="**\*.razor.cs" DependentUpon="%(Filename)" />
+		<None Update="**\*.razor.scss" DependentUpon="%(Filename)" />
+
+	</ItemGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="**/*.razor" />
+	</ItemGroup>
+
+
+
+	<ItemGroup>
+		<Using Include="Sandbox.Internal.GlobalGameNamespace" Static="true" />
+	</ItemGroup>
+
+  <PropertyGroup>
+	<OutputPath>F:\SteamLibrary\steamapps\common\sbox/.vs/output/</OutputPath>
+	<DocumentationFile>F:\SteamLibrary\steamapps\common\sbox/.vs/output/sbokubot.xml</DocumentationFile>
+	<RootNamespace>Sandbox</RootNamespace>
+	<Nullable>disable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<Analyzer Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed\Sandbox.CodeUpgrader.dll"/>
+		<Analyzer Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed\Sandbox.Generator.dll"/>
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.System.dll" />
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Engine.dll" />
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Filesystem.dll" />
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Game.dll" />
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Reflection.dll" />
+	</ItemGroup>
+
+  <ItemGroup>
+		<ProjectReference Include="F:\SteamLibrary\steamapps\common\sbox\addons\base\Code\Base Library.csproj" />
+
+  </ItemGroup>
+
+</Project>

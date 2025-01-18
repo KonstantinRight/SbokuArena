@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<AssemblyName>sbokubot.editor</AssemblyName>
+		<PackageId>sbokubot.editor</PackageId>
+		<LangVersion>13</LangVersion>
+		<NoWarn>1701;1702;1591;</NoWarn>
+		<WarningsAsErrors></WarningsAsErrors>
+		<TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<DefineConstants>SANDBOX;ADDON;DEBUG</DefineConstants>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+
+	</PropertyGroup>
+
+	<ItemGroup>
+		
+		<None Update="**\*.cs.scss" DependentUpon="%(Filename)" />
+		<Compile Update="**\*.razor.cs" DependentUpon="%(Filename)" />
+		<None Update="**\*.razor.scss" DependentUpon="%(Filename)" />
+
+	</ItemGroup>
+
+	<ItemGroup>
+		<AdditionalFiles Include="**/*.razor" />
+	</ItemGroup>
+
+
+
+	<ItemGroup>
+		<Using Include="Sandbox.Internal.GlobalToolsNamespace" Static="true" />
+		<Using Include="Sandbox.Internal.GlobalGameNamespace" Static="true" />
+	</ItemGroup>
+
+  <PropertyGroup>
+	<OutputPath>F:\SteamLibrary\steamapps\common\sbox/.vs/output/</OutputPath>
+	<DocumentationFile>F:\SteamLibrary\steamapps\common\sbox/.vs/output/sbokubot.editor.xml</DocumentationFile>
+	<RootNamespace>Sandbox</RootNamespace>
+	<Nullable>disable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<Analyzer Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed\Sandbox.CodeUpgrader.dll"/>
+		<Analyzer Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed\Sandbox.Generator.dll"/>
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.System.dll" />
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Engine.dll" />
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Filesystem.dll" />
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Game.dll" />
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Reflection.dll" />
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Tools.dll" />
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Compiling.dll" />
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Microsoft.CodeAnalysis.dll" />
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Bind.dll" />
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Facepunch.ActionGraphs.dll" />
+		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/SkiaSharp.dll" />
+	</ItemGroup>
+
+  <ItemGroup>
+		<ProjectReference Include="F:\SteamLibrary\steamapps\common\sbox\editor\ActionGraph\Code\actiongraph.csproj" />
+		<ProjectReference Include="F:\SteamLibrary\steamapps\common\sbox\editor\Hammer\Code\hammer.csproj" />
+		<ProjectReference Include="F:\SteamLibrary\steamapps\common\sbox\addons\tools\Code\Base Editor Library.csproj" />
+		<ProjectReference Include="D:\Projects\sbox\SbokuArena\Libraries\SbokuBot\Code\sbokubot.csproj" />
+		<ProjectReference Include="F:\SteamLibrary\steamapps\common\sbox\editor\ShaderGraph\Code\shadergraph.csproj" />
+
+  </ItemGroup>
+
+</Project>

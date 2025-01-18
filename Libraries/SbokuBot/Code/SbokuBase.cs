@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Sandbox.Citizen;
-using Sandbox.Events;
-using Sandbox.Sboku.Arena;
 using Sandbox.Sboku.Logic;
 using Sandbox.Sboku.Shared;
 using Sandbox.Sboku.States;
@@ -40,8 +38,6 @@ public abstract class SbokuBase : Component
     [Property]
     public bool IsOffline { get; set; } = false;
 
-    [RequireComponent]
-    public UpgradeHolder UpgradeHolder { get; set; }
 
     public int DistanceToRecalucaltePath { get => MinFightRange / 2; }
     public float ThinkingInterval { get => Settings.ThinkingInterval; }
@@ -178,12 +174,6 @@ public abstract class SbokuBase : Component
     protected override void OnUpdate()
     {
         timer.OnUpdate();
-
-        var swb = GetComponent<SWBAdapter>();
-        if (!swb.IsAlive)
-        {
-            Enabled = false;
-        }
     }
     protected override void OnFixedUpdate()
     {
@@ -253,9 +243,9 @@ public abstract class SbokuBase : Component
     /// Try to move in the direction given by the wishVelocity unit vector
     /// </summary>
     /// <param name="wishVelocity"></param>
-    private void Move(Vector3 wishVelocity)
+    protected virtual void Move(Vector3 wishVelocity)
     {
-        var vel = wishVelocity * Velocity * UpgradeHolder.SpeedMultiplier;
+        var vel = wishVelocity * Velocity;
         var gravity = Scene.PhysicsWorld.Gravity;
         if (character.IsOnGround)
         {
