@@ -1,7 +1,13 @@
 {
   "Title": "SbokuBot",
   "Type": "library",
-  "Org": "local",
+  "Org": "righty",
   "Ident": "sbokubot",
-  "Schema": 1
+  "Schema": 1,
+  "IncludeSourceFiles": false,
+  "Resources": null,
+  "PackageReferences": [],
+  "EditorReferences": null,
+  "IsWhitelistDisabled": false,
+  "Metadata": {}
 }
