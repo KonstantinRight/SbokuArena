@@ -1,4 +1,4 @@
-﻿using SWB.Player;
+﻿using Sandbox.Sboku.Shared;
 using System;
 
 namespace Sandbox.Sboku.Logic;
@@ -12,13 +12,21 @@ internal class IdleActionState : StateBase, IActionState
     {
         if (Target == null)
         {
-            foreach (var ply in Bot.Scene.GetAllComponents<PlayerBase>())
+            (ISbokuTarget Target, float SquaredDistance)? saved = null;
+            foreach (var tar in Bot.Scene.GetAllComponents<ISbokuTarget>())
             {
-                if (Bot.WorldPosition.DistanceSquared(ply.WorldPosition) <= MathF.Pow(Bot.SearchRange, 2))
+                var dist = Bot.WorldPosition.DistanceSquared(tar.WorldPosition);
+                if (tar.IsEnemy && dist <= MathF.Pow(Bot.SearchRange, 2))
                 {
-                    Bot.Target = ply;
+                    if (saved == null || dist < saved.Value.SquaredDistance)
+                    {
+                        saved = new(tar, dist);
+                    }
                 }
             }
+
+            if (saved != null)
+                Bot.Target = saved.Value.Target;
         }
 
         if (Bot.Target != null)

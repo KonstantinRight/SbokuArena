@@ -1,5 +1,6 @@
 using Sandbox.Events;
 using Sandbox.Sboku.Arena;
+using Sandbox.Sboku.Shared;
 using SWB.Shared;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace SWB.Player;
 
 [Group( "SWB" )]
 [Title( "PlayerBase" )]
-public partial class PlayerBase : Component, Component.INetworkSpawn, IPlayerBase
+public partial class PlayerBase : Component, Component.INetworkSpawn, IPlayerBase, ISbokuTarget
 {
 	[Property] public GameObject Head { get; set; }
 	[Property] public GameObject Body { get; set; }
@@ -43,7 +44,7 @@ public partial class PlayerBase : Component, Component.INetworkSpawn, IPlayerBas
 
 	Guid IPlayerBase.Id { get => GameObject.Id; }
 
-	protected override void OnAwake()
+    protected override void OnAwake()
 	{
 		Inventory = Components.Create<Inventory>();
 		CameraMovement = Components.GetInChildren<CameraMovement>();
@@ -208,8 +209,9 @@ public partial class PlayerBase : Component, Component.INetworkSpawn, IPlayerBas
 	{
 		return Game.ActiveScene.GetAllComponents<PlayerBase>();
 	}
-
-	public bool IsAttackPressed(string type)
+    
+	public bool IsEnemy => true;
+    public bool IsAttackPressed(string type)
 		=> Input.Pressed(type);
 	public bool IsAttackDown(string type)
 		=> Input.Down(type);

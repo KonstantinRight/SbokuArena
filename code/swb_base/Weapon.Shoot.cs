@@ -1,4 +1,6 @@
 ﻿using Sandbox.Events;
+using Sandbox.Sboku;
+using Sandbox.Sboku.Shared;
 using SWB.Shared;
 using System;
 using System.Collections.Generic;
@@ -7,8 +9,8 @@ namespace SWB.Base;
 
 public partial class Weapon
 {
-	public record NoAmmoLeftEvent(Weapon Weapon) : IGameEvent;
-	public record ReloadFinished(Weapon Weapon) : IGameEvent;
+	public record NoAmmoLeftEvent(ISbokuWeapon Weapon) : IGameEvent;
+	public record ReloadFinished(ISbokuWeapon Weapon) : IGameEvent;
 
 	/// <summary>
 	/// Checks if the weapon can do the provided attack
@@ -126,7 +128,7 @@ public partial class Weapon
 		}
 		if (!HasAmmo())
 		{
-			GameObject.Scene.Dispatch<NoAmmoLeftEvent>(new(this));
+			GameObject.Scene.Dispatch<NoAmmoLeftEvent>(new(new WeaponAdapter(this)));
 		}
 	}
 

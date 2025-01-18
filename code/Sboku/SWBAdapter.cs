@@ -1,5 +1,7 @@
 ﻿using Sandbox.Citizen;
 using Sandbox.Sboku.Arena;
+using Sandbox.Sboku.Logic;
+using Sandbox.Sboku.Shared;
 using SWB.Base;
 using SWB.Player;
 using SWB.Shared;
@@ -8,11 +10,11 @@ using System.Linq;
 
 namespace Sandbox.Sboku;
 [Title("SWB Adapter")]
-public class SWBAdapter : Component, IPlayerBase
+public class SWBAdapter : SbokuBase, IPlayerBase
 {
     private static Random rand = new();
 
-    public void GiveWeapon(string className, bool setActive = false)
+    public void GiveWeapon(string className)
     {
         var weapon = WeaponRegistry.Instance.Get(className);
 
@@ -22,27 +24,33 @@ public class SWBAdapter : Component, IPlayerBase
             return;
         }
 
-        Inventory.AddClone(weapon.GameObject, setActive);
+        Inventory.AddClone(weapon.GameObject, true);
         SetAmmo(weapon.Primary.AmmoType, 360);
+        sbokuWeapon = new WeaponAdapter(weapon);
     }
 
     protected override void OnStart()
     {
-        if (IsProxy) return;
+        base.OnStart();
 
+        if (IsProxy) return;
         Health = MaxHealth;
         Inventory = Components.Create<Inventory>();
         InitCameras();
         var wep = WeaponRegistry.Instance.Weapons.Values.ElementAt(rand.Next(0, WeaponRegistry.Instance.Weapons.Count));
-        GiveWeapon(wep.ClassName, true);
+        GiveWeapon(wep.ClassName);
     }
 
     protected override void OnAwake()
     {
+        base.OnAwake();
         sboku = GetComponent<SbokuBase>();
     }
 
     #region Sboku
+
+    public override ISbokuWeapon Weapon { get => sbokuWeapon; }
+    private ISbokuWeapon sbokuWeapon;
 
     private SbokuBase sboku;
 
@@ -52,6 +60,22 @@ public class SWBAdapter : Component, IPlayerBase
         => sboku?.IsShooting ?? false;
     public bool IsReloadDown()
         => sboku?.IsReloading ?? false;
+
+    public void OnGameEvent(Weapon.NoAmmoLeftEvent eventArgs)
+    {
+        if (eventArgs.Weapon != null && Weapon == eventArgs.Weapon)
+        {
+            Reload();
+        }
+    }
+
+    public void OnGameEvent(Weapon.ReloadFinished eventArgs)
+    {
+        if (eventArgs.Weapon != null && Weapon == eventArgs.Weapon)
+        {
+            OnReloadFinish();
+        }
+    }
 
     #endregion
 
@@ -89,7 +113,7 @@ public class SWBAdapter : Component, IPlayerBase
     Vector3 IPlayerBase.Velocity => GetComponent<SbokuBase>()?.Velocity ?? Vector3.Zero;
     public bool IsOnGround => GetComponent<CharacterController>()?.IsOnGround ?? true;
     public bool IsAlive => Health > 0;
-    public Vector3 EyePos => Head.WorldPosition + EyeOffset;
+    public override Vector3 EyePos => Head.WorldPosition + EyeOffset;
     Guid IPlayerBase.Id { get => GameObject.Id; }
 
     #endregion
@@ -112,8 +136,9 @@ public class SWBAdapter : Component, IPlayerBase
     public int Kills { get; set; }
     [Sync]
     public int Deaths { get; set; }
-    [Sync] 
-    public Angles EyeAngles { get; set; }
+    [Sync]
+    public override Angles EyeAngles { get => eyeAngles; set => eyeAngles = value; }
+    private Angles eyeAngles;
 
     public void ShakeScreen(ScreenShake screenShake)
     {

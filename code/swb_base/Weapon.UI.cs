@@ -1,5 +1,6 @@
 ﻿using SWB.Base.UI;
 using SWB.Player;
+using System;
 
 namespace SWB.Base;
 
@@ -54,7 +55,14 @@ public partial class Weapon
 	void OpenCustomizationMenu()
 	{
 		customizationMenu = new CustomizationMenu( this );
-		RootPanel.Panel.AddChild( customizationMenu );
+		try
+		{
+			RootPanel.Panel.AddChild( customizationMenu );
+		}
+		catch (Exception ex)
+		{
+			Log.Warning(ex);
+		}
 	}
 
 	void CloseCustomizationMenu()

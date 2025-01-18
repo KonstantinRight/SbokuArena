@@ -5,12 +5,11 @@ using Sandbox.Citizen;
 using Sandbox.Events;
 using Sandbox.Sboku.Arena;
 using Sandbox.Sboku.Logic;
+using Sandbox.Sboku.Shared;
 using Sandbox.Sboku.States;
-using SWB.Base;
-using SWB.Shared;
 
 namespace Sandbox.Sboku;
-public class SbokuBase : Component, IGameEventHandler<Weapon.NoAmmoLeftEvent>, IGameEventHandler<Weapon.ReloadFinished>
+public abstract class SbokuBase : Component
 {
     [Group("Controller")]
     [Property]
@@ -46,8 +45,8 @@ public class SbokuBase : Component, IGameEventHandler<Weapon.NoAmmoLeftEvent>, I
 
     public int DistanceToRecalucaltePath { get => MinFightRange / 2; }
     public float ThinkingInterval { get => Settings.ThinkingInterval; }
-    public Angles EyeAngles { get => GetComponent<SWBAdapter>().EyeAngles; set => GetComponent<SWBAdapter>().EyeAngles = value; }
-    public Vector3 EyePos { get => GetComponent<SWBAdapter>().EyePos; }
+    public abstract Angles EyeAngles { get; set; }
+    public abstract Vector3 EyePos { get; }
 
     /// <summary>
     /// A point in space the bot is navigating toward
@@ -57,7 +56,12 @@ public class SbokuBase : Component, IGameEventHandler<Weapon.NoAmmoLeftEvent>, I
     /// <summary>
     /// Target the bot must attack
     /// </summary>
-    public IPlayerBase Target { get; set; } = null;
+    public ISbokuTarget Target { get; set; } = null;
+
+    /// <summary>
+    /// Active weapon of the bot
+    /// </summary>
+    public abstract ISbokuWeapon Weapon { get; }
 
     public bool IsShooting { get; set; }
 
@@ -215,7 +219,7 @@ public class SbokuBase : Component, IGameEventHandler<Weapon.NoAmmoLeftEvent>, I
             Rotate(yaw);
         }
 
-        if (Target is IPlayerBase ply)
+        if (Target is ISbokuTarget ply)
         {
             var direction = ply.GameObject.WorldPosition - character.WorldPosition;
             float yaw = MathF.Atan2(direction.y, direction.x).RadianToDegree();
@@ -323,14 +327,13 @@ public class SbokuBase : Component, IGameEventHandler<Weapon.NoAmmoLeftEvent>, I
         Destination = null;
     }
 
-
-    public void OnGameEvent(Weapon.NoAmmoLeftEvent eventArgs)
+    public void Reload()
     {
-        (combatState as ShootState)?.OnReload(eventArgs.Weapon);
+        (combatState as ShootState)?.OnReload();
     }
 
-    public void OnGameEvent(Weapon.ReloadFinished eventArgs)
+    public void OnReloadFinish()
     {
-        (combatState as ReloadState)?.OnReloadFinish(eventArgs.Weapon);
+        (combatState as ReloadState)?.OnReloadFinish();
     }
 }

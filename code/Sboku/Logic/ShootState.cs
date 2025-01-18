@@ -1,6 +1,4 @@
-﻿using SWB.Base;
-using System;
-using System.Diagnostics;
+﻿using Sandbox.Sboku.Shared;
 
 namespace Sandbox.Sboku.Logic;
 internal class ShootState : StateBase, ICombatState
@@ -11,23 +9,24 @@ internal class ShootState : StateBase, ICombatState
 
     public override void Think()
     {
-            var wep = Adapter.Inventory.Active?.Components.Get<Weapon>();
-            if (wep is null)
-            {
-                Bot.SetCombatState<IdleCombatState>();
-                return;
-            }
+        // TODO: move to condition
+        var wep = Weapon;
+        if (wep is null)
+        {
+            Bot.SetCombatState<IdleCombatState>();
+            return;
+        }
 
-            if (wep.HasAmmo())
-            {
-                Bot.IsShooting = Scene.Trace.Ray(Bot.EyePos, Target.GameObject.WorldPosition + Bot.HeightToAimAt)
-                                            .IgnoreGameObjectHierarchy(Bot.GameObject)
-                                            .Run().GameObject?.Parent == Target.GameObject;
-            }
-            else
-            {
-                OnReload(wep);
-            }
+        if (wep.HasAmmo())
+        {
+            Bot.IsShooting = Scene.Trace.Ray(Bot.EyePos, Target.GameObject.WorldPosition + Bot.HeightToAimAt)
+                                        .IgnoreGameObjectHierarchy(Bot.GameObject)
+                                        .Run().GameObject?.Parent == Target.GameObject;
+        }
+        else
+        {
+            OnReload();
+        }
     }
 
     public override void OnUnset()
@@ -35,13 +34,10 @@ internal class ShootState : StateBase, ICombatState
         Bot.IsShooting = false;
     }
 
-    public void OnReload(Weapon wep)
+    public void OnReload()
     {
         lock (this)
         {
-            if (Adapter.Inventory.Active?.Components.Get<Weapon>() != wep)
-                return;
-
             Bot.IsShooting = false;
             Bot.SetCombatState<ReloadState>();
         }

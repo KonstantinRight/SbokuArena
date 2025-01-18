@@ -1,4 +1,4 @@
-﻿using SWB.Shared;
+﻿using Sandbox.Sboku.Shared;
 
 namespace Sandbox.Sboku.Logic;
 public class SbokuParent
@@ -6,10 +6,11 @@ public class SbokuParent
     protected SbokuBase Bot { get; }
     protected Scene Scene => Bot.Scene;
     protected SbokuSettings Settings => Bot.Settings;
-    protected IPlayerBase Target => Bot.Target;
-    protected IPlayerBase Adapter => Bot.GetComponent<SWBAdapter>();
+    protected ISbokuTarget Target => Bot.Target;
+    protected ISbokuWeapon Weapon => Bot.Weapon;
+    
     /// <summary>
-    /// Get squared distance to target. If turget is null, we'll get NRE
+    /// Get squared distance to target. If turget is null, we'll get NRE.
     /// </summary>
     protected float SquaredDistanceToTarget => Bot.WorldPosition.DistanceSquared(Target.GameObject.WorldPosition);
 
