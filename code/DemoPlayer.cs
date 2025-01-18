@@ -10,7 +10,7 @@ namespace SWB.Demo;
 
 [Group( "SWB" )]
 [Title( "Demo Player" )]
-public class DemoPlayer : PlayerBase, IGameEventHandler<RoundManager.OpenUpgradeScreen>
+public class DemoPlayer : PlayerBase, IGameEventHandler<RoundManager.OpenUpgradeScreen>, IGameEventHandler<RoundManager.Victory>
 {
     [Property]
     public GameObject ArenaUI { get; set; }
@@ -88,26 +88,43 @@ public class DemoPlayer : PlayerBase, IGameEventHandler<RoundManager.OpenUpgrade
     protected override void OnAwake()
     {
 		base.OnAwake();
-        CreateFailScreen();
+        CreateUpgradeScreen();
+    }
+
+	private void HideUI()
+	{
+        if (RootDisplay.GetComponent<ScreenPanel>() != null)
+            RootDisplay.GetComponent<ScreenPanel>().Enabled = false;
     }
 
     public void CreateUpgradeScreen()
 	{
-        RootDisplay.GetComponent<ScreenPanel>().Enabled = false;
+		HideUI();
 		ArenaUI.AddComponent<UpgradeMenu>();
 	}
 
     public void CreateFailScreen()
     {
-		if (RootDisplay.GetComponent<ScreenPanel>() != null)
-			RootDisplay.GetComponent<ScreenPanel>().Enabled = false;
+        HideUI();
+        ArenaUI.AddComponent<EndMenu>();
+    }
 
-        ArenaUI.AddComponent<FailMenu>();
+	public void CreateVictoryScreen()
+	{
+        HideUI();
+        var c = ArenaUI.AddComponent<EndMenu>();
+        c.WinVariant = true;
     }
 
     public void OnGameEvent(RoundManager.OpenUpgradeScreen eventArgs)
     {
 		if (!IsValid || IsProxy) return;
         CreateUpgradeScreen();
+    }
+
+    public void OnGameEvent(RoundManager.Victory eventArgs)
+    {
+        if (!IsValid || IsProxy) return;
+		CreateVictoryScreen();
     }
 }

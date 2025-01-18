@@ -117,22 +117,29 @@ public sealed class RoundManager : Component,
             ad.GameObject.Destroy();
     }
 
-    [Rpc.Broadcast]
-    private void FinishRound()
+	[Rpc.Broadcast]
+	private void FinishRound()
 	{
 		isRoundStarted = false;
 		RoundNumber++;
 
 		RemoveEntities();
 
-        foreach (var ply in Scene.GetAllComponents<DemoPlayer>())
+		foreach (var ply in Scene.GetAllComponents<DemoPlayer>())
 		{
-            ply.Health = ply.MaxHealth;
+			ply.Health = ply.MaxHealth;
 			ply.Inventory.Clear();
 			ply.GetComponent<UpgradeHolder>().FreePoints++;
 		}
 
-		Scene.Dispatch<OpenUpgradeScreen>(new());
+		if (RoundNumber <= TotalRounds)
+		{
+			Scene.Dispatch<OpenUpgradeScreen>(new());
+		}
+		else
+		{
+            Scene.Dispatch<Victory>(new());
+        }
     }
 
     public void OnGameEvent(UpgradeScreenClosed eventArgs)
@@ -157,4 +164,5 @@ public sealed class RoundManager : Component,
     public record OpenUpgradeScreen() : IGameEvent;
 	public record UpgradeScreenClosed() : IGameEvent;
 	public record GameOver() : IGameEvent;
+	public record Victory() : IGameEvent;
 }

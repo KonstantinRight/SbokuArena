@@ -1803,6 +1803,25 @@
           "__PrefabVariables": {}
         }
       ]
+    },
+    {
+      "__guid": "317d915b-b669-42b1-9d07-3a4329d67189",
+      "Flags": 0,
+      "Name": "NavMeshFixer",
+      "Position": "-760.5473,-760.5474,1075.476",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "NavMeshFixer",
+          "__guid": "3f09b0de-957e-4e7a-9a97-ad3520ec4713",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
+        }
+      ]
     }
   ],
   "SceneProperties": {
