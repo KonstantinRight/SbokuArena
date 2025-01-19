@@ -26,16 +26,13 @@ public class Conditions
         }
         public override bool If()
                 => !(Bot.IsActiveActionState<IdleActionState>() && Bot.IsActiveCombatState<IdleCombatState>())
-                   && (Target == null
+                   && (Weapon == null
+                   ||  Target == null
                    || !Target.IsValid
                    || !Target.IsAlive
                    || SquaredDistanceToTarget > MathF.Pow(Bot.SearchRange, 2));
         public override void Then()
-        {
-            Bot.Target = null;
-            Bot.SetActionState<IdleActionState>();
-            Bot.SetCombatState<IdleCombatState>();
-        }
+            => Bot.ResetState();
     }
     private class ChaseCondition : SimpleCondition
     {

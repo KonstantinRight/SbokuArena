@@ -1,5 +1,4 @@
 ﻿using Sandbox.Sboku;
-using Sandbox.Sboku.Shared;
 
 namespace Sandbox.AI.Default;
 internal class ShootState : StateBase, ICombatState
@@ -10,15 +9,7 @@ internal class ShootState : StateBase, ICombatState
 
     public override void Think()
     {
-        // TODO: move to condition
-        var wep = Weapon;
-        if (wep is null)
-        {
-            Bot.SetCombatState<IdleCombatState>();
-            return;
-        }
-
-        if (wep.HasAmmo())
+        if (Weapon.HasAmmo())
         {
             Bot.IsShooting = Scene.Trace.Ray(Bot.EyePos, Target.GameObject.WorldPosition + Bot.HeightToAimAt)
                                         .IgnoreGameObjectHierarchy(Bot.GameObject)

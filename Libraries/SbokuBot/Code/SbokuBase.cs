@@ -6,7 +6,7 @@ using Sandbox.Sboku.Shared;
 using Sandbox.Shared;
 
 namespace Sandbox.Sboku;
-public abstract class SbokuBase : Component, ISbokuBase
+public abstract class SbokuBase : Component, ISbokuBot
 {
     [Group("Controller")]
     [Property]
@@ -36,6 +36,9 @@ public abstract class SbokuBase : Component, ISbokuBase
     [Property]
     [Range(100, 5000, step: 100)]
     public int MaxFightRange { get; set; } = 600;
+    /// <summary>
+    /// If true, the bot won't make any new decisions
+    /// </summary>
     [Group("AI")]
     [Property]
     public bool IsOffline { get; set; } = false;
@@ -128,6 +131,14 @@ public abstract class SbokuBase : Component, ISbokuBase
     protected virtual List<ISbokuCondition> GetConditions()
         => Conditions.Get(this);
 
+    public void ResetState()
+    {
+        Target = null;
+        Destination = null;
+        SetActionState<IdleActionState>();
+        SetCombatState<IdleCombatState>();
+    }
+
     #region Component events
 
     private TimerHelper timer = new();
@@ -146,6 +157,8 @@ public abstract class SbokuBase : Component, ISbokuBase
     }
     protected override void OnDisabled()
     {
+        ResetState();
+
         if (TimerHandler is not null)
             timer.Remove(TimerHandler);
     }

@@ -4,7 +4,7 @@ using Sandbox.Sboku.Shared;
 using System.Collections.Generic;
 
 namespace Sandbox.Shared;
-public interface ISbokuBase
+public interface ISbokuBot
 {
     CharacterController Character { get; set; }
     Vector3 EyePos { get; }
