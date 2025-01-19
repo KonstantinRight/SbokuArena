@@ -24,7 +24,7 @@
     "CsProjName": "",
     "StartupScene": "scenes/minimal.scene",
     "ProjectTemplate": null,
-    "LaunchMode": "QuickPlay",
+    "LaunchMode": "Normal",
     "MapStartupScene": "scenes/minimal.scene",
     "ParentPackage": "Simple Weapon Base"
   }
