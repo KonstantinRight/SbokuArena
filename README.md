@@ -3,6 +3,8 @@
 
 Sboku arena is an **FPS arena game mode** for *S&Box*, built on top of [Simple Weapon Base](https://github.com/timmybo5/simple-weapon-base). It demonstrates the capabilities of **SbokuBot**, an AI framework for shooter NPCs.
 
+![image](https://cdn.sbox.game/org/righty/sbokuarena/screenshots/d99f6d64-af4f-4602-b5da-e832f5e9c712.jpg)
+
 ## Features
 - Built-in support for Simple Weapon Base 
 - Survive finite waves of enemies
