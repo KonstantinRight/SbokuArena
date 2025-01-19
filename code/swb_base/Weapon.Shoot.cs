@@ -128,7 +128,7 @@ public partial class Weapon
 		}
 		if (!HasAmmo())
 		{
-			GameObject.Scene.Dispatch<NoAmmoLeftEvent>(new(new WeaponAdapter(this)));
+			Owner.GameObject.Dispatch<NoAmmoLeftEvent>(new(new WeaponAdapter(this)));
 		}
 	}
 

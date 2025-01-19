@@ -1,4 +1,5 @@
 ﻿using Sandbox.Citizen;
+using Sandbox.Events;
 using Sandbox.Sboku.Arena;
 using Sandbox.Sboku.Shared;
 using SWB.Base;
@@ -12,7 +13,7 @@ namespace Sandbox.Sboku;
 
 [Title("Bot Adapter")]
 [Group("Sboku Arena")]
-public class BotAdapter : SbokuBase, IPlayerBase
+public class BotAdapter : SbokuBase, IPlayerBase, IGameEventHandler<Weapon.NoAmmoLeftEvent>, IGameEventHandler<Weapon.ReloadFinished>
 {
     [RequireComponent]
     public UpgradeHolder UpgradeHolder { get; set; }
@@ -94,20 +95,10 @@ public class BotAdapter : SbokuBase, IPlayerBase
         => sboku?.IsReloading ?? false;
 
     public void OnGameEvent(Weapon.NoAmmoLeftEvent eventArgs)
-    {
-        if (eventArgs.Weapon != null && Weapon == eventArgs.Weapon)
-        {
-            Reload();
-        }
-    }
+        => Reload();
 
     public void OnGameEvent(Weapon.ReloadFinished eventArgs)
-    {
-        if (eventArgs.Weapon != null && Weapon == eventArgs.Weapon)
-        {
-            OnReloadFinish();
-        }
-    }
+        => OnReloadFinish();
 
     #endregion
 

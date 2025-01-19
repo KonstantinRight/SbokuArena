@@ -49,7 +49,7 @@ public partial class Weapon
 	public virtual void OnReloadFinish()
 	{
 		IsReloading = false;
-		GameObject.Scene.Dispatch<ReloadFinished>(new(new WeaponAdapter(this)));
+		Owner.GameObject.Dispatch<ReloadFinished>(new(new WeaponAdapter(this)));
 		var maxClipSize = BulletCocking && Primary.Ammo > 0 ? Primary.ClipSize + 1 : Primary.ClipSize;
 
 		if ( Primary.InfiniteAmmo == InfiniteAmmoType.reserve )
