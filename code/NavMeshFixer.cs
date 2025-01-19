@@ -1,3 +1,4 @@
+[Group("Sboku Arena")]
 public sealed class NavMeshFixer : Component
 {
     protected override void OnUpdate()

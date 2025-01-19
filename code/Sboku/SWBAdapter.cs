@@ -11,6 +11,7 @@ using System.Linq;
 
 namespace Sandbox.Sboku;
 [Title("SWB Adapter")]
+[Group("Sboku Arena")]
 public class SWBAdapter : SbokuBase, IPlayerBase
 {
     [RequireComponent]
@@ -35,7 +36,7 @@ public class SWBAdapter : SbokuBase, IPlayerBase
 
     protected override void OnStart()
     {
-        base.OnStart();
+        ClothingContainer.CreateFromLocalUser().Apply(GetComponentInChildren<SkinnedModelRenderer>());
 
         if (IsProxy) return;
         Health = MaxHealth;
@@ -62,6 +63,20 @@ public class SWBAdapter : SbokuBase, IPlayerBase
     }
 
     #region Sboku
+
+    private CitizenAnimationHelper anim => GetComponentInChildren<CitizenAnimationHelper>();
+    
+    protected override void UpdateAnimations(Vector3 WishVelocity, Rotation rotation)
+    {
+        if (anim is null) return;
+
+        anim.WithWishVelocity(WishVelocity);
+        anim.WithVelocity(Character.Velocity);
+        anim.AimAngle = rotation;
+        anim.IsGrounded = Character.IsOnGround;
+        anim.WithLook(rotation.Forward);
+        anim.MoveStyle = CitizenAnimationHelper.MoveStyles.Auto;
+    }
 
     public override ISbokuWeapon Weapon { get => sbokuWeapon; }
     private ISbokuWeapon sbokuWeapon;

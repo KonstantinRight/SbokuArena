@@ -6,4 +6,5 @@ public interface ISbokuTarget
     bool IsEnemy { get; }
     bool IsValid { get; }
     bool IsAlive { get; }
+    CharacterController CharacterController { get; }
 }

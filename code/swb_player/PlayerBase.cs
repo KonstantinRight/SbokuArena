@@ -211,6 +211,7 @@ public partial class PlayerBase : Component, Component.INetworkSpawn, IPlayerBas
 	}
     
 	public bool IsEnemy => true;
+
     public bool IsAttackPressed(string type)
 		=> Input.Pressed(type);
 	public bool IsAttackDown(string type)

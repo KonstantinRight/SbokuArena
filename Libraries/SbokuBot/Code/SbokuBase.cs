@@ -21,6 +21,9 @@ public abstract class SbokuBase : Component
     [Group("Controller")]
     [Property]
     public float AirControl { get; set; } = 0.1f;
+    [Group("Controller")]
+    [Property]
+    public CharacterController Character { get; set; }
 
     [Group("AI")]
     [Property]
@@ -65,15 +68,13 @@ public abstract class SbokuBase : Component
     /// <summary>
     /// Height bots will aim at
     /// </summary>
-    public Vector3 HeightToAimAt { get => Target != null ? Vector3.Zero.WithZ(Target.GameObject.GetComponent<CharacterController>().Height * 2 / 3) : Vector3.Zero; }
+    public Vector3 HeightToAimAt { get => Target != null ? Vector3.Zero.WithZ(Target.CharacterController.Height * 2 / 3) : Vector3.Zero; }
 
     /// <summary>
     /// You must set it to true to reload and then manually unset. This way is more robust due to the way SWB works.
     /// </summary>
     public bool IsReloading { get; set; }
 
-    private CharacterController character => GetComponentInChildren<CharacterController>();
-    private CitizenAnimationHelper anim => GetComponentInChildren<CitizenAnimationHelper>();
     public SbokuSettings Settings { get; private set; }
 
     private List<Vector3> path;
@@ -129,25 +130,30 @@ public abstract class SbokuBase : Component
     private object TimerHandler;
     protected override void OnEnabled()
     {
-        TimerHandler = timer.Every(ThinkingInterval, OnStateExecute);
-
         if (MinFightRange > MaxFightRange)
         {
             Log.Error("Min fight range is supposed to be less than MaxFightRange");
         }
+
+        if (IsProxy)
+            return;
+
+        TimerHandler = timer.Every(ThinkingInterval, OnStateExecute);
     }
     protected override void OnDisabled()
     {
         if (TimerHandler is not null)
             timer.Remove(TimerHandler);
     }
-    protected override void OnStart()
-    {
-        ClothingContainer.CreateFromLocalUser().Apply(GetComponentInChildren<SkinnedModelRenderer>());
-    }
     protected override void OnAwake()
     {
         Settings = SbokuSettings.CreateOrFind(Scene);
+
+        if (Character == null)
+        {
+            Character = AddComponent<CharacterController>();
+        }
+
         if (!Scene.NavMesh.IsEnabled)
         {
             Enabled = false;
@@ -173,10 +179,16 @@ public abstract class SbokuBase : Component
     }
     protected override void OnUpdate()
     {
+        if (IsProxy)
+            return;
+
         timer.OnUpdate();
     }
     protected override void OnFixedUpdate()
     {
+        if (IsProxy)
+            return;
+
         if (path is not null)
         {
             if (Settings.ShowDebugOverlay)
@@ -185,7 +197,7 @@ public abstract class SbokuBase : Component
                     Scene.DebugOverlay.Sphere(new Sphere(p, 10), Color.Yellow, 1);
             }
 
-            if (Vector3.DistanceBetweenSquared(character.WorldPosition.WithZ(0), Destination.Value.WithZ(0)) < MathF.Pow(Scene.NavMesh.AgentRadius, 2))
+            if (Vector3.DistanceBetweenSquared(Character.WorldPosition.WithZ(0), Destination.Value.WithZ(0)) < MathF.Pow(Scene.NavMesh.AgentRadius, 2))
             {
                 pathEnumerator++;
                 if (pathEnumerator < path.Count)
@@ -203,7 +215,7 @@ public abstract class SbokuBase : Component
         var vector = Vector3.Zero;
         if (Destination is Vector3 dest)
         {
-            var direction = dest - character.WorldPosition;
+            var direction = dest - Character.WorldPosition;
             float yaw = MathF.Atan2(direction.y, direction.x).RadianToDegree();
             vector = direction.WithZ(0).Normal;
             Rotate(yaw);
@@ -211,7 +223,7 @@ public abstract class SbokuBase : Component
 
         if (Target is ISbokuTarget ply)
         {
-            var direction = ply.GameObject.WorldPosition - character.WorldPosition;
+            var direction = ply.GameObject.WorldPosition - Character.WorldPosition;
             float yaw = MathF.Atan2(direction.y, direction.x).RadianToDegree();
             Rotate(yaw);
 
@@ -222,7 +234,7 @@ public abstract class SbokuBase : Component
 
         Move(vector);
 
-        UpdateAnimations(vector, character.WorldRotation);
+        UpdateAnimations(vector, Character.WorldRotation);
     }
 
     protected override void DrawGizmos()
@@ -247,22 +259,22 @@ public abstract class SbokuBase : Component
     {
         var vel = wishVelocity * Velocity;
         var gravity = Scene.PhysicsWorld.Gravity;
-        if (character.IsOnGround)
+        if (Character.IsOnGround)
         {
-            character.Velocity = character.Velocity.WithZ(0);
-            character.Accelerate(vel);
-            character.ApplyFriction(Friction);
+            Character.Velocity = Character.Velocity.WithZ(0);
+            Character.Accelerate(vel);
+            Character.ApplyFriction(Friction);
         }
         else
         {
-            character.Velocity += gravity * Time.Delta * 0.5f;
-            character.Accelerate(vel.ClampLength(MaxForce));
-            character.ApplyFriction(AirControl);
+            Character.Velocity += gravity * Time.Delta * 0.5f;
+            Character.Accelerate(vel.ClampLength(MaxForce));
+            Character.ApplyFriction(AirControl);
         }
 
-        if (!(character.Velocity.IsNearZeroLength && vel.IsNearZeroLength))
+        if (!(Character.Velocity.IsNearZeroLength && vel.IsNearZeroLength))
         {
-            character.Move();
+            Character.Move();
         }
     }
 
@@ -273,24 +285,15 @@ public abstract class SbokuBase : Component
     private void Rotate(float yaw)
         => GameObject.WorldRotation = Rotation.FromYaw(yaw);
 
-    private void UpdateAnimations(Vector3 WishVelocity, Rotation rotation)
-    {
-        if (anim is null) return;
-
-        anim.WithWishVelocity(WishVelocity);
-        anim.WithVelocity(character.Velocity);
-        anim.AimAngle = rotation;
-        anim.IsGrounded = character.IsOnGround;
-        anim.WithLook(rotation.Forward);
-        anim.MoveStyle = CitizenAnimationHelper.MoveStyles.Auto;
-    }
+    [Rpc.Broadcast]
+    protected abstract void UpdateAnimations(Vector3 WishVelocity, Rotation rotation);
 
     /// <summary>
     /// Navigate to the position
     /// </summary>
     /// <param name="targetPosition"></param>
     public void MoveTo(Vector3 targetPosition)
-        => MoveTo(Scene.NavMesh.GetSimplePath(GameObject.WorldPosition, targetPosition));
+        => MoveTo(Scene.NavMesh.GetSimplePathSafe(GameObject.WorldPosition, targetPosition));
 
     /// <summary>
     /// Navigate to the position given the path.

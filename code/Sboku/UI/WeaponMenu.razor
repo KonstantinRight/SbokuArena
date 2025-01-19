@@ -53,7 +53,21 @@
 	private void Next()
 	{
 		GetComponentInParent<DemoPlayer>().GiveWeapon(selected.ClassName, true);
-		this.GameObject.Parent.GetComponent<DemoPlayer>().RootDisplay.GetComponent<ScreenPanel>(true).Enabled = true;
+
+		// For some reason RootDisplay may be null as well as exception can be thrown inside GetComponent
+		try
+		{
+			var rootPanel = this.GameObject.GetComponentInParent<DemoPlayer>()?.RootDisplay?.GetComponent<ScreenPanel>(true);
+			if (rootPanel is not null)
+			{
+				rootPanel.Enabled = true;
+			}
+		}
+		catch (Exception e)
+		{
+			Log.Warning(e);
+		}
+
 		Scene.Dispatch<RoundManager.UpgradeScreenClosed>(new());
 		Destroy();
 	}

@@ -37,8 +37,7 @@ public class DemoPlayer : PlayerBase, IGameEventHandler<RoundManager.OpenUpgrade
 
 		return null;
 	}
-
-	public override void Respawn()
+    public override void Respawn()
 	{
 		base.Respawn();
 
@@ -86,19 +85,30 @@ public class DemoPlayer : PlayerBase, IGameEventHandler<RoundManager.OpenUpgrade
 
     public void CreateHitmarker(int health)
     {
+        if (IsProxy)
+            return;
+
         var display = RootDisplay as RootDisplay;
         display.CreateHitmarker(health <= 0);
         Sound.Play("hitmarker");
     }
 
     // Arena
-    protected override void OnAwake()
+
+    protected override void OnStart()
     {
-		base.OnAwake();
+        base.OnStart();
+
+        if (IsProxy || !IsValid)
+        {
+            ArenaUI.Enabled = false;
+            return;
+        }
+
         CreateUpgradeScreen();
     }
 
-	private void HideUI()
+    private void HideUI()
 	{
         if (RootDisplay.GetComponent<ScreenPanel>() != null)
             RootDisplay.GetComponent<ScreenPanel>().Enabled = false;
@@ -116,7 +126,7 @@ public class DemoPlayer : PlayerBase, IGameEventHandler<RoundManager.OpenUpgrade
         ArenaUI.AddComponent<EndMenu>();
     }
 
-	public void CreateVictoryScreen()
+    public void CreateVictoryScreen()
 	{
         HideUI();
         var c = ArenaUI.AddComponent<EndMenu>();

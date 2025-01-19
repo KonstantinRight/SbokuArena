@@ -1,4 +1,5 @@
 ﻿namespace Sandbox.Sboku;
+[Group("Sboku Bot")]
 public class SbokuSettings : Component
 {
     private static object lockObject = new object();

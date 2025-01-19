@@ -144,7 +144,8 @@ public sealed class RoundManager : Component,
 
     public void OnGameEvent(UpgradeScreenClosed eventArgs)
     {
-		SetCallback(StartCountdown, StartRound);
+		if (!isRoundStarted)
+			SetCallback(StartCountdown, StartRound);
     }
 
 	[Rpc.Broadcast]
