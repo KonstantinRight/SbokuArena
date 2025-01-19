@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SWB.Demo;
@@ -16,9 +17,17 @@ public class DemoNetworkManager : Component, Component.INetworkListener
 		return base.OnLoad();
 	}
 
+	private List<Connection> connections = new();
 	// Called on host
 	void INetworkListener.OnActive( Connection connection )
 	{
+		if (connections.Contains(connection))
+		{
+			Log.Warning("Connection is doubled. Somehow.");
+			return;
+		}
+		connections.Add(connection);
+
 		var playerGO = PlayerPrefab.Clone();
 		playerGO.Name = "Player";
 		playerGO.NetworkSpawn( connection );

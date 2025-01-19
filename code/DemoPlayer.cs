@@ -84,7 +84,14 @@ public class DemoPlayer : PlayerBase, IGameEventHandler<RoundManager.OpenUpgrade
 		Sound.Play( "hitmarker" );
 	}
 
-	// Arena
+    public void CreateHitmarker(int health)
+    {
+        var display = RootDisplay as RootDisplay;
+        display.CreateHitmarker(health <= 0);
+        Sound.Play("hitmarker");
+    }
+
+    // Arena
     protected override void OnAwake()
     {
 		base.OnAwake();

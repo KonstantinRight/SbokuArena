@@ -3,6 +3,7 @@ using Sandbox.Sboku.Arena;
 using Sandbox.Sboku.Logic;
 using Sandbox.Sboku.Shared;
 using SWB.Base;
+using SWB.Demo;
 using SWB.Player;
 using SWB.Shared;
 using System;
@@ -205,23 +206,32 @@ public class SWBAdapter : SbokuBase, IPlayerBase
     [Rpc.Broadcast]
     public void TakeDamage(SWB.Shared.DamageInfo info)
     {
-        if (!IsValid || IsProxy || !IsAlive)
+        var attacker = Scene.Directory.FindByGuid(info.AttackerId);
+        if (attacker == null || !attacker.IsValid) 
             return;
 
-        if (Array.Exists(info.Tags, tag => tag == "head"))
-            info.Damage *= 2;
-
-        float dmgMultiplier = 1;
-        var attacker = Scene.Directory.FindByGuid(info.AttackerId);
-        if (attacker != null && attacker.IsValid)
+        if (IsValid && !IsProxy && IsAlive)
         {
-            dmgMultiplier = attacker.GetComponent<UpgradeHolder>().DamageMultiplier;
+            if (Array.Exists(info.Tags, tag => tag == "head"))
+                info.Damage *= 2;
+
+            float dmgMultiplier = 1;
+            if (attacker != null && attacker.IsValid)
+            {
+                dmgMultiplier = attacker.GetComponent<UpgradeHolder>().DamageMultiplier;
+            }
+
+            Health -= (int)(MathF.Round(info.Damage * GetComponent<UpgradeHolder>().ArmorMultiplier * dmgMultiplier));
+
+            if (Health <= 0)
+                OnDeath(info);
         }
 
-        Health -= (int)(MathF.Round(info.Damage * GetComponent<UpgradeHolder>().ArmorMultiplier * dmgMultiplier));
-
-        if (Health <= 0)
-            OnDeath(info);
+        var ply = attacker.GetComponent<DemoPlayer>();
+        if (ply is not null && ply.IsValid())
+        {
+            ply.CreateHitmarker(Health);
+        }
     }
 
     [Rpc.Broadcast]
