@@ -12,8 +12,8 @@
           "__guid": "e43f4bf2-f567-42b9-99cc-7ca19814b6a0",
           "Flags": 0,
           "Name": "Spawner",
-          "Position": "990.2937,207.6197,-100.201",
-          "Rotation": "0,0,0.7071067,0.7071068",
+          "Position": "990.2938,-935.7141,-100.201",
+          "Rotation": "0,0,-0.7071067,0.7071068",
           "Scale": "0.5998768,0.5998768,1.339126",
           "Enabled": true,
           "__Prefab": "prefabs/arena/spawner.prefab",
@@ -23,8 +23,8 @@
           "__guid": "2aecff15-6268-4954-9463-3a32de0e9b58",
           "Flags": 0,
           "Name": "Spawner",
-          "Position": "990.2935,-935.7141,-100.201",
-          "Rotation": "0,0,0.7071067,0.7071068",
+          "Position": "990.2935,207.6197,-100.201",
+          "Rotation": "0,0,-0.7071067,0.7071068",
           "Scale": "0.5998768,0.5998768,1.339126",
           "Enabled": true,
           "__Prefab": "prefabs/arena/spawner.prefab",
@@ -34,19 +34,10 @@
           "__guid": "28a41165-2d4c-4fe7-8a88-ef6d614380f0",
           "Flags": 0,
           "Name": "Spawner",
-          "Position": "990.2936,-337.2494,-100.201",
-          "Rotation": "0,0,0.7071067,0.7071068",
+          "Position": "990.2937,-390.845,-100.201",
+          "Rotation": "0,0,-0.7071067,0.7071068",
           "Scale": "0.5998768,0.5998768,1.339126",
           "Enabled": true,
-          "__Prefab": "prefabs/arena/spawner.prefab",
-          "__PrefabVariables": {}
-        },
-        {
-          "__guid": "87760414-3c8a-40e4-a105-e64ff552971c",
-          "Flags": 0,
-          "Name": "Spawner",
-          "Position": "-0.1645632,-1015.996,34.1991",
-          "Scale": "0.5998768,0.5998768,1.339126",
           "__Prefab": "prefabs/arena/spawner.prefab",
           "__PrefabVariables": {}
         }
@@ -1292,6 +1283,53 @@
       "Position": "150.3619,81.7764,808.7837",
       "Enabled": true,
       "Children": [
+        {
+          "__guid": "1767cea3-9c7a-4313-bf25-e86c606a0ab6",
+          "Flags": 0,
+          "Name": "Blocker",
+          "Position": "463.0819,134.9255,-742.0474",
+          "Rotation": "0,0,-0.7071067,0.7071068",
+          "Scale": "12.86208,4.021899,4.021899",
+          "Enabled": true,
+          "Components": [
+            {
+              "__type": "Sandbox.ModelRenderer",
+              "__guid": "cb7d93c4-ca63-415d-810b-cfda643b6b62",
+              "__enabled": false,
+              "BodyGroups": 18446744073709551615,
+              "CreateAttachments": false,
+              "MaterialGroup": null,
+              "MaterialOverride": null,
+              "Model": "models/dev/box.vmdl",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "RenderOptions": {
+                "GameLayer": true,
+                "OverlayLayer": false,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderType": "On",
+              "Tint": "1,1,1,1"
+            },
+            {
+              "__type": "Sandbox.NavMeshArea",
+              "__guid": "9477a766-ce40-458d-abfa-84006ecc3da8",
+              "IsBlocker": true,
+              "LinkedCollider": null,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            }
+          ]
+        },
         {
           "__guid": "609922ef-3525-4cd3-b120-24d0c971305d",
           "Flags": 0,
