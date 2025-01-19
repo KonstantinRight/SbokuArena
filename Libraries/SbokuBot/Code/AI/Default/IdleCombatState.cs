@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Sandbox.Sboku;
+using System;
 
-namespace Sandbox.Sboku.Logic;
+namespace Sandbox.AI.Default;
 internal class IdleCombatState : StateBase, ICombatState
 {
     public IdleCombatState(SbokuBase bot) : base(bot)

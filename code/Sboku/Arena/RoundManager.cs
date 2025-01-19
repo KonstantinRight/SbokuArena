@@ -114,7 +114,7 @@ public sealed class RoundManager : Component,
 	[Rpc.Host]
 	public void RemoveEntities()
 	{
-        foreach (var ad in Scene.GetComponentsInChildren<SWBAdapter>(includeDisabled: true))
+        foreach (var ad in Scene.GetComponentsInChildren<BotAdapter>(includeDisabled: true))
             ad.GameObject.Destroy();
     }
 

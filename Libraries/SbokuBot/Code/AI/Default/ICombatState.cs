@@ -1,6 +1,6 @@
-﻿using Sandbox.Sboku.States;
+﻿using Sandbox.Shared;
 
-namespace Sandbox.Sboku.Logic;
+namespace Sandbox.AI.Default;
 /// <summary>
 /// A state for combat (shoot, reload, etc.)
 /// </summary>

@@ -1,4 +1,4 @@
-﻿namespace Sandbox.Sboku.States;
+﻿namespace Sandbox.Shared;
 /// <summary>
 /// General interface for any state
 /// </summary>

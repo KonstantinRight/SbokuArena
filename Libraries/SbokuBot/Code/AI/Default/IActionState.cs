@@ -1,6 +1,6 @@
-﻿using Sandbox.Sboku.States;
+﻿using Sandbox.Shared;
 
-namespace Sandbox.Sboku.Logic;
+namespace Sandbox.AI.Default;
 /// <summary>
 /// A movement state (walk, find a cover, etc.)
 /// </summary>

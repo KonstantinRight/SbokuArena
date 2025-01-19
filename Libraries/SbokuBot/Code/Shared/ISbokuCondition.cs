@@ -1,5 +1,5 @@
-﻿namespace Sandbox.Sboku.States;
-public interface ICondition
+﻿namespace Sandbox.Shared;
+public interface ISbokuCondition
 {
     bool If();
     void Then();

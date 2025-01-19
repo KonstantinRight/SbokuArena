@@ -1,7 +1,8 @@
-﻿using Sandbox.Sboku.Shared;
+﻿using Sandbox.Sboku;
+using Sandbox.Sboku.Shared;
 using System;
 
-namespace Sandbox.Sboku.Logic;
+namespace Sandbox.AI.Default;
 internal class IdleActionState : StateBase, IActionState
 {
     public IdleActionState(SbokuBase bot) : base(bot)

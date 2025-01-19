@@ -1,6 +1,7 @@
-﻿using Sandbox.Sboku.Shared;
+﻿using Sandbox.Sboku;
+using Sandbox.Sboku.Shared;
 
-namespace Sandbox.Sboku.Logic;
+namespace Sandbox.AI.Default;
 public class SbokuParent
 {
     protected SbokuBase Bot { get; }
@@ -8,7 +9,7 @@ public class SbokuParent
     protected SbokuSettings Settings => Bot.Settings;
     protected ISbokuTarget Target => Bot.Target;
     protected ISbokuWeapon Weapon => Bot.Weapon;
-    
+
     /// <summary>
     /// Get squared distance to target. If turget is null, we'll get NRE.
     /// </summary>

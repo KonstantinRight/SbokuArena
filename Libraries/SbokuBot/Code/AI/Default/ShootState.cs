@@ -1,6 +1,7 @@
-﻿using Sandbox.Sboku.Shared;
+﻿using Sandbox.Sboku;
+using Sandbox.Sboku.Shared;
 
-namespace Sandbox.Sboku.Logic;
+namespace Sandbox.AI.Default;
 internal class ShootState : StateBase, ICombatState
 {
     public ShootState(SbokuBase bot) : base(bot)

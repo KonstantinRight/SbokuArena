@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sandbox.Citizen;
-using Sandbox.Sboku.Logic;
+using Sandbox.AI.Default;
 using Sandbox.Sboku.Shared;
-using Sandbox.Sboku.States;
+using Sandbox.Shared;
 
 namespace Sandbox.Sboku;
-public abstract class SbokuBase : Component
+public abstract class SbokuBase : Component, ISbokuBase
 {
     [Group("Controller")]
     [Property]
@@ -40,7 +39,6 @@ public abstract class SbokuBase : Component
     [Group("AI")]
     [Property]
     public bool IsOffline { get; set; } = false;
-
 
     public int DistanceToRecalucaltePath { get => MinFightRange / 2; }
     public float ThinkingInterval { get => Settings.ThinkingInterval; }
@@ -81,22 +79,22 @@ public abstract class SbokuBase : Component
     private int pathEnumerator;
 
     #region States
-    
-    private Dictionary<Type, ISbokuState> states;
+
+    protected Dictionary<Type, ISbokuState> States { get; private set; }
     private IActionState actionState;
     private ICombatState combatState;
-    private List<ICondition> conditions;
+    private List<ISbokuCondition> conditions;
 
     public void SetActionState<T>() where T : IActionState
     {
-        var state = (IActionState)states[typeof(T)];
+        var state = (IActionState)States[typeof(T)];
         actionState?.OnUnset();
         state.OnSet();
         actionState = state;
     }
     public void SetCombatState<T>() where T : ICombatState
     {
-        var state = (ICombatState)states[typeof(T)];
+        var state = (ICombatState)States[typeof(T)];
         combatState?.OnUnset();
         state.OnSet();
         combatState = state;
@@ -109,7 +107,15 @@ public abstract class SbokuBase : Component
 
     public SbokuBase()
     {
-        states = new()
+        States = GetStates();
+        conditions = GetConditions();
+
+        SetActionState<IdleActionState>();
+        SetCombatState<IdleCombatState>();
+    }
+
+    protected virtual Dictionary<Type, ISbokuState> GetStates()
+        => new()
         {
             { typeof(IdleActionState), new IdleActionState(this) },
             { typeof(ChaseState), new ChaseState(this) },
@@ -119,10 +125,8 @@ public abstract class SbokuBase : Component
             { typeof(ReloadState), new ReloadState(this) },
         };
 
-        SetActionState<IdleActionState>();
-        SetCombatState<IdleCombatState>();
-        conditions = Conditions.Get(this);
-    }
+    protected virtual List<ISbokuCondition> GetConditions()
+        => Conditions.Get(this);
 
     #region Component events
 
@@ -248,7 +252,7 @@ public abstract class SbokuBase : Component
         Gizmo.Draw.Color = Color.Red;
         Gizmo.Draw.LineCircle(Vector3.Zero, Vector3.Up, MaxFightRange);
     }
-   
+
     #endregion
 
     /// <summary>

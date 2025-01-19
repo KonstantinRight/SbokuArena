@@ -1,6 +1,5 @@
 ﻿using Sandbox.Citizen;
 using Sandbox.Sboku.Arena;
-using Sandbox.Sboku.Logic;
 using Sandbox.Sboku.Shared;
 using SWB.Base;
 using SWB.Demo;
@@ -10,9 +9,10 @@ using System;
 using System.Linq;
 
 namespace Sandbox.Sboku;
-[Title("SWB Adapter")]
+
+[Title("Bot Adapter")]
 [Group("Sboku Arena")]
-public class SWBAdapter : SbokuBase, IPlayerBase
+public class BotAdapter : SbokuBase, IPlayerBase
 {
     [RequireComponent]
     public UpgradeHolder UpgradeHolder { get; set; }
@@ -115,16 +115,24 @@ public class SWBAdapter : SbokuBase, IPlayerBase
 
     #region Properties
 
+    [Group("Character")]
     [Property]
     public GameObject Head { get; set; }
+    [Group("Character")]
     [Property]
     public GameObject Body { get; set; }
+    [Group("Character")]
     [Property]
     public SkinnedModelRenderer BodyRenderer { get; set; }
+    [Group("Character")]
     [Property]
     public CitizenAnimationHelper AnimationHelper { get; set; }
+    [Group("Character")]
     [Property]
     public int MaxHealth { get; set; } = 100;
+    [Group("Character")]
+    [Property]
+    public ModelPhysics RagdollPhysics { get; set; }
 
     #endregion
 
@@ -214,9 +222,6 @@ public class SWBAdapter : SbokuBase, IPlayerBase
     #endregion
 
     #region Damage
-
-    [Property]
-    public ModelPhysics RagdollPhysics { get; set; }
 
     [Rpc.Broadcast]
     public void TakeDamage(SWB.Shared.DamageInfo info)

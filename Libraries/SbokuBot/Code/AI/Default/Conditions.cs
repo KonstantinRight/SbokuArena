@@ -1,11 +1,12 @@
 ﻿using System;
-using Sandbox.Sboku.States;
 using System.Collections.Generic;
+using Sandbox.Sboku;
+using Sandbox.Shared;
 
-namespace Sandbox.Sboku.Logic;
+namespace Sandbox.AI.Default;
 public class Conditions
 {
-    private abstract class SimpleCondition : SbokuParent, ICondition
+    private abstract class SimpleCondition : SbokuParent, ISbokuCondition
     {
         public SimpleCondition(SbokuBase bot) : base(bot)
         {
@@ -24,8 +25,8 @@ public class Conditions
         {
         }
         public override bool If()
-                =>    !(Bot.IsActiveActionState<IdleActionState>() && Bot.IsActiveCombatState<IdleCombatState>())
-                   && (Target == null 
+                => !(Bot.IsActiveActionState<IdleActionState>() && Bot.IsActiveCombatState<IdleCombatState>())
+                   && (Target == null
                    || !Target.IsValid
                    || !Target.IsAlive
                    || SquaredDistanceToTarget > MathF.Pow(Bot.SearchRange, 2));
@@ -48,8 +49,8 @@ public class Conditions
     }
 
 
-    public static List<ICondition> Get(SbokuBase bot) =>
-        new List<ICondition>()
+    public static List<ISbokuCondition> Get(SbokuBase bot) =>
+        new List<ISbokuCondition>()
         {
             new StopCondion(bot),
             new ChaseCondition(bot)

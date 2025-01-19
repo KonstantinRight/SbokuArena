@@ -1,6 +1,7 @@
-﻿using System.Linq;
+﻿using Sandbox.Sboku;
+using System.Linq;
 
-namespace Sandbox.Sboku.Logic;
+namespace Sandbox.AI.Default;
 internal class TacticalState : StateBase, IActionState
 {
     public TacticalState(SbokuBase bot) : base(bot)

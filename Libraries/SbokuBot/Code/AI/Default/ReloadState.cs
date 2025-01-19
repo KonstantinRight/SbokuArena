@@ -1,6 +1,7 @@
-﻿using Sandbox.Sboku.Shared;
+﻿using Sandbox.Sboku;
+using Sandbox.Sboku.Shared;
 
-namespace Sandbox.Sboku.Logic;
+namespace Sandbox.AI.Default;
 internal class ReloadState : StateBase, ICombatState
 {
     public ReloadState(SbokuBase bot) : base(bot)

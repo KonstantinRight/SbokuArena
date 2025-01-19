@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Sandbox.Sboku;
+using System;
 
-namespace Sandbox.Sboku.Logic;
+namespace Sandbox.AI.Default;
 internal class ChaseState : StateBase, IActionState
 {
     private Vector3 savedTargetPos = Vector3.Zero;
-    private bool NeedToRecalculatePath 
+    private bool NeedToRecalculatePath
         => MathF.Pow(Bot.DistanceToRecalucaltePath, 2) >= Bot.Target.GameObject.WorldPosition.DistanceSquared(savedTargetPos);
 
     public ChaseState(SbokuBase bot) : base(bot)

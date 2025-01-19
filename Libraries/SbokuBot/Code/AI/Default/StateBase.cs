@@ -1,6 +1,7 @@
-﻿using Sandbox.Sboku.States;
+﻿using Sandbox.Sboku;
+using Sandbox.Shared;
 
-namespace Sandbox.Sboku.Logic;
+namespace Sandbox.AI.Default;
 public abstract class StateBase : SbokuParent, ISbokuState
 {
     protected StateBase(SbokuBase bot) : base(bot)
