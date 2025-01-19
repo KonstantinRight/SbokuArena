@@ -41,13 +41,11 @@
 
 @code
 {
-	private static Random rand = new Random();
-
 	private List<Weapon> weapons;
 	private Weapon selected;
 	protected override void OnAwake()
 	{
-		weapons = WeaponRegistry.Instance.Weapons.Values.OrderBy(_ => rand.Next()).Take(3).ToList();
+		weapons = WeaponRegistry.Instance.Weapons.Values.OrderBy(_ => Game.Random.Next()).Take(3).ToList();
 	}
 
 	private void Next()

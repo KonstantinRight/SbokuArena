@@ -8,7 +8,6 @@ public class UpgradeHolder : Component
     #region Leveling
 
     public const int LevelCap = 5;
-    private static Random rand = new Random();
 
     [Property]
     public int FreePoints { get; set; } = 1;
@@ -74,7 +73,7 @@ public class UpgradeHolder : Component
         var indexes = new List<int> { 0, 1, 2 };
         while (points > 0)
         {
-            var selected = indexes[rand.Next(indexes.Count)];
+            var selected = indexes[Game.Random.Next(indexes.Count)];
             switch (selected)
             {
                 case 0:

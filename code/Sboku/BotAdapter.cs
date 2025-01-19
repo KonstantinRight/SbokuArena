@@ -17,8 +17,6 @@ public class BotAdapter : SbokuBase, IPlayerBase
     [RequireComponent]
     public UpgradeHolder UpgradeHolder { get; set; }
 
-    private static Random rand = new();
-
     public void GiveWeapon(string className)
     {
         var weapon = WeaponRegistry.Instance.Get(className);
@@ -42,7 +40,7 @@ public class BotAdapter : SbokuBase, IPlayerBase
         Health = MaxHealth;
         Inventory = Components.Create<Inventory>();
         InitCameras();
-        var wep = WeaponRegistry.Instance.Weapons.Values.ElementAt(rand.Next(0, WeaponRegistry.Instance.Weapons.Count));
+        var wep = WeaponRegistry.Instance.Weapons.Values.ElementAt(Game.Random.Next(0, WeaponRegistry.Instance.Weapons.Count));
         GiveWeapon(wep.ClassName);
     }
 
