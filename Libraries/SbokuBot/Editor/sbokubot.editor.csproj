@@ -13,10 +13,12 @@
 		<DefineConstants>SANDBOX;ADDON;DEBUG</DefineConstants>
 		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
 
+		<DesignTimeBuild Condition="'$(DesignTimeBuild)' == 'true'">true</DesignTimeBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
 		
+		<CompilerVisibleProperty Include="DesignTimeBuild" />
 		<None Update="**\*.cs.scss" DependentUpon="%(Filename)" />
 		<Compile Update="**\*.razor.cs" DependentUpon="%(Filename)" />
 		<None Update="**\*.razor.scss" DependentUpon="%(Filename)" />
@@ -43,7 +45,7 @@
 
 	<ItemGroup>
 		<Analyzer Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed\Sandbox.CodeUpgrader.dll"/>
-		<Analyzer Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed\Sandbox.Generator.dll"/>
+		<Analyzer Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed\Sandbox.Generator.dll" Condition="$(DesignTimeBuild) != 'true'"/>
 		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.System.dll" />
 		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Engine.dll" />
 		<Reference Include="F:\SteamLibrary\steamapps\common\sbox\bin\managed/Sandbox.Filesystem.dll" />
