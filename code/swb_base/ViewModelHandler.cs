@@ -104,7 +104,7 @@ public class ViewModelHandler : Component
 		// Initialize the target vectors for this frame
 		targetVectorPos = Vector3.Zero;
 		targetVectorRot = Vector3.Zero;
-		targetPlayerFOV = Preferences.FieldOfView;
+		targetPlayerFOV = 70f;
 		targetWeaponFOV = Weapon.FOV;
 
 		// Editor mode
