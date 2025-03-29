@@ -75,15 +75,17 @@ public partial class PlayerBase
 		var attacker = Scene.Directory.FindByGuid(info.AttackerId);
 		if (attacker != null && attacker.IsValid)
 		{
-			dmgMultiplier = attacker.GetComponent<UpgradeHolder>().DamageMultiplier;
+			dmgMultiplier = attacker.GetComponent<UpgradeHolder>().DamageMultiplier * GetComponent<UpgradeHolder>().ArmorMultiplier;
 		}
 
-        var dmg = (int)(MathF.Round(info.Damage * dmgMultiplier));
 		if (!dmgTable.ContainsKey(info.Inflictor))
 		{
 			dmgTable.Add(info.Inflictor, new(info));
 		}
-		dmgTable[info.Inflictor].Damage = Math.Clamp(dmgTable[info.Inflictor].Damage + dmg, 1, (int)MathF.Round(MaxDamageClamp * GetComponent<UpgradeHolder>().ArmorMultiplier));
+		dmgTable[info.Inflictor].Damage = (int)MathF.Round(Math.Clamp(
+            dmgTable[info.Inflictor].Damage + info.Damage,
+            1,
+            MathF.Round(MaxDamageClamp * GetComponent<UpgradeHolder>().ArmorMultiplier * dmgMultiplier)));
     }
 
     [Rpc.Broadcast]

@@ -130,21 +130,21 @@ public class UpgradeHolder : Component
 
     public float SpeedMultiplier { get => SpeedClass switch
         {
-            Level.A => 1.75f,
-            Level.B => 1.5f,
-            Level.C => 1.25f,
-            Level.D => 1.05f,
-            Level.E => 0.9f,
-            Level.F => 0.75f,
+            Level.A => 2f,
+            Level.B => 1.6f,
+            Level.C => 1.3f,
+            Level.D => 1.0f,
+            Level.E => 0.75f,
+            Level.F => 0.5f,
             _ => throw new NotImplementedException("No multiplier for " + SpeedClass),
         };
     }
     public float DamageMultiplier { get => DamageClass switch
         {
-            Level.A => 8f,
-            Level.B => 5f,
-            Level.C => 3f,
-            Level.D => 1.5f,
+            Level.A => 4f,
+            Level.B => 3f,
+            Level.C => 2f,
+            Level.D => 1.3f,
             Level.E => 1.1f,
             Level.F => 1f,
             _ => throw new NotImplementedException("No multiplier for " + DamageClass),
@@ -152,11 +152,11 @@ public class UpgradeHolder : Component
     }
     public float ArmorMultiplier { get => ArmorClass switch
         {
-            Level.A => 0.1f,
-            Level.B => 0.15f,
-            Level.C => 0.25f,
-            Level.D => 0.5f,
-            Level.E => 0.75f,
+            Level.A => 0.2f,
+            Level.B => 0.35f,
+            Level.C => 0.5f,
+            Level.D => 0.6f,
+            Level.E => 0.8f,
             Level.F => 1f,
             _ => throw new System.NotImplementedException("No multiplier for " + ArmorClass),
         };
