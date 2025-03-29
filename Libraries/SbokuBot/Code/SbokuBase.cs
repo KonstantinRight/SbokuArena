@@ -43,6 +43,20 @@ public abstract class SbokuBase : Component, ISbokuBot
     [Property]
     public bool IsOffline { get; set; } = false;
 
+    /// <summary>
+    /// The duration of a single firing burst.
+    /// </summary>
+    [Group("Combat")]
+    [Property]
+    public float BurstPeriod { get; set; } = 0.5f;
+    /// <summary>
+    /// The duration of a single firing burst.
+    /// </summary>
+    [Group("Combat")]
+    [Property]
+    [Range(1, 20, step: 1)]
+    public int AimSpeed { get; set; } = 8;
+
     public int DistanceToRecalucaltePath { get => MinFightRange / 2; }
     public float ThinkingInterval { get => Settings.ThinkingInterval; }
     public abstract Angles EyeAngles { get; set; }
@@ -113,8 +127,11 @@ public abstract class SbokuBase : Component, ISbokuBot
         States = GetStates();
         conditions = GetConditions();
 
-        SetActionState<IdleActionState>();
-        SetCombatState<IdleCombatState>();
+        if (States.ContainsKey(typeof(IdleActionState)))
+            SetActionState<IdleActionState>();
+
+        if (States.ContainsKey(typeof(IdleCombatState)))
+            SetCombatState<IdleCombatState>();
     }
 
     protected virtual Dictionary<Type, ISbokuState> GetStates()
@@ -240,13 +257,22 @@ public abstract class SbokuBase : Component, ISbokuBot
 
         if (Target is ISbokuTarget ply)
         {
-            var direction = ply.GameObject.WorldPosition - Character.WorldPosition;
-            float yaw = MathF.Atan2(direction.y, direction.x).RadianToDegree();
-            Rotate(yaw);
+            // Compute the perfect aim direction: from the eye position toward the target
+            var perfectAimDirection = (ply.GameObject.WorldPosition + HeightToAimAt - EyePos).Normal;
+            // Smoothly interpolate between current and perfect aim direction
+            var newAimDirection = Vector3.Slerp(EyeAngles.Forward, perfectAimDirection, AimSpeed * Time.Delta);
 
-            direction = ply.GameObject.WorldPosition + HeightToAimAt - EyePos;
-            float pitch = -MathF.Atan2(direction.z, /* Length2D */ MathF.Sqrt(direction.x * direction.x + direction.y * direction.y)).RadianToDegree();
-            EyeAngles = new Angles(pitch, GameObject.WorldRotation.Yaw(), 0);
+            // Now derive the horizontal yaw and vertical pitch from the new aim direction
+            // Calculate yaw from the x and y components
+            var newYaw = MathF.Atan2(newAimDirection.y, newAimDirection.x).RadianToDegree();
+            Rotate(newYaw);
+
+            // Calculate pitch from the z component and the horizontal length
+            var horizontalLength = MathF.Sqrt(newAimDirection.x * newAimDirection.x + newAimDirection.y * newAimDirection.y);
+            var newPitch = -MathF.Atan2(newAimDirection.z, horizontalLength).RadianToDegree();
+
+            EyeAngles = new Angles(newPitch, newYaw, 0);
+
         }
 
         Move(vector);

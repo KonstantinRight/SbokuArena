@@ -42,6 +42,7 @@ public class BotAdapter : SbokuBase, IPlayerBase, IGameEventHandler<Weapon.NoAmm
         Inventory = Components.Create<Inventory>();
         InitCameras();
         var wep = WeaponRegistry.Instance.Weapons.Values.ElementAt(Game.Random.Next(0, WeaponRegistry.Instance.Weapons.Count));
+        //var wep = WeaponRegistry.Instance.Get("swb_scarh");
         GiveWeapon(wep.ClassName);
     }
 
