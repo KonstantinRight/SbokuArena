@@ -10,7 +10,7 @@
   "EditorReferences": null,
   "IsStandaloneOnly": false,
   "Metadata": {
-    "MaxPlayers": 64,
+    "MaxPlayers": 1,
     "MinPlayers": 1,
     "TickRate": 50,
     "GameNetworkType": "Multiplayer",
