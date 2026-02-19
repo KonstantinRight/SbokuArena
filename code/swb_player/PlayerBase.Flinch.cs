@@ -36,7 +36,10 @@ public partial class PlayerBase
 		if ( currFlinch > 0 )
 		{
 			var flinchAngles = new Angles( isLoweringFlinch ? currFlinch : -currFlinch, 0, 0 );
-			EyeAnglesOffset += flinchAngles;
+			ApplyEyeAnglesOffset( flinchAngles );
+
+			if ( IsUsingController )
+				Input.TriggerHaptics( HapticEffect.HardImpact, 0.1f, currFlinch, currFlinch );
 		}
 	}
 }

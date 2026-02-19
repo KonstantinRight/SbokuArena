@@ -13,6 +13,7 @@ public partial class Weapon : Component, IInventoryItem
 	public bool IsOwnerBot => Owner is PlayerBase ply ? ply.IsBot : true;
 	public IPlayerBase Owner { get; private set; }
 	public ViewModelHandler ViewModelHandler { get; private set; }
+	public PlayerCameraHandler CameraHandler { get; private set; }
 	public SkinnedModelRenderer ViewModelRenderer { get; private set; }
 	public SkinnedModelRenderer ViewModelHandsRenderer { get; private set; }
 	public SkinnedModelRenderer WorldModelRenderer { get; private set; }
@@ -29,6 +30,13 @@ public partial class Weapon : Component, IInventoryItem
 		Settings = WeaponSettings.Instance;
 		InitialPrimaryStats = StatsModifier.FromShootInfo( Primary );
 
+		// Default BulletType
+		if ( Primary is not null && Primary.BulletType is null )
+			Primary.BulletType = Components.Create<HitScanBulletInfo>();
+		if ( Secondary is not null && Secondary.BulletType is null )
+			Secondary.BulletType = Components.Create<HitScanBulletInfo>();
+
+		// Stats
 		if ( Secondary is not null )
 			InitialSecondaryStats = StatsModifier.FromShootInfo( Secondary );
 		else
@@ -39,6 +47,13 @@ public partial class Weapon : Component, IInventoryItem
 		{
 			WorldPosition = new( 0, 0, -999999 );
 			Network.ClearInterpolation();
+		}
+
+		Owner = Components.GetInAncestors<IPlayerBase>( true );
+		if ( !Owner.IsValid() )
+		{
+			Log.Error( $"{ClassName} cannot find owner, destroying!" );
+			Destroy();
 		}
 	}
 
@@ -53,7 +68,8 @@ public partial class Weapon : Component, IInventoryItem
 		if ( ViewModelRenderer?.GameObject is not null )
 			ViewModelRenderer.GameObject.Enabled = true;
 
-		CreateUI();
+		if ( !Owner.IsBot )
+			CreateUI();
 	}
 
 	protected override void OnDisabled()
@@ -83,71 +99,94 @@ public partial class Weapon : Component, IInventoryItem
 		IsAiming = false;
 		IsCustomizing = false;
 
+		if ( Owner is not null )
+			Owner.HoldType = HoldTypes.None;
+
 		DestroyUI();
 	}
 
 	[Rpc.Broadcast]
 	public virtual void OnCarryStart()
 	{
-		if ( !IsValid ) return;
+		if ( !GameObject.IsValid() || !this.IsValid() ) return;
 		GameObject.Enabled = true;
+		TimeSinceDeployed = -999f;
 	}
 
 	[Rpc.Broadcast]
 	public virtual void OnCarryStop()
 	{
-		if ( !IsValid ) return;
+		if ( !GameObject.IsValid() || !this.IsValid() ) return;
 		GameObject.Enabled = false;
 	}
 
 	public virtual bool CanCarryStop()
 	{
-		return TimeSinceDeployed > 0;
+		return Owner.IsBot || TimeSinceDeployed > 0;
 	}
 
-	public virtual void OnDeploy()
+	public virtual (float delay, string anim) GetDrawInfo()
 	{
 		var delay = 0f;
+		var anim = "";
 
 		if ( Primary.Ammo == 0 && !string.IsNullOrEmpty( DrawEmptyAnim ) )
 		{
-			ViewModelRenderer?.Set( DrawEmptyAnim, true );
+			anim = DrawEmptyAnim;
 			delay = DrawEmptyTime;
 		}
 		else if ( !string.IsNullOrEmpty( DrawAnim ) )
 		{
-			ViewModelRenderer?.Set( DrawAnim, true );
+			anim = DrawAnim;
 			delay = DrawTime;
 		}
 
-		TimeSinceDeployed = -delay;
+		return (delay, anim);
+	}
+
+	public virtual void OnDeploy()
+	{
+		var drawInfo = GetDrawInfo();
+		TimeSinceDeployed = -drawInfo.delay;
 
 		// Sound
-		if ( DeploySound is not null )
+		if ( !IsProxy && DeploySound is not null )
 			PlaySound( DeploySound.ResourceId );
+
+		// Boltback
+		if ( InBoltBack )
+			AsyncBoltBack( drawInfo.delay );
+	}
+
+	public virtual void OnViewModelDeploy()
+	{
+		var drawInfo = GetDrawInfo();
+
+		if ( !string.IsNullOrEmpty( drawInfo.anim ) )
+			ViewModelRenderer?.Set( drawInfo.anim, true );
 
 		// Start drawing (We delay by 1 frame to allow the animation to start first)
 		async void ShouldDrawDelayed()
 		{
 			await GameTask.Delay( 1 );
 			if ( ViewModelHandler.IsValid() )
+			{
 				ViewModelHandler.ShouldDraw = true;
+				OnViewModelDrawn();
+			}
 		}
 		ShouldDrawDelayed();
-
-		// Boltback
-		if ( InBoltBack )
-			AsyncBoltBack( delay );
 	}
+
+	/// <summary>Called when the view model starts being drawn</summary>
+	public virtual void OnViewModelDrawn() { }
 
 	protected override void OnStart()
 	{
-		Owner = Components.GetInAncestors<IPlayerBase>( true );
-		if ( !Owner.IsValid() )
+		if ( !IsProxy && Owner.Camera is not null )
 		{
-			Log.Error( $"{ClassName} cannot find owner, destroying!" );
-			Destroy();
-			return;
+			CameraHandler = Components.GetOrCreate<PlayerCameraHandler>();
+			CameraHandler.Weapon = this;
 		}
 
 		CreateModels();
@@ -180,11 +219,13 @@ public partial class Weapon : Component, IInventoryItem
 		if ( Owner is null ) return;
 
 		UpdateModels();
-		Owner.AnimationHelper.HoldType = HoldType;
+		Owner.HoldType = HoldType;
 
-		if ( !IsProxy )
+		if ( !IsProxy && !Owner.IsBot )
 		{
 			if ( IsDeploying ) return;
+
+			ShouldTuckVar = ShouldTuck( out TuckDist );
 
 			// Customization
 			if ( WeaponSettings.Instance.Customization && !IsScoping && !IsAiming && Input.Pressed( InputButtonHelper.Menu ) && Attachments.Count > 0 )
@@ -200,12 +241,31 @@ public partial class Weapon : Component, IInventoryItem
 			// Don't cancel reload when customizing
 			if ( IsCustomizing && !IsReloading ) return;
 
+			if ( IsRunning )
+				TimeSinceRunning = 0;
+
+			var wasAiming = IsAiming;
 			IsAiming = !Owner.IsRunning && AimAnimData != AngPos.Zero && Input.Down( InputButtonHelper.SecondaryAttack );
 
+			if ( wasAiming != IsAiming )
+			{
+				if ( IsAiming )
+					OnAimStart();
+				else
+					OnAimStop();
+			}
+
 			if ( IsScoping )
-				Owner.InputSensitivity = ScopeInfo.AimSensitivity;
+				Owner.InputSensitivity = ScopeInfo.Sensitivity;
 			else if ( IsAiming )
-				Owner.InputSensitivity = AimSensitivity;
+				Owner.InputSensitivity = AimInfo.Sensitivity;
+			else
+				Owner.InputSensitivity = 1f;
+
+			OnAimAssistUpdate();
+
+			if ( IsAiming )
+				OnAimUpdate();
 
 			if ( Scoping )
 			{
@@ -254,10 +314,21 @@ public partial class Weapon : Component, IInventoryItem
 
 	void UpdateModels()
 	{
-		if ( !IsProxy && WorldModelRenderer is not null )
+		// Should draw after deploy
+		if ( (IsProxy || Owner.IsBot) && WorldModelRenderer is not null )
+		{
+			WorldModelRenderer.RenderType = ModelRenderer.ShadowRenderType.On;
+			WorldModelRenderer.RenderOptions.Game = true;
+		}
+
+		if ( !IsProxy && !Owner.IsBot && WorldModelRenderer is not null )
 		{
 			var worldModelRenderType = Owner.IsFirstPerson ? ModelRenderer.ShadowRenderType.ShadowsOnly : ModelRenderer.ShadowRenderType.On;
 			WorldModelRenderer.RenderType = worldModelRenderType;
+
+			// Should draw after deploy
+			if ( !Owner.IsFirstPerson )
+				WorldModelRenderer.RenderOptions.Game = true;
 
 			// Attachments
 			Attachments.ForEach( ( att ) =>
@@ -275,30 +346,58 @@ public partial class Weapon : Component, IInventoryItem
 
 	void CreateModels()
 	{
-		if ( !IsProxy && ViewModel is not null && ViewModelRenderer is null )
+		if ( !IsProxy && !Owner.IsBot && ViewModel is not null && ViewModelRenderer is null )
 		{
 			var viewModelGO = new GameObject( true, "Viewmodel" );
 			viewModelGO.SetParent( Owner.GameObject, false );
 			viewModelGO.Tags.Add( TagsHelper.ViewModel );
-			viewModelGO.Flags |= GameObjectFlags.NotNetworked;
+			viewModelGO.NetworkMode = NetworkMode.Never;
 
 			ViewModelRenderer = viewModelGO.Components.Create<SkinnedModelRenderer>();
 			ViewModelRenderer.Model = ViewModel;
 			ViewModelRenderer.AnimationGraph = ViewModel.AnimGraph;
 			ViewModelRenderer.CreateBoneObjects = true;
+			ViewModelRenderer.CreateAttachments = true;
 			ViewModelRenderer.Enabled = false;
-			ViewModelRenderer.OnComponentEnabled += () =>
+			ViewModelRenderer.OnComponentEnabled += async () =>
 			{
 				// Prevent flickering when enabling the component, this is controlled by the ViewModelHandler
 				ViewModelRenderer.RenderType = ModelRenderer.ShadowRenderType.ShadowsOnly;
-				ResetViewModelAnimations();
-				OnDeploy();
+				ViewModelRenderer.ClearParameters();
+				OnViewModelDeploy();
+
+				// Deploy
+				if ( WorldModel is null )
+				{
+					await GameTask.DelayRealtime( 1 );
+					if ( this.IsValid() )
+						OnDeploy();
+				}
 			};
 
 			ViewModelHandler = viewModelGO.Components.Create<ViewModelHandler>();
 			ViewModelHandler.Weapon = this;
 			ViewModelHandler.ViewModelRenderer = ViewModelRenderer;
-			ViewModelHandler.Camera = Owner.ViewModelCamera;
+			var viewModelCamera = Owner.ViewModelCamera;
+			if ( Owner.ViewModelCamera is null )
+			{
+				var viewModelCameraGameObject = new GameObject();
+				viewModelCameraGameObject.Name = "ViewModelCamera";
+				viewModelCameraGameObject.SetParent( Owner.GameObject, false );
+
+				// Setup the view model camera
+				viewModelCamera = viewModelCameraGameObject.Components.Create<CameraComponent>();
+				viewModelCamera.ClearFlags = ClearFlags.Depth | ClearFlags.Stencil;
+				viewModelCamera.ZNear = 1;
+				viewModelCamera.Priority = 2;
+				viewModelCamera.TargetEye = StereoTargetEye.RightEye;
+				viewModelCamera.RenderTags.Add( new TagSet() { TagsHelper.ViewModel, TagsHelper.Light } );
+
+				Owner.ViewModelCamera = viewModelCamera;
+			}
+			ViewModelHandler.Camera = viewModelCamera;
+
+			Owner.Camera.RenderExcludeTags.Add( TagsHelper.ViewModel );
 
 			if ( ViewModelHands is not null )
 			{
@@ -321,39 +420,36 @@ public partial class Weapon : Component, IInventoryItem
 			WorldModelRenderer.Model = WorldModel;
 			WorldModelRenderer.AnimationGraph = WorldModel.AnimGraph;
 			WorldModelRenderer.CreateBoneObjects = true;
+			WorldModelRenderer.CreateAttachments = true;
 
-			var bodyRenderer = Owner.Body.Components.Get<SkinnedModelRenderer>();
-			ModelUtil.ParentToBone( GameObject, bodyRenderer, "hold_R" );
+			async void OnComponentEnabled()
+			{
+				// Prevent flickering when enabling the component
+				WorldModelRenderer.RenderType = ModelRenderer.ShadowRenderType.Off;
+				WorldModelRenderer.RenderOptions.Game = false;
+
+				// Deploy
+				await GameTask.DelayRealtime( 1 );
+				if ( this.IsValid() )
+					OnDeploy();
+			}
+
+			WorldModelRenderer.OnComponentEnabled += () =>
+			{
+				// Called after weapon has been switched already
+				OnComponentEnabled();
+			};
+
+			// Called when weapon models are created
+			OnComponentEnabled();
+			Owner.ParentToBone( GameObject, "hold_R" );
 		}
-	}
-
-	// Temp fix until https://github.com/Facepunch/sbox-issues/issues/5247 is fixed
-	public virtual void ResetViewModelAnimations()
-	{
-		if ( Primary.IsValid() )
-		{
-			ViewModelRenderer?.Set( Primary.ShootAnim ?? "", false );
-			ViewModelRenderer?.Set( Primary.ShootEmptyAnim ?? "", false );
-			ViewModelRenderer?.Set( Primary.ShootAimedAnim ?? "", false );
-		}
-
-		if ( Secondary.IsValid() )
-		{
-			ViewModelRenderer?.Set( Secondary.ShootAnim ?? "", false );
-			ViewModelRenderer?.Set( Secondary.ShootEmptyAnim ?? "", false );
-			ViewModelRenderer?.Set( Secondary.ShootAimedAnim ?? "", false );
-		}
-
-		ViewModelRenderer?.Set( ReloadAnim ?? "", false );
-		ViewModelRenderer?.Set( ReloadEmptyAnim ?? "", false );
-		ViewModelRenderer?.Set( DrawAnim ?? "", false );
-		ViewModelRenderer?.Set( DrawEmptyAnim ?? "", false );
 	}
 
 	[Rpc.Broadcast]
 	public void PlaySound( int resourceID )
 	{
-		if ( !IsValid ) return;
+		if ( !this.IsValid() ) return;
 
 		var sound = ResourceLibrary.Get<SoundEvent>( resourceID );
 		if ( sound is null ) return;

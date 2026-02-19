@@ -17,9 +17,15 @@ public class ReflexSightBG : SightAttachment
 	public override int BodyGroupChoice { get; set; } = 1;
 	public override int BodyGroupDefault { get; set; } = 0;
 
-	// Sight
-	public override float AimPlayerFOV { get; set; } = 50f;
-	public override float AimSensitivity { get; set; } = 0.5f;
+	[Property]
+	public override AimInfo AimInfo { get; set; } = new AimInfo()
+	{
+		SpreadModifier = -1f,
+		AimInFOVSpeed = -1f,
+		AimOutFOVSpeed = -1f,
+		Sensitivity = 0.5f,
+		PlayerFOV = 50f,
+	};
 }
 
 [Title( "Hunter Scope" )]
@@ -31,7 +37,7 @@ public class HunterScope2DBG : Scope2DAttachment
 	public override int BodyGroupChoice { get; set; } = 2;
 	public override int BodyGroupDefault { get; set; } = 0;
 
-	// Scope
+	[Property]
 	public override ScopeInfo ScopeInfo { get; set; } = new()
 	{
 		LensTexture = "materials/swb/scopes/swb_lens_hunter.png",
@@ -39,7 +45,8 @@ public class HunterScope2DBG : Scope2DAttachment
 		ScopeInDelay = 0.2f,
 		ScopeInSound = ResourceLibrary.Get<SoundEvent>( "sounds/swb/scope/swb_sniper.zoom_in.sound" ),
 		FOV = 8f,
-		AimSensitivity = 0.25f
+		Sensitivity = 0.25f,
+		Spread = 0f,
 	};
 }
 
@@ -53,7 +60,7 @@ public class SniperSilencerBG : SilencerAttachment
 	public override int BodyGroupDefault { get; set; } = 0;
 
 	// Silencer
-	public override ParticleSystem MuzzleFlashParticle { get; set; } = ParticleSystem.Load( "particles/swb/muzzle/flash_silenced.vpcf" );
+	public override PrefabScene MuzzleFlashParticle { get; set; } = SceneUtility.GetPrefabScene( ResourceLibrary.Get<PrefabFile>( "prefabs/particles/muzzle/muzzleflash.prefab" ) );
 	[Property, Group( "Silencer" )] public override SoundEvent ShootSound { get; set; } = ResourceLibrary.Get<SoundEvent>( "sounds/swb/attachments/silencer/swb_sniper.silenced.fire.sound" );
 }
 

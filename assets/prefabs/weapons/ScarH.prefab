@@ -1,22 +1,37 @@
 {
   "RootObject": {
     "__guid": "a3b668c3-acfb-4043-8f7c-93b7df84b5c8",
+    "__version": 2,
     "Flags": 0,
     "Name": "scarh",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
     "Tags": "weapon",
+    "Enabled": false,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
     "Components": [
       {
         "__type": "SWB.Base.Weapon",
         "__guid": "4d44110c-f7a1-4168-a9f3-dbeaa77a630a",
+        "__enabled": true,
+        "Flags": 0,
         "AimAnimData": {
           "Angle": "-0.1,0.34,3.9",
           "Pos": "-2.163,0.36,0.233"
         },
-        "AimFOV": 35,
-        "AimInFOVSpeed": 1,
-        "AimOutFOVSpeed": 1,
-        "AimPlayerFOV": -1,
-        "AimSensitivity": 0.85,
+        "AimInfo": {
+          "SpreadModifier": 0.25,
+          "Sensitivity": 0.85,
+          "ViewModelFOV": 30,
+          "PlayerFOV": -1,
+          "AimInFOVSpeed": 1,
+          "AimOutFOVSpeed": 1
+        },
         "AnimSpeed": 1,
         "BoltBack": false,
         "BoltBackAnim": "boltback",
@@ -42,9 +57,9 @@
         "DrawEmptyAnim": "",
         "DrawEmptyTime": -1,
         "DrawTime": 0.6,
-        "FOV": 65,
         "HoldType": "Rifle",
         "Icon": "weapons/swb/scarh/scarh.png",
+        "Mobility": 1,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -72,7 +87,8 @@
           "ScopeInSound": null,
           "ScopeOutSound": null,
           "FOV": 8,
-          "AimSensitivity": 0.25
+          "Sensitivity": 0.25,
+          "Spread": 0
         },
         "Scoping": false,
         "Secondary": null,
@@ -82,22 +98,40 @@
         "ShellReloadInsertTime": 0,
         "ShellReloadStartTime": 0,
         "Slot": 5,
-        "TuckRange": 0,
+        "TuckRange": 30,
         "ViewModel": "weapons/swb/scarh/v_scarh.vmdl",
+        "ViewModelFOV": 65,
         "ViewModelHands": null,
         "WorldModel": "weapons/swb/scarh/w_scarh.vmdl"
       },
       {
         "__type": "SWB.Base.ShootInfo",
         "__guid": "ff1c8c67-10c8-4767-925a-0d606a3845ff",
+        "__enabled": true,
+        "Flags": 0,
         "Ammo": 30,
         "AmmoType": "rifle",
-        "BarrelSmokeParticle": "particles/swb/muzzle/barrel_smoke.vpcf",
-        "BulletEjectParticle": "particles/swb/bullet_hulls/20mm_eject.vpcf",
+        "BarrelSmokeParticle": {
+          "_type": "gameobject",
+          "prefab": "prefabs/particles/muzzle/barrelsmoke.prefab"
+        },
+        "BulletEjectParticle": {
+          "_type": "gameobject",
+          "prefab": "prefabs/particles/shell/shelleject_20mm.prefab"
+        },
         "Bullets": 1,
         "BulletSize": 2,
         "BulletTracerChance": 0.33,
-        "BulletTracerParticle": "particles/swb/tracer/tracer.vpcf",
+        "BulletTracerParticle": {
+          "_type": "gameobject",
+          "prefab": "prefabs/particles/tracer/tracer.prefab"
+        },
+        "BulletType": {
+          "_type": "component",
+          "component_id": "4bfd7500-4b75-47ff-9b9e-23980850714a",
+          "go": "a3b668c3-acfb-4043-8f7c-93b7df84b5c8",
+          "component_type": "HitScanBulletInfo"
+        },
         "ClipSize": 30,
         "Damage": 25,
         "DryShootSound": "sounds/swb/clip/swb_rifle.empty.sound",
@@ -105,7 +139,10 @@
         "Force": 3,
         "HitFlinch": 2,
         "InfiniteAmmo": "reserve",
-        "MuzzleFlashParticle": "particles/swb/muzzle/flash.vpcf",
+        "MuzzleFlashParticle": {
+          "_type": "gameobject",
+          "prefab": "prefabs/particles/muzzle/muzzleflash.prefab"
+        },
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -126,18 +163,26 @@
         "ShootSound": "weapons/swb/scarh/sounds/scar.fire.sound",
         "Spread": 0.08,
         "VMParticleScale": 1.3,
+        "WMMuzzleParticleScale": 1.6,
         "WMParticleScale": 1
       },
       {
         "__type": "SWB.Demo.ReflexSightBG",
         "__guid": "0db16e29-30e1-463f-8812-7df647458e7c",
+        "__enabled": true,
+        "Flags": 0,
         "AimAnimData": {
           "Angle": "-1.47,0.44,3.9",
           "Pos": "-2.181,0.36,0.596"
         },
-        "AimFOV": -1,
-        "AimInFOVSpeed": -1,
-        "AimOutFOVSpeed": -1,
+        "AimInfo": {
+          "SpreadModifier": -1,
+          "Sensitivity": 0.5,
+          "ViewModelFOV": -1,
+          "PlayerFOV": 50,
+          "AimInFOVSpeed": -1,
+          "AimOutFOVSpeed": -1
+        },
         "Bone": null,
         "Enable": false,
         "OnComponentDestroy": null,
@@ -153,6 +198,8 @@
       {
         "__type": "SWB.Demo.RifleSilencerBG",
         "__guid": "6a2ee00f-5ba2-4b35-a74e-ceb5f3cda188",
+        "__enabled": true,
+        "Flags": 0,
         "Bone": null,
         "EffectAttachmentOrBone": "muzzle_silenced",
         "Enable": false,
@@ -166,19 +213,25 @@
         "ShootSound": "sounds/swb/attachments/silencer/swb_rifle.silenced.fire.sound",
         "ViewModelScale": "1,1,1",
         "WorldModelScale": "1,1,1"
+      },
+      {
+        "__type": "SWB.Base.HitScanBulletInfo",
+        "__guid": "4bfd7500-4b75-47ff-9b9e-23980850714a",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
       }
     ],
     "Children": [],
-    "__variables": [],
     "__properties": {
-      "FixedUpdateFrequency": 50,
-      "MaxFixedUpdates": 5,
-      "NetworkFrequency": 30,
       "NetworkInterpolation": true,
-      "PhysicsSubSteps": 1,
-      "ThreadedAnimation": true,
       "TimeScale": 1,
-      "UseFixedUpdate": true,
+      "WantsSystemScene": true,
       "Metadata": {},
       "NavMesh": {
         "Enabled": false,
@@ -192,13 +245,14 @@
         "ExcludedBodies": "",
         "IncludedBodies": ""
       }
-    }
+    },
+    "__variables": []
   },
+  "ResourceVersion": 2,
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "ResourceVersion": 1,
   "__references": [],
-  "__version": 1
+  "__version": 2
 }

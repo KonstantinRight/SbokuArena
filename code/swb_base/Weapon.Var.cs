@@ -1,4 +1,4 @@
-﻿using Sandbox.Citizen;
+﻿using SWB.Shared;
 
 namespace SWB.Base;
 
@@ -24,10 +24,7 @@ public partial class Weapon
 	[Property, Group( "General" )] public CrosshairSettings CrosshairSettings { get; set; } = new();
 
 	/// <summary>How the player holds the weapon in thirdperson</summary>
-	[Property, Group( "General" )] public CitizenAnimationHelper.HoldTypes HoldType { get; set; } = CitizenAnimationHelper.HoldTypes.Pistol;
-
-	/// <summary>Mouse sensitivity while aiming (lower is slower, 0 to disable)</summary>
-	[Property, Group( "General" )] public float AimSensitivity { get; set; } = 0.85f;
+	[Property, Group( "General" )] public HoldTypes HoldType { get; set; } = HoldTypes.Pistol;
 
 	/// <summary>Can bullets be cocked in the barrel? (clip ammo + 1)</summary>
 	[Property, Group( "General" )] public bool BulletCocking { get; set; } = true;
@@ -35,27 +32,16 @@ public partial class Weapon
 	/// <summary>Range that tucking should be enabled (-1 to disable tucking)</summary>
 	[Property, Group( "General" )] public float TuckRange { get; set; } = 30f;
 
+	/// <summary>How much movement speed is affected by holding this weapon (Speed *= Mobility)</summary>
+	[Property, Group( "General" )] public float Mobility { get; set; } = 1f;
+
 	[Property, Group( "General" )] public int Slot { get; set; } = 0;
 
 	/// <summary>Firing sound when clip is empty</summary>
 	[Property, Group( "Sounds" )] public SoundEvent DeploySound { get; set; }
 
-
-	/// <summary>Default weapon field of view</summary>
-	[Property, Group( "FOV" )] public float FOV { get; set; } = 70f;
-
-	/// <summary>Weapon FOV while aiming (-1 to use default weapon fov)</summary>
-	[Property, Group( "FOV" )] public float AimFOV { get; set; } = -1f;
-
-	/// <summary>Player FOV while aiming (-1 to use default player fov)</summary>
-	[Property, Group( "FOV" )] public float AimPlayerFOV { get; set; } = -1f;
-
-	/// <summary>FOV aim in speed</summary>
-	[Property, Group( "FOV" ), Title( "Aim in FOV speed" )] public float AimInFOVSpeed { get; set; } = 1f;
-
-	/// <summary>FOV aim out speed</summary>
-	[Property, Group( "FOV" ), Title( "Aim out FOV speed" )] public float AimOutFOVSpeed { get; set; } = 1f;
-
+	/// <summary>View Model field of view</summary>
+	[Property, Group( "General" )] public float ViewModelFOV { get; set; } = 70f;
 
 	/// <summary>Procedural animation speed (lower is slower)</summary>
 	[Property, Group( "Animations" )] public float AnimSpeed { get; set; } = 1;
@@ -128,6 +114,13 @@ public partial class Weapon
 	/// <summary>Scope Information</summary>
 	[Property, Group( "Scoping" )] public ScopeInfo ScopeInfo { get; set; } = new();
 
+	/// <summary>Aim Information</summary>
+	[Property, Group( "General" )]
+	public AimInfo AimInfo { get; set; } = new AimInfo()
+	{
+		Sensitivity = 0.85f,
+	};
+
 	/// <summary>Primary attack data</summary>
 	[Property, Group( "Firing" ), Title( "Primary ShootInfo (component)" ), RequireComponent] public ShootInfo Primary { get; set; }
 
@@ -146,6 +139,9 @@ public partial class Weapon
 
 	/// <summary>Time since the last reload</summary>
 	public TimeSince TimeSinceReload { get; set; }
+
+	/// <summary>Time since the weapon was in run animation</summary>
+	public TimeSince TimeSinceRunning { get; set; }
 
 	public bool IsCustomizing { get; set; }
 
@@ -174,6 +170,8 @@ public partial class Weapon
 	public StatsModifier InitialSecondaryStats { get; private set; }
 
 	public bool IsDeploying => TimeSinceDeployed < 0;
+	public bool ShouldTuckVar;
+	public float TuckDist;
 
 	// Private
 	int burstCount = 0;

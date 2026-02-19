@@ -6,6 +6,7 @@ public class Inventory : Component, IInventory
 {
 	[Sync] public NetList<GameObject> Items { get; set; } = new();
 	[Sync] public new GameObject Active { get; set; }
+	[Sync] public IInventoryItem ActiveItem { get; set; }
 
 	IPlayerBase player;
 
@@ -17,9 +18,7 @@ public class Inventory : Component, IInventory
 	public void Add( GameObject gameObject, bool makeActive = false )
 	{
 		if ( !Has( gameObject ) )
-		{
 			Items.Add( gameObject );
-		}
 
 		if ( makeActive )
 			SetActive( gameObject );
@@ -36,7 +35,7 @@ public class Inventory : Component, IInventory
 	{
         CloneConfig config = new( player.GameObject.WorldTransform, player.GameObject, false, gamePrefab.Name );
 		var gameObject = gamePrefab.Clone( config );
-		gameObject.NetworkSpawn( player.GameObject.Network.Owner );
+		gameObject.NetworkSpawn( false, player.GameObject.Network.Owner );
 
 		Add( gameObject, makeActive );
 		return gameObject;
@@ -63,6 +62,7 @@ public class Inventory : Component, IInventory
 		}
 
 		Active = gameObject;
+		ActiveItem = newActive;
 	}
 
 	public void SetActive( string name )

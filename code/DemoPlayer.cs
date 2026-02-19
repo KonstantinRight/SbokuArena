@@ -4,6 +4,7 @@ using Sandbox.Sboku.UI;
 using SWB.Base;
 using SWB.HUD;
 using SWB.Player;
+using SWB.Shared;
 using System.Linq;
 
 namespace SWB.Demo;
@@ -14,6 +15,8 @@ public class DemoPlayer : PlayerBase, IGameEventHandler<RoundManager.OpenUpgrade
 {
     [Property]
     public GameObject ArenaUI { get; set; }
+
+	TimeSince timeSincePerspectiveSwitch;
 
     public void GiveWeapon( string className, bool setActive = false )
 	{
@@ -37,10 +40,10 @@ public class DemoPlayer : PlayerBase, IGameEventHandler<RoundManager.OpenUpgrade
 
 		return null;
 	}
-    public override void Respawn()
-	{
-		base.Respawn();
 
+	public override void Respawn( Transform? respawnAt = null )
+	{
+		base.Respawn( respawnAt );
         if (IsBot) return;
 
         // Give weapons
@@ -75,8 +78,8 @@ public class DemoPlayer : PlayerBase, IGameEventHandler<RoundManager.OpenUpgrade
 		base.TakeDamage( info );
 
 		// Attacker only
-		var localPly = PlayerBase.GetLocal();
-		if ( localPly is null || !localPly.IsAlive || localPly.GameObject.Id != info.AttackerId ) return;
+		var localPly = PlayerBase.Local;
+		if ( info.Attacker is null || localPly is null || !localPly.IsAlive || localPly.GameObject.Id != info.Attacker.Id ) return;
 
 		var display = localPly.RootDisplay as RootDisplay;
 		display.CreateHitmarker( Health <= 0 );
@@ -92,6 +95,32 @@ public class DemoPlayer : PlayerBase, IGameEventHandler<RoundManager.OpenUpgrade
         display.CreateHitmarker(health <= 0);
         Sound.Play("hitmarker");
     }
+	
+	public override void DoFallDamage( Vector3 impactVelocity )
+	{
+		// Disable fall damage
+	}
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+
+		if ( IsProxy || IsBot ) return;
+
+		// Customization
+		if ( Input.Pressed( InputButtonHelper.View ) && timeSincePerspectiveSwitch > 0.5 )
+		{
+			var localPly = PlayerBase.Local;
+			if ( localPly is null || !localPly.IsAlive ) return;
+
+			var activeWep = localPly.Inventory.Active.GetComponent<Weapon>();
+			if ( !activeWep.IsScoping && !activeWep.IsAiming )
+			{
+				ConsoleSystem.Run( "thirdperson" );
+				timeSincePerspectiveSwitch = 0;
+			}
+		}
+	}
 
     // Arena
 

@@ -69,7 +69,7 @@ public partial class Weapon
 	public virtual void CancelShellReload()
 	{
 		IsReloading = false;
-		ViewModelRenderer.Set( ReloadAnim, false );
+		ViewModelRenderer?.Set( ReloadAnim, false );
 	}
 
 	public virtual void OnShellReload()
@@ -87,7 +87,7 @@ public partial class Weapon
 
 		Primary.Ammo += 1;
 
-		if ( ammo != 0 && Primary.Ammo < Primary.ClipSize )
+		if ( ammo != 0 && Primary.Ammo < Primary.ClipSize && Owner.AmmoCount( Primary.AmmoType ) > 0 )
 		{
 			ReloadTime = ShellReloadInsertTime;
 			Reload();
@@ -112,7 +112,7 @@ public partial class Weapon
 		await GameTask.DelaySeconds( BoltBackEjectDelay );
 		if ( !IsValid ) return;
 		var scale = CanSeeViewModel ? Primary.VMParticleScale : Primary.WMParticleScale;
-		CreateParticle( Primary.BulletEjectParticle, "ejection_point", scale );
+		CreateParticle( Primary.BulletEjectParticle, "ejection_point", scale, attachmentYawOnly: true );
 
 		// Finished
 		await GameTask.DelaySeconds( BoltBackTime - BoltBackEjectDelay );
@@ -124,6 +124,6 @@ public partial class Weapon
 	public virtual void HandleReloadEffects()
 	{
 		// Player
-		Owner?.BodyRenderer?.Set( "b_reload", true );
+		Owner?.TriggerAnimation( Shared.Animations.Reload );
 	}
 }

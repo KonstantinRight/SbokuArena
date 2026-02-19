@@ -1,4 +1,6 @@
 ﻿using SWB.Base.Attachments;
+using SWB.Shared;
+using System;
 
 namespace SWB.Base;
 
@@ -15,9 +17,9 @@ public partial class Weapon
 	}
 
 	/// <summary>
-	/// Gets the info on where to show the muzzle effect
+	/// Gets the visible muzzle renderer and attachment name
 	/// </summary>
-	public virtual Transform? GetMuzzleTransform()
+	public virtual (SkinnedModelRenderer, string) GetMuzzleEffectDetails()
 	{
 		var activeAttachment = GetActiveAttachmentForCategory( AttachmentCategory.Muzzle );
 		var effectRenderer = GetEffectRenderer();
@@ -38,7 +40,25 @@ public partial class Weapon
 			}
 		}
 
-		return effectRenderer?.GetAttachment( effectAttachment );
+		return (effectRenderer, effectAttachment);
+	}
+
+	/// <summary>
+	/// Gets the muzzle attachment transform
+	/// </summary>
+	public virtual Transform? GetMuzzleTransform()
+	{
+		var muzzleDetails = GetMuzzleEffectDetails();
+		return muzzleDetails.Item1?.GetAttachment( muzzleDetails.Item2 );
+	}
+
+	/// <summary>
+	/// Gets the muzzle attachment gameobject
+	/// </summary>
+	public virtual GameObject GetMuzzleObject()
+	{
+		var muzzleDetails = GetMuzzleEffectDetails();
+		return muzzleDetails.Item1?.GetAttachmentObject( muzzleDetails.Item2 );
 	}
 
 	/// <summary>
@@ -110,7 +130,7 @@ public partial class Weapon
 
 		// Aiming
 		if ( IsAiming && Primary.Bullets == 1 )
-			floatMod /= 4;
+			floatMod *= AimInfo.SpreadModifier;
 
 		if ( !Owner.IsOnGround )
 		{
@@ -132,5 +152,19 @@ public partial class Weapon
 		var recoilY = Game.Random.NextFloat( -0.2f, 0.2f ) * recoilX;
 		var recoilAngles = new Angles( recoilX, recoilY, 0 );
 		return recoilAngles;
+	}
+
+	public static MovementImpact GetMovementImpactFromForce( float force )
+	{
+		// 1.0 → 0.6 (40% max slow)
+		var maxSlow = 0.4f;
+		var t = Math.Clamp( force / 10f, 0f, 1f );
+		var amount = 1f - t * maxSlow;
+
+		return new()
+		{
+			Amount = amount,
+			Duration = 0.4f,
+		};
 	}
 }

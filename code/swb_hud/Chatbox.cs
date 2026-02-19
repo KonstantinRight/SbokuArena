@@ -8,12 +8,12 @@ namespace SWB.HUD;
 
 public class Chatbox : Panel
 {
-	IPlayerBase player;
+	PlayerBase player;
 
 	Panel history;
 	TextEntry textEntry;
 
-	public Chatbox( IPlayerBase player )
+	public Chatbox( PlayerBase player )
 	{
 		this.player = player;
 		StyleSheet.Load( "/swb_hud/Chatbox.cs.scss" );
@@ -21,7 +21,7 @@ public class Chatbox : Panel
 		var msgArea = Add.Panel( "msgArea" );
 		history = msgArea.Add.Panel( "history" );
 
-		textEntry = Add.TextEntry();
+		textEntry = AddChild<TextEntry>();
 		textEntry.AddClass( "entry" );
 		textEntry.Placeholder = "Type here";
 		textEntry.AddEventListener( "onsubmit", () => Submit() );
@@ -95,14 +95,14 @@ public class Chatbox : Panel
 	[ConCmd( "say", Help = "Send a chat message" )]
 	public static void Say( string msg )
 	{
-		var player = PlayerBase.GetLocal();
+		var player = PlayerBase.Local;
 		SendMsg( player.GameObject.Id, msg );
 	}
 
 	[Rpc.Broadcast]
 	public static void SendMsg( Guid senderId, string msg )
 	{
-		var player = PlayerBase.GetLocal();
+		var player = PlayerBase.Local;
 		if ( player is null ) return;
 
 		var rootDisplay = player.RootDisplay as RootDisplay;

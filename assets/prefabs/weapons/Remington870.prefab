@@ -1,22 +1,37 @@
 {
   "RootObject": {
     "__guid": "90e1f323-4483-4cab-a02f-56d0ccf3fead",
+    "__version": 2,
     "Flags": 0,
     "Name": "remington870",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
     "Tags": "weapon",
+    "Enabled": false,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
     "Components": [
       {
         "__type": "SWB.Base.Weapon",
         "__guid": "61ada1b9-4036-4907-be9e-e774c0e4154a",
+        "__enabled": true,
+        "Flags": 0,
         "AimAnimData": {
           "Angle": "-1,0.41,0",
           "Pos": "-2.8,0,0.85"
         },
-        "AimFOV": 35,
-        "AimInFOVSpeed": 1,
-        "AimOutFOVSpeed": 1,
-        "AimPlayerFOV": -1,
-        "AimSensitivity": 0.85,
+        "AimInfo": {
+          "SpreadModifier": 0.25,
+          "Sensitivity": 0.85,
+          "ViewModelFOV": 35,
+          "PlayerFOV": -1,
+          "AimInFOVSpeed": 1,
+          "AimOutFOVSpeed": 1
+        },
         "AnimSpeed": 1,
         "BoltBack": false,
         "BoltBackAnim": "boltback",
@@ -42,9 +57,9 @@
         "DrawEmptyAnim": "",
         "DrawEmptyTime": -1,
         "DrawTime": 0.7,
-        "FOV": 65,
         "HoldType": "Shotgun",
         "Icon": "weapons/swb/remington/remington.png",
+        "Mobility": 1,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -72,7 +87,8 @@
           "ScopeInSound": null,
           "ScopeOutSound": null,
           "FOV": 8,
-          "AimSensitivity": 0.25
+          "Sensitivity": 0.25,
+          "Spread": 0
         },
         "Scoping": false,
         "Secondary": null,
@@ -82,22 +98,40 @@
         "ShellReloadInsertTime": 0.71,
         "ShellReloadStartTime": 0.62,
         "Slot": 3,
-        "TuckRange": 0,
+        "TuckRange": 30,
         "ViewModel": "weapons/swb/remington/v_remington.vmdl",
+        "ViewModelFOV": 65,
         "ViewModelHands": null,
         "WorldModel": "weapons/swb/remington/w_remington.vmdl"
       },
       {
         "__type": "SWB.Base.ShootInfo",
         "__guid": "6c143f17-9226-4a53-bbb9-3473b4d013cc",
+        "__enabled": true,
+        "Flags": 0,
         "Ammo": 6,
         "AmmoType": "shotgun",
-        "BarrelSmokeParticle": "particles/swb/muzzle/barrel_smoke.vpcf",
-        "BulletEjectParticle": "particles/swb/bullet_hulls/12gauge_eject.vpcf",
+        "BarrelSmokeParticle": {
+          "_type": "gameobject",
+          "prefab": "prefabs/particles/muzzle/barrelsmoke.prefab"
+        },
+        "BulletEjectParticle": {
+          "_type": "gameobject",
+          "prefab": "prefabs/particles/shell/shelleject_12gauge.prefab"
+        },
         "Bullets": 10,
         "BulletSize": 2,
         "BulletTracerChance": 0.33,
-        "BulletTracerParticle": "particles/swb/tracer/tracer.vpcf",
+        "BulletTracerParticle": {
+          "_type": "gameobject",
+          "prefab": "prefabs/particles/tracer/tracer.prefab"
+        },
+        "BulletType": {
+          "_type": "component",
+          "component_id": "b24cbcdc-c529-473f-b84b-11e89fd5ea60",
+          "go": "90e1f323-4483-4cab-a02f-56d0ccf3fead",
+          "component_type": "HitScanBulletInfo"
+        },
         "ClipSize": 6,
         "Damage": 12,
         "DryShootSound": "sounds/swb/clip/swb_shotty.empty.sound",
@@ -105,7 +139,10 @@
         "Force": 3,
         "HitFlinch": 2.5,
         "InfiniteAmmo": "reserve",
-        "MuzzleFlashParticle": "particles/swb/muzzle/flash.vpcf",
+        "MuzzleFlashParticle": {
+          "_type": "gameobject",
+          "prefab": "prefabs/particles/muzzle/muzzleflash.prefab"
+        },
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -126,18 +163,26 @@
         "ShootSound": "weapons/swb/remington/sounds/remington.fire.sound",
         "Spread": 0.14,
         "VMParticleScale": 2,
+        "WMMuzzleParticleScale": 3,
         "WMParticleScale": 2.5
       },
       {
         "__type": "SWB.Demo.ReflexSightBG",
         "__guid": "28ba3396-e484-4425-9a37-cf6b2d976c27",
+        "__enabled": true,
+        "Flags": 0,
         "AimAnimData": {
           "Angle": "-0.07,0.48,-0.5",
           "Pos": "-2.816,0,0.36"
         },
-        "AimFOV": -1,
-        "AimInFOVSpeed": -1,
-        "AimOutFOVSpeed": -1,
+        "AimInfo": {
+          "SpreadModifier": -1,
+          "Sensitivity": 0.5,
+          "ViewModelFOV": -1,
+          "PlayerFOV": 50,
+          "AimInFOVSpeed": -1,
+          "AimOutFOVSpeed": -1
+        },
         "Bone": null,
         "Enable": false,
         "OnComponentDestroy": null,
@@ -153,6 +198,8 @@
       {
         "__type": "SWB.Demo.ShotgunSilencerBG",
         "__guid": "9e2fc3a7-822a-416b-b095-3f404511517b",
+        "__enabled": true,
+        "Flags": 0,
         "Bone": null,
         "EffectAttachmentOrBone": "muzzle_silenced",
         "Enable": false,
@@ -166,19 +213,25 @@
         "ShootSound": "sounds/swb/attachments/silencer/swb_shotgun.silenced.fire.sound",
         "ViewModelScale": "1,1,1",
         "WorldModelScale": "1,1,1"
+      },
+      {
+        "__type": "SWB.Base.HitScanBulletInfo",
+        "__guid": "b24cbcdc-c529-473f-b84b-11e89fd5ea60",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
       }
     ],
     "Children": [],
-    "__variables": [],
     "__properties": {
-      "FixedUpdateFrequency": 50,
-      "MaxFixedUpdates": 5,
-      "NetworkFrequency": 30,
       "NetworkInterpolation": true,
-      "PhysicsSubSteps": 1,
-      "ThreadedAnimation": true,
       "TimeScale": 1,
-      "UseFixedUpdate": true,
+      "WantsSystemScene": true,
       "Metadata": {},
       "NavMesh": {
         "Enabled": false,
@@ -192,13 +245,14 @@
         "ExcludedBodies": "",
         "IncludedBodies": ""
       }
-    }
+    },
+    "__variables": []
   },
+  "ResourceVersion": 2,
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "ResourceVersion": 1,
   "__references": [],
-  "__version": 1
+  "__version": 2
 }

@@ -1,24 +1,57 @@
 ﻿using Sandbox.UI;
 using Sandbox.UI.Construct;
 using SWB.Base;
+using SWB.Player;
 using SWB.Shared;
+using System.Collections.Generic;
 
 namespace SWB.HUD;
 
+struct KeyBind
+{
+	public string Key { get; set; }
+	public string Label { get; set; }
+
+	public KeyBind( string key, string label )
+	{
+		Key = key;
+		Label = label;
+	}
+}
+
 public class KeyDisplay : Panel
 {
-	IPlayerBase player;
+	PlayerBase player;
+	bool usingController;
 
-	public KeyDisplay( IPlayerBase player )
+	List<KeyBind> keys = new()
+	{
+		new(InputButtonHelper.Menu, "Customization"),
+		new(InputButtonHelper.View, "Thirdperson"),
+	};
+
+	public KeyDisplay( PlayerBase player )
 	{
 		this.player = player;
 		StyleSheet.Load( "/swb_hud/KeyDisplay.cs.scss" );
 
-		var keyIcon = this.Add.Image( "", "keyIcon" );
-		var buttonTexture = Input.GetGlyph( InputButtonHelper.Menu, style: GlyphStyle.Dark );
-		keyIcon.Texture = buttonTexture;
+		CreateKeys();
+	}
 
-		this.Add.Label( "Customization", "label" );
+	void CreateKeys()
+	{
+		usingController = Input.UsingController;
+		DeleteChildren();
+
+		keys.ForEach( keyBind =>
+		{
+			var wrapper = Add.Panel( "wrapper" );
+			var keyIcon = wrapper.Add.Image( "", "keyIcon" );
+			var buttonTexture = Input.GetGlyph( keyBind.Key, style: GlyphStyle.Dark );
+			keyIcon.Texture = buttonTexture;
+
+			wrapper.Add.Label( keyBind.Label, "label" );
+		} );
 	}
 
 	public override void Tick()
@@ -30,6 +63,10 @@ public class KeyDisplay : Panel
 			SetClass( "hide", true );
 			return;
 		}
+
+		// Update glyphs when switching input device
+		if ( usingController != Input.UsingController )
+			CreateKeys();
 
 		var activeWeapon = activeGO.Components.Get<Weapon>();
 		var isValidWeapon = activeWeapon is not null;

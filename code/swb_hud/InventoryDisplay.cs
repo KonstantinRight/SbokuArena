@@ -1,6 +1,7 @@
 ﻿using Sandbox.UI;
 using Sandbox.UI.Construct;
 using SWB.Base;
+using SWB.Player;
 using SWB.Shared;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,12 @@ namespace SWB.HUD;
 
 public class InventoryDisplay : Panel
 {
-	IPlayerBase player;
+	PlayerBase player;
 	List<IInventoryItem> items = new();
 	Dictionary<int, Panel> itemPanels = new();
 	IInventoryItem activeItem;
 
-	public InventoryDisplay( IPlayerBase player )
+	public InventoryDisplay( PlayerBase player )
 	{
 		this.player = player;
 		StyleSheet.Load( "/swb_hud/InventoryDisplay.cs.scss" );
@@ -98,8 +99,8 @@ public class InventoryDisplay : Panel
 		else if ( Input.Pressed( InputButtonHelper.Slot7 ) ) SwitchItem( 7 );
 		else if ( Input.Pressed( InputButtonHelper.Slot8 ) ) SwitchItem( 8 );
 		else if ( Input.Pressed( InputButtonHelper.Slot9 ) ) SwitchItem( 9 );
-		else if ( Input.MouseWheel.y > 0 ) SwitchToNext();
-		else if ( Input.MouseWheel.y < 0 ) SwitchToPrev();
+		else if ( Input.MouseWheel.y > 0 || Input.Pressed( InputButtonHelper.SlotNext ) ) SwitchToNext();
+		else if ( Input.MouseWheel.y < 0 || Input.Pressed( InputButtonHelper.SlotPrev ) ) SwitchToPrev();
 	}
 
 	void SwitchToNext()

@@ -1,6 +1,9 @@
 using Sandbox.Citizen;
 using Sandbox.Sboku.Arena;
 using SWB.Shared;
+using System;
+using System.Collections.Generic;
+using static Sandbox.SceneModel;
 
 namespace SWB.Player;
 
@@ -13,24 +16,75 @@ public partial class PlayerBase
 	[Property] public float WalkSpeed { get; set; } = 160f;
 	[Property] public float CrouchSpeed { get; set; } = 90f;
 	[Property] public float JumpForce { get; set; } = 350f;
+	[Property] public float NoclipSpeed { get; set; } = 5f;
+
+	/// <summary>Blocks jump when jumping quickly in succession</summary>
+	[Property] public bool JumpSpamPrevention { get; set; } = true;
+
+	[Property, Category( "Falling" )] public float SafeFallSpeed { get; set; } = 500f;
+	[Property, Category( "Falling" )] public float LethalFallSpeed { get; set; } = 700f;
+	[Property, Category( "Falling" )] public float MaxFallDamage { get; set; } = 100f;
+	[Property, Category( "Falling" )] public float FallDamageExponent { get; set; } = 2f;
 
 	[Sync] public Vector3 WishVelocity { get; set; } = Vector3.Zero;
+	[Sync] public Vector3 FallingVelocity { get; set; } = Vector3.Zero;
 	[Sync] public Angles EyeAngles { get; set; }
 	[Sync] public Vector3 EyeOffset { get; set; } = Vector3.Zero;
 	[Sync] public bool IsCrouching { get; set; } = false;
 	[Sync] public bool IsRunning { get; set; } = false;
 	[Sync] public bool CanMove { get; set; } = true;
+	[Sync] public bool Noclip { get; private set; } = false;
+	[Sync] public bool IsUsingController { get; set; }
 
-	public bool IsOnGround => CharacterController.IsOnGround;
-	public Vector3 Velocity => CharacterController.Velocity;
+	public TimeSince TimeSinceAirborne { get; set; }
+	public bool IsOnGround => CharacterController?.IsOnGround ?? true;
+	public Vector3 Velocity => CharacterController?.Velocity ?? Vector3.Zero;
 	public Vector3 EyePos => Head.WorldPosition + EyeOffset;
 	public Angles EyeAnglesNormal => EyeAngles.Normal;
 
 	public CharacterController CharacterController { get; set; }
 	public CitizenAnimationHelper AnimationHelper { get; set; }
+	public HoldTypes HoldType
+	{
+		set { AnimationHelper.HoldType = (CitizenAnimationHelper.HoldTypes)value; }
+	}
+
 	public CapsuleCollider BodyCollider { get; set; }
 
+	HashSet<string> stickyButtons = new( StringComparer.Ordinal );
+	HashSet<string> stickyActiveButtons = new( StringComparer.Ordinal );
+	TimeSince timeSinceStickyRunStart = 0;
+
 	TimeSince timeSinceLastFootstep = 0;
+	bool groundedCheck = true;
+
+	public void ToggleNoclip()
+	{
+		Noclip = !Noclip;
+
+		if ( Noclip ) Tags.Add( TagsHelper.Trigger );
+		else Tags.Remove( TagsHelper.Trigger );
+
+		BodyRenderer.Set( "b_noclip", Noclip );
+	}
+
+	public virtual void OnInputDeviceSwitch()
+	{
+		IsUsingController = Input.UsingController;
+		stickyButtons.Clear();
+		stickyActiveButtons.Clear();
+
+		if ( IsUsingController )
+		{
+			stickyButtons.Add( InputButtonHelper.Duck );
+			stickyButtons.Add( InputButtonHelper.Run );
+		}
+	}
+
+	bool InputIsDownOrPressed( string button )
+	{
+		return !IsUsingController ? Input.Down( button ) : Input.Pressed( button );
+	}
 
 	void OnMovementAwake()
 	{
@@ -42,27 +96,55 @@ public partial class PlayerBase
 			BodyRenderer.OnFootstepEvent += OnAnimEventFootstep;
 	}
 
-	void OnMovementUpdate()
+	public virtual void OnMovementUpdate()
 	{
-		if ( !IsProxy )
+		if ( !IsProxy && !IsBot )
 		{
-			IsRunning = Input.Down( InputButtonHelper.Run );
+			UpdateRun();
 
 			if ( Input.Pressed( InputButtonHelper.Jump ) )
-				Jump();
+			{
+				if ( IsClimbingLadder )
+					LadderJump();
+				else
+					Jump();
+			}
 
 			UpdateCrouch();
+		}
+
+		if ( !IsOnGround )
+		{
+			TimeSinceAirborne = 0;
+			FallingVelocity = Velocity;
+		}
+
+		if ( IsOnGround && groundedCheck != IsOnGround )
+		{
+			groundedCheck = IsOnGround;
+			OnGrounded( FallingVelocity );
+		}
+		else if ( !IsOnGround )
+		{
+			groundedCheck = false;
 		}
 
 		RotateBody();
 		UpdateAnimations();
 	}
 
-	void OnMovementFixedUpdate()
+	public virtual void OnMovementFixedUpdate()
 	{
 		if ( IsProxy ) return;
-		BuildWishVelocity();
-		Move();
+		if ( !IsBot )
+			BuildWishVelocity();
+
+		if ( Noclip )
+			NoclipMove();
+		else if ( IsClimbingLadder )
+			LadderMove();
+		else
+			Move();
 	}
 
 	void BuildWishVelocity()
@@ -78,13 +160,24 @@ public partial class PlayerBase
 			if ( Input.Down( InputButtonHelper.Left ) ) WishVelocity += rot.Left;
 			if ( Input.Down( InputButtonHelper.Right ) ) WishVelocity += rot.Right;
 		}
+		var rot = Camera.WorldRotation; // = EyeAngles in firstperson | = Camera.WorldRotation in thirdperson
+		WishVelocity += rot * Input.AnalogMove;
 
-		WishVelocity = WishVelocity.WithZ( 0 );
+		if ( !Noclip )
+			WishVelocity = WishVelocity.WithZ( 0 );
+
 		if ( !WishVelocity.IsNearZeroLength ) WishVelocity = WishVelocity.Normal;
 
 		if ( IsCrouching ) WishVelocity *= CrouchSpeed * UpgradeHolder.SpeedMultiplier;
 		else if ( IsRunning ) WishVelocity *= RunSpeed * UpgradeHolder.SpeedMultiplier;
 		else WishVelocity *= WalkSpeed * UpgradeHolder.SpeedMultiplier;
+
+		// Mobility from item
+		if ( Inventory.ActiveItem is not null )
+			WishVelocity *= Inventory.ActiveItem.Mobility;
+
+		// Impact from bullets, etc.
+		WishVelocity *= movementImpact;
 	}
 
 	void Move()
@@ -135,8 +228,46 @@ public partial class PlayerBase
 	{
 		if ( !IsOnGround ) return;
 
-		CharacterController.Punch( Vector3.Up * JumpForce );
+		if ( JumpSpamPrevention && TimeSinceAirborne < 0.2f )
+			return;
+
+		var jumpVelocity = Vector3.Up * JumpForce;
+
+		// Sound
+		var tr = GetSurfaceTrace();
+		if ( tr.Hit )
+			PlayFootLaunchSound( tr.Surface, jumpVelocity );
+
+		CharacterController.Punch( jumpVelocity );
 		AnimationHelper?.TriggerJump();
+
+		// Unstick crouch
+		if ( IsCrouching )
+			stickyActiveButtons.Remove( InputButtonHelper.Duck );
+
+		// Unstick run
+		if ( IsRunning )
+			stickyActiveButtons.Remove( InputButtonHelper.Run );
+	}
+
+	/// <summary>Called once when the player lands</summary>
+	public virtual void OnGrounded( Vector3 velocity )
+	{
+		var tr = GetSurfaceTrace();
+		if ( tr.Hit )
+			PlayFootLandSound( tr.Surface, velocity );
+
+		if ( !IsProxy )
+		{
+			ShakeScreen( new()
+			{
+				Size = 0.2f,
+				Rotation = 0.2f,
+				Duration = 0.1f,
+			} );
+
+			DoFallDamage( velocity );
+		}
 	}
 
 	void UpdateAnimations()
@@ -146,22 +277,75 @@ public partial class PlayerBase
 		AnimationHelper.WithWishVelocity( WishVelocity );
 		AnimationHelper.WithVelocity( CharacterController.Velocity );
 		AnimationHelper.AimAngle = EyeAngles.ToRotation();
-		AnimationHelper.IsGrounded = IsOnGround;
+		AnimationHelper.IsGrounded = IsOnGround || IsClimbingLadder;
 		AnimationHelper.WithLook( EyeAngles.ToRotation().Forward, 1f, 0.75f, 0.5f );
 		AnimationHelper.MoveStyle = CitizenAnimationHelper.MoveStyles.Run;
 		AnimationHelper.DuckLevel = IsCrouching ? 1 : 0;
 	}
 
+	void UpdateRun()
+	{
+		var runIsDownOrPressed = InputIsDownOrPressed( InputButtonHelper.Run );
+		var runIsStickyActive = stickyActiveButtons.Contains( InputButtonHelper.Run );
+
+		// Velocity unstick
+		var speed = Velocity.WithZ( 0 );
+		if ( !IsCrouching && timeSinceStickyRunStart > 0.2 && speed.LengthSquared < 20000 )
+		{
+			runIsStickyActive = false;
+			stickyActiveButtons.Remove( InputButtonHelper.Run );
+		}
+
+		// Stick
+		if ( IsUsingController && runIsDownOrPressed )
+		{
+			runIsStickyActive = !runIsStickyActive;
+
+			if ( runIsStickyActive )
+			{
+				timeSinceStickyRunStart = 0;
+				stickyActiveButtons.Add( InputButtonHelper.Run );
+			}
+			else
+				stickyActiveButtons.Remove( InputButtonHelper.Run );
+		}
+
+		// Unstick crouch
+		if ( runIsStickyActive && IsCrouching )
+		{
+			stickyActiveButtons.Remove( InputButtonHelper.Duck );
+		}
+
+		IsRunning = runIsDownOrPressed || runIsStickyActive;
+	}
+
 	void UpdateCrouch()
 	{
-		if ( Input.Down( InputButtonHelper.Duck ) && !IsCrouching && IsOnGround )
+		var duckIsDownOrPressed = InputIsDownOrPressed( InputButtonHelper.Duck );
+		var duckIsStickyActive = stickyActiveButtons.Contains( InputButtonHelper.Duck );
+
+		// Unstick
+		if ( duckIsDownOrPressed && duckIsStickyActive )
+		{
+			duckIsStickyActive = false;
+			stickyActiveButtons.Remove( InputButtonHelper.Duck );
+		}
+
+		if ( duckIsDownOrPressed && !IsCrouching && !IsRunning && IsOnGround && !IsClimbingLadder )
 		{
 			IsCrouching = true;
 			CharacterController.Height /= 2f;
 			BodyCollider.End = BodyCollider.End.WithZ( BodyCollider.End.z / 2f );
+
+			if ( stickyButtons.Contains( InputButtonHelper.Duck ) )
+			{
+				stickyActiveButtons.Add( InputButtonHelper.Duck );
+			}
 		}
 
-		if ( IsCrouching && (!Input.Down( InputButtonHelper.Duck ) || !IsOnGround) )
+		if ( duckIsStickyActive ) return;
+
+		if ( IsCrouching && (!duckIsDownOrPressed || !IsOnGround) )
 		{
 			// Check we have space to uncrouch
 			var targetHeight = CharacterController.Height * 2f;
@@ -182,6 +366,10 @@ public partial class PlayerBase
 
 		// Walk
 		var stepDelay = 0.25f;
+		var speed = Velocity.WithZ( 0 );
+
+		// Standing still
+		if ( speed.IsNearlyZero( 0.01f ) && TimeSinceAirborne > 0.1f ) return;
 
 		// Running
 		if ( Velocity.WithZ( 0 ).Length >= 200 )
@@ -199,15 +387,68 @@ public partial class PlayerBase
 
 		var tr = Scene.Trace.Ray( footstepEvent.Transform.Position, footstepEvent.Transform.Position + Vector3.Down * 20 )
 			.Radius( 1 )
-			.IgnoreGameObject( this.GameObject )
+			.IgnoreGameObjectHierarchy( this.GameObject )
 			.Run();
 
 		if ( !tr.Hit ) return;
 
-		var sound = tr.Surface.PlayCollisionSound( footstepEvent.Transform.Position );
-		if ( sound is not null )
-			sound.Volume = footstepEvent.Volume;
-
+		PlayFootstepSound( tr.Surface, footstepEvent );
 		timeSinceLastFootstep = 0;
+	}
+
+	public SceneTraceResult GetSurfaceTrace()
+	{
+		return Scene.Trace.Ray( WorldPosition, WorldPosition + Vector3.Down * 1000 )
+			.Radius( 1 )
+			.IgnoreGameObjectHierarchy( this.GameObject )
+			.Run();
+	}
+
+	public void PlaySoundEvent( Sandbox.SoundEvent soundEvent, string fallback, float dist )
+	{
+		SoundHandle soundHandle = null;
+
+		if ( soundEvent is not null )
+			soundHandle = Sound.Play( soundEvent );
+
+		soundHandle ??= Sound.Play( fallback );
+		soundHandle.Distance = dist;
+		soundHandle.Position = WorldPosition;
+	}
+
+	public virtual void PlayFootstepSound( Surface surface, FootstepEvent footstepEvent )
+	{
+		PlaySoundEvent( surface?.SoundCollection.FootRight, "footstep-concrete", 7500 );
+	}
+
+	[Rpc.Broadcast( NetFlags.Unreliable )]
+	public virtual void PlayFootLaunchSound( Surface surface, Vector3 velocity )
+	{
+		PlaySoundEvent( surface?.SoundCollection.FootLaunch, "footstep-concrete-jump", 7500 );
+	}
+
+	public virtual void PlayFootLandSound( Surface surface, Vector3 velocity )
+	{
+		PlaySoundEvent( surface?.SoundCollection.FootLand, "footstep-concrete-land", 10000 );
+	}
+
+	public virtual void DoFallDamage( Vector3 impactVelocity )
+	{
+		var downSpeed = -impactVelocity.z;
+		if ( downSpeed <= SafeFallSpeed ) return;
+
+		// Normalize to 0..1 between safe and lethal
+		var t = (downSpeed - SafeFallSpeed) / Math.Max( 1f, (LethalFallSpeed - SafeFallSpeed) );
+		t = Math.Clamp( t, 0f, 1f );
+
+		var curved = MathF.Pow( t, FallDamageExponent );
+		var damage = curved * MaxFallDamage;
+		var damageInfo = new Shared.DamageInfo
+		{
+			Damage = damage,
+			Force = impactVelocity,
+		};
+
+		TakeDamage( damageInfo );
 	}
 }
