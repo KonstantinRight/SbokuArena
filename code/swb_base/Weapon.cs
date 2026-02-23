@@ -1,4 +1,5 @@
-﻿using SWB.Base.Attachments;
+﻿using Sandbox.Sboku;
+using SWB.Base.Attachments;
 using SWB.Player;
 using SWB.Shared;
 using System.Collections.Generic;
@@ -183,7 +184,7 @@ public partial class Weapon : Component, IInventoryItem
 
 	protected override void OnStart()
 	{
-		if ( !IsProxy && Owner.Camera is not null )
+		if ( !IsProxy && Owner.Camera is not null && Owner is not BotAdapter)
 		{
 			CameraHandler = Components.GetOrCreate<PlayerCameraHandler>();
 			CameraHandler.Weapon = this;

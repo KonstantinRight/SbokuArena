@@ -142,8 +142,8 @@ public partial class PlayerBase : Component, Component.INetworkSpawn, IPlayerBas
 		{
 			var attacker = attackerGO.Components.Get<IPlayerBase>();
 
-			if ( attacker is not null && attacker != this )
-				attacker.Kills++;
+			//if ( attacker is not null && attacker != this )
+			//	attacker.Kills++;
 		}
 
 		if ( IsProxy ) return;

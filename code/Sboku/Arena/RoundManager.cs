@@ -1,5 +1,6 @@
 using Sandbox.Events;
 using SWB.Demo;
+using SWB.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -114,8 +115,8 @@ public sealed class RoundManager : Component,
 	[Rpc.Host]
 	public void RemoveEntities()
 	{
-        foreach (var ad in Scene.GetComponentsInChildren<BotAdapter>(includeDisabled: true))
-            ad.GameObject.Destroy();
+		foreach ( var ad in Scene.GetComponentsInChildren<BotAdapter>( includeDisabled: true ).Select(x => x.GameObject).Concat(Scene.FindAllWithTag( TagsHelper.DeadPlayer )))
+            ad.Destroy();
     }
 
 	[Rpc.Broadcast]

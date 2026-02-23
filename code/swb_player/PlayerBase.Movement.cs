@@ -1,5 +1,4 @@
 using Sandbox.Citizen;
-using Sandbox.Sboku.Arena;
 using SWB.Shared;
 using System;
 using System.Collections.Generic;
@@ -152,16 +151,11 @@ public partial class PlayerBase
 		WishVelocity = 0;
 		if ( !CanMove ) return;
 
-		var rot = EyeAngles.ToRotation();
 		if (RootDisplay.GetComponent<ScreenPanel>(true).Enabled)
 		{
-			if ( Input.Down( InputButtonHelper.Forward ) ) WishVelocity += rot.Forward;
-			if ( Input.Down( InputButtonHelper.Backward ) ) WishVelocity += rot.Backward;
-			if ( Input.Down( InputButtonHelper.Left ) ) WishVelocity += rot.Left;
-			if ( Input.Down( InputButtonHelper.Right ) ) WishVelocity += rot.Right;
+			var rot = Camera.WorldRotation; // = EyeAngles in firstperson | = Camera.WorldRotation in thirdperson
+			WishVelocity += rot * Input.AnalogMove;
 		}
-		var rot = Camera.WorldRotation; // = EyeAngles in firstperson | = Camera.WorldRotation in thirdperson
-		WishVelocity += rot * Input.AnalogMove;
 
 		if ( !Noclip )
 			WishVelocity = WishVelocity.WithZ( 0 );
@@ -178,6 +172,26 @@ public partial class PlayerBase
 
 		// Impact from bullets, etc.
 		WishVelocity *= movementImpact;
+	}
+
+	void NoclipMove()
+	{
+		var speedMod = 1f;
+
+		if ( Input.Down( InputButtonHelper.Run ) )
+			speedMod = 2f;
+		if ( Input.Down( InputButtonHelper.Duck ) )
+			speedMod = 0.5f;
+
+		WishVelocity *= NoclipSpeed * speedMod;
+
+		if ( Input.Down( InputButtonHelper.Jump ) )
+			WishVelocity += Vector3.Up * NoclipSpeed * speedMod * 100;
+
+		CharacterController.Velocity = WishVelocity;
+
+		if ( !CharacterController.Velocity.IsNearZeroLength )
+			CharacterController.Move();
 	}
 
 	void Move()
@@ -348,13 +362,13 @@ public partial class PlayerBase
 		if ( IsCrouching && (!duckIsDownOrPressed || !IsOnGround) )
 		{
 			// Check we have space to uncrouch
-			var targetHeight = CharacterController.Height * 2f;
+			var targetHeight = CharacterController.Height + 4;
 			var upTrace = CharacterController.TraceDirection( Vector3.Up * targetHeight );
 
 			if ( !upTrace.Hit )
 			{
 				IsCrouching = false;
-				CharacterController.Height = targetHeight;
+				CharacterController.Height *= 2;
 				BodyCollider.End = BodyCollider.End.WithZ( BodyCollider.End.z * 2f );
 			}
 		}

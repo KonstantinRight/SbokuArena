@@ -84,7 +84,7 @@ public partial class PlayerBase
 			info.Damage *= 2;
 
 		float dmgMultiplier = 1;
-		var attacker = Scene.Directory.FindByGuid(info.AttackerId);
+		var attacker = Scene.Directory.FindByGuid(info.Attacker.Id);
 		if (attacker != null && attacker.IsValid)
 		{
 			dmgMultiplier = attacker.GetComponent<UpgradeHolder>().DamageMultiplier * GetComponent<UpgradeHolder>().ArmorMultiplier;
